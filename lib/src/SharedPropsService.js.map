@@ -1,0 +1,1 @@
+{"version":3,"file":"SharedPropsService.js","sourceRoot":"","sources":["../../src/SharedPropsService.ts"],"names":[],"mappings":";;AAEA,IAAI,YAAyB,CAAC;AAE9B,SAAS,cAAc,CAAC,KAAkB;IACxC,YAAY,GAAG,KAAK,CAAC;AACvB,CAAC;AAED,SAAS,aAAa,CAAC,GAAW;IAChC,IAAI,YAAY,EAAE;QAChB,OAAO,YAAY,CAAC,GAAG,CAAC,CAAC;KAC1B;IACD,OAAO,IAAI,CAAC;AACd,CAAC;AAED,kBAAe;IACb,cAAc;IACd,aAAa;CACd,CAAC"}
