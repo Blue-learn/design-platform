@@ -8,7 +8,8 @@
     "build": "tsc",
     "dev": "tsc -w",
     "version-bump": "npm version patch",
-    "publish": "npm publish --access public"
+    "publish": "npm publish --access public",
+    "copy": "sh scripts/copy-dev.sh"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.6",
