@@ -9,7 +9,8 @@
     "dev": "tsc -w",
     "version-bump": "npm version patch",
     "publish": "npm publish --access public",
-    "copy": "sh scripts/copy-dev.sh"
+    "copy": "sh scripts/copy-dev.sh",
+    "copy-watcher": "node chokidar.js"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.6",
@@ -17,7 +18,8 @@
     "@types/react-native": "^0.67.7",
     "react": "^17.0.2",
     "react-native": "^0.67.1",
-    "typescript": "^4.5.5"
+    "typescript": "^4.5.5",
+    "chokidar": "^3.5.3"
   },
   "directories": {
     "lib": "lib"

@@ -1,3 +1,4 @@
+import React from "react";
 import createDataContext from "./createDataContext";
 type ScreenProps = {};
 type StandardEnum = { [id: number]: string };
@@ -13,7 +14,7 @@ export type WidgetRegistry = {
   };
 };
 
-export type DcConfig = { widgetRegistry: WidgetRegistry };
+export type DesignComponentConfig = { widgetRegistry: WidgetRegistry };
 
 enum GlobalActionType {
   SET_CONFIG = "set_config",
@@ -22,18 +23,18 @@ enum GlobalActionType {
 
 type SetConfigAction = {
   type: GlobalActionType.SET_CONFIG;
-  payload: DcConfig;
+  payload: DesignComponentConfig;
 };
 
 type SetScreenPropsAction = {
   type: GlobalActionType.SET_SCREEN_PROPS;
-  payload: DcConfig;
+  payload: DesignComponentConfig;
 };
 
 type GlobalAction = SetConfigAction | SetScreenPropsAction;
 
 export type GlobalState = {
-  config: DcConfig | null;
+  config: DesignComponentConfig | null;
   screenProps: ScreenProps | null;
 };
 
@@ -54,7 +55,7 @@ const GlobalReducer = (state: GlobalState, action: GlobalAction) => {
 };
 
 const setConfig = (dispatch: any) => {
-  return (config: DcConfig) => {
+  return (config: DesignComponentConfig) => {
     dispatch({ type: GlobalActionType.SET_CONFIG, payload: config });
   };
 };
