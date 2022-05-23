@@ -4,32 +4,30 @@ import { View } from "react-native";
 import ItemRenderer, { TemplateItem } from "./ItemRenderer";
 import { PerformActionFn } from "../context/PerformActionContext";
 import SharedPropsService from "../SharedPropsService";
+import { DesignComponentConfig } from "../context";
 
 type TemplateProps = {
   item: TemplateItem;
   renderItem?: any;
   showModalSheet(routeKey: string, params: any): any;
-  performAction: PerformActionFn;
+  performAction?: PerformActionFn;
   updateDataStore(store: {}): void;
   widgetRef?: React.RefObject<View>;
   isVisible?: boolean;
 };
 
 class StandardWidgetRenderer extends React.PureComponent<TemplateProps> {
-  static config = null;
+  static config: DesignComponentConfig = { widgetRegistry: {} };
 
   private widgetRef: React.RefObject<View>;
 
   constructor(props: TemplateProps) {
     super(props);
     this.state = {
-      isVisible: props.isVisible || false,
+      isVisible: true,
     };
-
-    if (StandardWidgetRenderer.config === null) {
-      StandardWidgetRenderer.config =
-        SharedPropsService.getPropsValue("componentConfig");
-    }
+    StandardWidgetRenderer.config =
+      SharedPropsService.getPropsValue("componentConfig");
 
     this.widgetRef = React.createRef<View>();
   }
@@ -76,12 +74,13 @@ class StandardWidgetRenderer extends React.PureComponent<TemplateProps> {
     };
 
     const Widget: any = _get(
-      StandardWidgetRenderer.config,
+      StandardWidgetRenderer.config.widgetRegistry,
       `${item.type || item.widgetType}`,
       null
     );
 
     const WidgetToRender = Widget.Component;
+
     return (
       <>
         <WidgetToRender {...props} ref={this.widgetRef} />

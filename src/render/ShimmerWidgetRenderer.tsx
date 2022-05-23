@@ -2,7 +2,6 @@ import React from "react";
 import _get from "lodash-es/get";
 import { TemplateItem } from "./ItemRenderer";
 import SharedPropsService from "../SharedPropsService";
-// import Separator from './components/Separator';
 
 const ShimmerWidgetRenderer: React.FunctionComponent<TemplateItem> = ({
   type,

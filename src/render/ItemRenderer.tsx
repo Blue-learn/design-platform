@@ -20,7 +20,7 @@ interface Props {
   onComponentMount?: (id: string) => void;
   forwardedRef?: any;
   // from context
-  performTapAction: PerformTapActionFn;
+  performTapAction?: PerformTapActionFn;
 }
 
 class ItemRenderer extends React.PureComponent<Props> {
@@ -32,7 +32,9 @@ class ItemRenderer extends React.PureComponent<Props> {
     super(props);
     const { item, performTapAction } = props;
 
-    this.boundPerformTapAction = performTapAction();
+    if (performTapAction) {
+      this.boundPerformTapAction = performTapAction();
+    }
   }
 
   componentDidMount() {
