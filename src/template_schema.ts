@@ -1,4 +1,4 @@
-const templateSchema = {
+export const templateSchema = {
   isError: false,
   success: {
     data: {
@@ -6,31 +6,37 @@ const templateSchema = {
         type: "layouts/list",
         id: "layout_id",
         widgets: [
+          // {
+          //   id: "space",
+          //   type: "SPACE", // from WIDGET List
+          //   position: "top-fixed", // optional
+          // },
           {
-            id: "component_id",
-            type: "component_type", // from WIDGET List
+            id: "button",
+            type: "BUTTON", // from WIDGET List
             position: "top-fixed", // optional
           },
+          // {
+          //   id: "avatar",
+          //   type: "AVATAR", // from WIDGET List
+          //   position: "top-fixed", // optional
+          // },
         ],
       },
-      dataStore: {
-        layout_id: {},
-        component1_id: {
-          label: "Hello World", //props
-          tapAction: {
-            id: "component1_id", //triggered with component reference id
-            type: "api_call",
-            payload: {
-              url: "http://api.goole.com",
-              method: "post",
-              data: { foo: "bar" },
-            },
-          },
+      datastore: {
+        space: { size: "2" },
+        button: {
+          label: `Button`,
+          type: "large-filled",
+          width: "full",
+          iconName: "chat",
         },
-        vstack: {
-          listWidgets: [{ type: "Button", id: "nested_component_id" }],
-        }, //,
-        nested_component_id: {},
+        layout_id: {},
+        avatar: {
+          borderWidth: 0,
+          size: "lg",
+          uri: "https://reactnative.dev/img/tiny_logo.png",
+        },
       },
     },
   },
