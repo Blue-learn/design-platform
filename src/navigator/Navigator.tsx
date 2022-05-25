@@ -1,35 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import SharedPropsService from "../SharedPropsService";
-import ItemRenderer from "../render/ItemRenderer";
 import { ScreenProps } from "../types";
+import ListView from "../component/ListView";
 
 const Navigator = (props: ScreenProps) => {
-  const [state, setState] = useState(false);
+  const [isLoading, toggleLoad] = useState(true);
 
   useEffect(() => {
+    toggleLoad(true);
     SharedPropsService.setGlobalProps(props, () => {
-      setState(true);
+      toggleLoad(false);
     });
   }, [props]);
 
-  if (!state)
+  if (isLoading)
     return (
-      <>
-        <Text>Please wait ...</Text>
-      </>
+      <ActivityIndicator style={{ margin: 10 }} size="large" color={"black"} />
     );
 
   return (
     <View style={{ flex: 1 }}>
-      <Text>Hello... from Platform</Text>
-      <ItemRenderer
-        item={{
-          id: "__id__",
-          type: "BUTTON",
-          props: { label: "Hello World" },
-        }}
-      />
+      <ListView />
     </View>
   );
 };
