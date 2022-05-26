@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import SharedPropsService from "../SharedPropsService";
 import { ScreenProps } from "../types";
-import ListView from "../component/ListView";
+import ListViewRenderer from "../component/ListViewRenderer";
 
 const Navigator = (props: ScreenProps) => {
   const [isLoading, toggleLoad] = useState(true);
+  const _initGlobalProps = async () => {
+    toggleLoad(true);
+    await SharedPropsService.setGlobalProps(props);
+    toggleLoad(false);
+  };
 
   useEffect(() => {
-    toggleLoad(true);
-    SharedPropsService.setGlobalProps(props, () => {
-      toggleLoad(false);
-    });
+    _initGlobalProps();
   }, [props]);
 
   if (isLoading)
@@ -21,7 +23,7 @@ const Navigator = (props: ScreenProps) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <ListView />
+      {props.initData && <ListViewRenderer template={props.initData} />}
     </View>
   );
 };

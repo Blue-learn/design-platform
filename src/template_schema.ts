@@ -1,4 +1,6 @@
-export const templateSchema = {
+import { TemplateSchema } from "./types";
+
+export const template: TemplateSchema = {
   isError: false,
   success: {
     data: {
@@ -11,6 +13,16 @@ export const templateSchema = {
           //   type: "SPACE", // from WIDGET List
           //   position: "top-fixed", // optional
           // },
+          {
+            id: "button",
+            type: "BUTTON", // from WIDGET List
+            position: "top-fixed", // optional
+          },
+          {
+            id: "button",
+            type: "BUTTON", // from WIDGET List
+            position: "top-fixed", // optional
+          },
           {
             id: "button",
             type: "BUTTON", // from WIDGET List
@@ -29,7 +41,7 @@ export const templateSchema = {
           label: `Button`,
           type: "large-filled",
           width: "full",
-          iconName: "chat",
+          // iconName: "chat",
         },
         layout_id: {},
         avatar: {

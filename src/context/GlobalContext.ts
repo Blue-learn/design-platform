@@ -1,18 +1,6 @@
 import React from "react";
 import createDataContext from "./createDataContext";
-type ScreenProps = {};
-type StandardEnum = { [id: number]: string };
-export type WidgetItem = {
-  id: string;
-  widgetType: StandardEnum;
-  props: any;
-};
-
-export type WidgetRegistry = {
-  [key: string]: {
-    Component?: React.ComponentType<any>;
-  };
-};
+import { ScreenProps, WidgetRegistry } from "../types";
 
 export type DesignComponentConfig = { widgetRegistry: WidgetRegistry };
 
