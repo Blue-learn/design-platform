@@ -52,12 +52,6 @@ export default class ListViewRenderer extends React.Component<
   };
 
   _rowRenderer(type: number, data: { id: string; type: string }) {
-    // console.warn(
-    //   "_rowRenderer data",
-    //   data,
-    //   "datastore",
-    //   this.state.datastore[data.id]
-    // );
     return (
       <ItemRenderer
         item={{
@@ -75,7 +69,6 @@ export default class ListViewRenderer extends React.Component<
     this.setState({ isMeasuring: false });
     this.initLayoutMaker();
   };
-
   render() {
     if (this.state.isMeasuring)
       return (
