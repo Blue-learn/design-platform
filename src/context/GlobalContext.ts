@@ -2,7 +2,7 @@ import React from "react";
 import createDataContext from "./createDataContext";
 import { ScreenProps, WidgetRegistry } from "../types";
 
-export type DesignComponentConfig = { widgetRegistry: WidgetRegistry };
+// export type WidgetRegistry = { widgetRegistry: WidgetRegistry };
 
 enum GlobalActionType {
   SET_CONFIG = "set_config",
@@ -11,18 +11,18 @@ enum GlobalActionType {
 
 type SetConfigAction = {
   type: GlobalActionType.SET_CONFIG;
-  payload: DesignComponentConfig;
+  payload: WidgetRegistry;
 };
 
 type SetScreenPropsAction = {
   type: GlobalActionType.SET_SCREEN_PROPS;
-  payload: DesignComponentConfig;
+  payload: WidgetRegistry;
 };
 
 type GlobalAction = SetConfigAction | SetScreenPropsAction;
 
 export type GlobalState = {
-  config: DesignComponentConfig | null;
+  config: WidgetRegistry | null;
   screenProps: ScreenProps | null;
 };
 
@@ -43,7 +43,7 @@ const GlobalReducer = (state: GlobalState, action: GlobalAction) => {
 };
 
 const setConfig = (dispatch: any) => {
-  return (config: DesignComponentConfig) => {
+  return (config: WidgetRegistry) => {
     dispatch({ type: GlobalActionType.SET_CONFIG, payload: config });
   };
 };

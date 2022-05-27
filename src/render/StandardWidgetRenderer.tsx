@@ -1,10 +1,9 @@
 import React from "react";
 import _get from "lodash-es/get";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import ItemRenderer, { TemplateItem } from "./ItemRenderer";
 import { PerformActionFn } from "../context/PerformActionContext";
 import SharedPropsService from "../SharedPropsService";
-import { DesignComponentConfig } from "../context";
 
 type TemplateProps = {
   item: TemplateItem;
@@ -17,27 +16,14 @@ type TemplateProps = {
 };
 
 class StandardWidgetRenderer extends React.PureComponent<TemplateProps> {
-  static config: DesignComponentConfig = { widgetRegistry: {} };
-
-  private widgetRef: React.RefObject<View>;
+  widgetRef: React.RefObject<View>;
 
   constructor(props: TemplateProps) {
     super(props);
     this.state = {
       isVisible: true,
     };
-    StandardWidgetRenderer.config =
-      SharedPropsService.getPropsValue("componentConfig");
-
     this.widgetRef = React.createRef<View>();
-  }
-
-  componentDidMount() {}
-
-  componentWillUnmount() {}
-
-  static getDerivedStateFromProps(props: TemplateProps, state: {}) {
-    return null;
   }
 
   renderItem = (
@@ -72,20 +58,21 @@ class StandardWidgetRenderer extends React.PureComponent<TemplateProps> {
       showModalSheet,
       isVisible: true,
     };
-
     const Widget: any = _get(
-      StandardWidgetRenderer.config.widgetRegistry,
-      `${item.type || item.widgetType}`,
+      SharedPropsService.getPropsValue("widgetRegistry"),
+      `${item.type}`,
       null
     );
+    // console.warn("Widget--->", Widget);
 
+    if (!Widget || !Widget.Component)
+      return (
+        <Text>
+          Error rendering type:{item.type} id:{item.id} not found
+        </Text>
+      );
     const WidgetToRender = Widget.Component;
-
-    return (
-      <>
-        <WidgetToRender {...props} ref={this.widgetRef} />
-      </>
-    );
+    return <WidgetToRender {...props} ref={this.widgetRef} />;
   }
 }
 

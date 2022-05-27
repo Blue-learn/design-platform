@@ -6,7 +6,7 @@ import SharedPropsService from "../SharedPropsService";
 const ShimmerWidgetRenderer: React.FunctionComponent<TemplateItem> = ({
   type,
 }) => {
-  const config = SharedPropsService.getPropsValue("componentConfig");
+  const config = SharedPropsService.getPropsValue("widgetRegistry");
 
   const Widget = _get(config, `${type}`, null);
 

@@ -1,10 +1,9 @@
 import { ScreenProps } from "./types";
 
-let _globalProps: ScreenProps;
+let _globalProps: ScreenProps = { routeId: "", widgetRegistry: {} };
 
-async function setGlobalProps(props: ScreenProps, callback?: Function) {
+async function setGlobalProps(props: ScreenProps) {
   _globalProps = await props;
-  if (callback) await callback();
 }
 
 function getPropsValue(key?: string) {

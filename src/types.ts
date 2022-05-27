@@ -1,11 +1,10 @@
-import { DesignComponentConfig } from "./context";
 import React from "react";
 
 export type ScreenProps = {
   route?: string; // screen or view to open
   routeId: string;
   initData?: TemplateSchema;
-  componentConfig?: DesignComponentConfig;
+  widgetRegistry: WidgetRegistry;
 };
 export type TemplateSchema = {
   isError: boolean;
@@ -29,6 +28,6 @@ export type WidgetItem = {
 
 export type WidgetRegistry = {
   [key: string]: {
-    Component?: React.ComponentType<any>;
+    Component?: any;
   };
 };

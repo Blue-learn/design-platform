@@ -22,7 +22,7 @@ export const ComponentHeightCalculate: ({
     };
 
     return (
-      <View onLayout={_onLayout} style={{ opacity: 0 }}>
+      <View key={`${index}`} onLayout={_onLayout} style={{ opacity: 0 }}>
         <ItemRenderer
           item={{
             id: widgetItem.id,

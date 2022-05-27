@@ -59,7 +59,7 @@ class ItemRenderer extends React.PureComponent<Props> {
         errorType: "ERROR_TYPES.ITEM_RENDERING_SKIPPED",
         message: `Component ${item.type} not rendered. Missing props for id ${item.id}.`,
       };
-      console.warn(errorObj);
+      console.warn("ItemRender->", errorObj);
       return null;
     }
     return (
