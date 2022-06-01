@@ -1,33 +1,47 @@
+import { PerformActionFn } from "./context/PerformActionContext";
 import React from "react";
+import { View } from "react-native";
 
+export type WidgetItem = {
+  id: string;
+  type: string;
+  position?: string;
+  props?: object;
+};
 export type ScreenProps = {
   route?: string; // screen or view to open
   routeId: string;
   initData?: TemplateSchema;
   widgetRegistry: WidgetRegistry;
 };
+export type DataStoreType = { [keys in string]: Object } | null;
+export type LayoutType = {
+  id: string;
+  type: string;
+  widgets: WidgetItem[];
+};
 export type TemplateSchema = {
   isError: boolean;
   success: {
     data: {
-      layout: {
-        id: string;
-        type: string;
-        widgets: { id: string; type: string; position?: string }[];
-      };
-      datastore: { [keys in string]: Object };
+      layout: LayoutType;
+      datastore: DataStoreType;
     };
   };
-};
-type StandardEnum = { [id: number | string]: string };
-export type WidgetItem = {
-  id: string;
-  type: StandardEnum;
-  props: any;
 };
 
 export type WidgetRegistry = {
   [key: string]: {
-    Component?: any;
+    Component?: JSX.Element;
   };
+};
+
+export type TemplateProps = {
+  item: WidgetItem;
+  renderItem?: any;
+  showModalSheet(routeKey: string, params: any): any;
+  performAction?: PerformActionFn;
+  updateDataStore(store: {}): void;
+  widgetRef?: React.RefObject<View>;
+  isVisible?: boolean;
 };

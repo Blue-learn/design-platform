@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions } from "react-native";
+import { Dimensions, View } from "react-native";
 import {
   RecyclerListView,
   DataProvider,
@@ -7,17 +7,21 @@ import {
 } from "recyclerlistview";
 import ItemRenderer from "../render/ItemRenderer";
 import _get from "lodash-es/get";
-import { TemplateSchema } from "../types";
+import { WidgetItem } from "../types";
 import { ComponentHeightCalculate } from "./ComponentHeightCalculate";
+import { GlobalState } from "../context";
 
 const { width } = Dimensions.get("window");
 const heightsMapRef = { current: {} };
 
-export default class ListViewRenderer extends React.Component<
-  { template: TemplateSchema },
+class ListViewRenderer extends React.Component<
+  {
+    id: string;
+    widgetItems: WidgetItem[];
+  } & GlobalState,
   {
     dataProvider: DataProvider;
-    datastore: { [keys in string]: Object };
+    layoutStyle?: object;
     isMeasuring: boolean;
   }
 > {
@@ -31,10 +35,8 @@ export default class ListViewRenderer extends React.Component<
 
     this._rowRenderer = this._rowRenderer.bind(this);
     this.state = {
-      dataProvider: dataProvider.cloneWithRows(
-        _get(this.props.template, `success.data.layout.widgets`, [])
-      ),
-      datastore: _get(this.props.template, `success.data.datastore`, {}),
+      dataProvider: dataProvider.cloneWithRows(this.props.widgetItems),
+      layoutStyle: _get(this.props.datastore, this.props.id),
       isMeasuring: true,
     };
   }
@@ -51,13 +53,16 @@ export default class ListViewRenderer extends React.Component<
     );
   };
 
-  _rowRenderer(type: number, data: { id: string; type: string }) {
+  _rowRenderer(type: number, data: WidgetItem) {
     return (
       <ItemRenderer
         item={{
           id: data.id,
           type: data.type,
-          props: this.state.datastore[data.id],
+          props: {
+            ...data?.props,
+            ...(this.props.datastore && this.props.datastore[data.id]),
+          },
         }}
       />
     );
@@ -74,16 +79,26 @@ export default class ListViewRenderer extends React.Component<
       return (
         <ComponentHeightCalculate
           widgetItems={this.state.dataProvider.getAllData()}
-          datastore={this.state.datastore}
+          datastore={this.props.datastore}
           callback={this._updateHeight}
         />
       );
     return (
-      <RecyclerListView
-        layoutProvider={this._layoutProvider}
-        dataProvider={this.state.dataProvider}
-        rowRenderer={this._rowRenderer}
-      />
+      <>
+        <View
+          style={[
+            { height: 60, backgroundColor: "red" },
+            this.state.layoutStyle,
+          ]}
+        ></View>
+        <RecyclerListView
+          layoutProvider={this._layoutProvider}
+          dataProvider={this.state.dataProvider}
+          rowRenderer={this._rowRenderer}
+        />
+        <View style={{ height: 60, backgroundColor: "red" }}></View>
+      </>
     );
   }
 }
+export default ListViewRenderer;

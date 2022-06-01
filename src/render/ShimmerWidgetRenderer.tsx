@@ -1,9 +1,9 @@
 import React from "react";
 import _get from "lodash-es/get";
-import { TemplateItem } from "./ItemRenderer";
 import SharedPropsService from "../SharedPropsService";
+import { WidgetItem } from "../types";
 
-const ShimmerWidgetRenderer: React.FunctionComponent<TemplateItem> = ({
+const ShimmerWidgetRenderer: React.FunctionComponent<WidgetItem> = ({
   type,
 }) => {
   const config = SharedPropsService.getPropsValue("widgetRegistry");

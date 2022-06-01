@@ -3,8 +3,7 @@ import { View, ActivityIndicator } from "react-native";
 import SharedPropsService from "../SharedPropsService";
 import { ScreenProps } from "../types";
 import ListViewRenderer from "../component/ListViewRenderer";
-
-const Navigator = (props: ScreenProps) => {
+const Navigator: React.FC<ScreenProps> = (props) => {
   const [isLoading, toggleLoad] = useState(true);
   const _initGlobalProps = async () => {
     toggleLoad(true);
@@ -14,16 +13,21 @@ const Navigator = (props: ScreenProps) => {
 
   useEffect(() => {
     _initGlobalProps();
-  }, [props]);
+  }, []);
 
   if (isLoading)
     return (
       <ActivityIndicator style={{ margin: 10 }} size="large" color={"black"} />
     );
-
   return (
     <View style={{ flex: 1 }}>
-      {props.initData && <ListViewRenderer template={props.initData} />}
+      {props.initData && (
+        <ListViewRenderer
+          id={props.initData.success.data.layout.id}
+          datastore={props.initData.success.data.datastore}
+          widgetItems={props.initData.success.data.layout.widgets}
+        />
+      )}
     </View>
   );
 };

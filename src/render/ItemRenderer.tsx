@@ -6,21 +6,21 @@ import {
   withPerformActionContext,
 } from "../context/PerformActionContext";
 import StandardWidgetRenderer from "./StandardWidgetRenderer";
+import ShimmerWidgetRenderer from "./ShimmerWidgetRenderer";
+import { WidgetItem } from "../types";
+import withGlobalContext from "../context/withGlobalContext";
+import { GlobalState } from "../context";
 
-export type TemplateItem = {
-  id: string;
-  type?: string;
-  widgetType?: string;
-  props?: any;
-};
 interface Props {
-  item: TemplateItem;
+  item: WidgetItem;
   extraProps?: any;
   isShimmer?: boolean;
   onComponentMount?: (id: string) => void;
   forwardedRef?: any;
-  // from context
+  //from withPerformActionContext
   performTapAction?: PerformTapActionFn;
+  //from withGlobalContext
+  state: GlobalState;
 }
 
 class ItemRenderer extends React.PureComponent<Props> {
@@ -30,8 +30,7 @@ class ItemRenderer extends React.PureComponent<Props> {
 
   constructor(props: Props) {
     super(props);
-    const { item, performTapAction } = props;
-
+    const { performTapAction } = props;
     if (performTapAction) {
       this.boundPerformTapAction = performTapAction();
     }
@@ -48,9 +47,16 @@ class ItemRenderer extends React.PureComponent<Props> {
   }
 
   render() {
-    const { item, extraProps = {}, forwardedRef, isShimmer } = this.props;
+    const {
+      item,
+      extraProps = {},
+      forwardedRef,
+      isShimmer,
+      state,
+    } = this.props;
 
-    const itemData = item.props || {};
+    const itemData =
+      item.props || (state && state.datastore && state.datastore[item.id]);
     if (itemData !== this.itemData) {
       this.itemData = itemData;
     }
@@ -59,9 +65,10 @@ class ItemRenderer extends React.PureComponent<Props> {
         errorType: "ERROR_TYPES.ITEM_RENDERING_SKIPPED",
         message: `Component ${item.type} not rendered. Missing props for id ${item.id}.`,
       };
-      console.warn("ItemRender->", errorObj);
+      console.warn("Error ItemRender->", errorObj);
       return null;
     }
+    if (isShimmer) return <ShimmerWidgetRenderer {...item} />;
     return (
       <StandardWidgetRenderer
         key={`${item.id || item.type}`}
@@ -79,4 +86,4 @@ const ItemRendererWithRef = React.forwardRef((props: Props, ref) => {
   return <ItemRenderer {...props} forwardedRef={ref} />;
 });
 
-export default withPerformActionContext(ItemRendererWithRef);
+export default withGlobalContext(withPerformActionContext(ItemRendererWithRef));

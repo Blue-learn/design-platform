@@ -8,24 +8,14 @@ export const template: TemplateSchema = {
         type: "layouts/list",
         id: "layout_id",
         widgets: [
-          // {
-          //   id: "space",
-          //   type: "SPACE", // from WIDGET List
-          //   position: "top-fixed", // optional
-          // },
           {
             id: "button",
             type: "BUTTON", // from WIDGET List
             position: "top-fixed", // optional
           },
           {
-            id: "button",
-            type: "BUTTON", // from WIDGET List
-            position: "top-fixed", // optional
-          },
-          {
-            id: "button",
-            type: "BUTTON", // from WIDGET List
+            id: "space",
+            type: "SPACE", // from WIDGET List
             position: "top-fixed", // optional
           },
           // {

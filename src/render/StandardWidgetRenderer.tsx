@@ -1,24 +1,16 @@
 import React from "react";
 import _get from "lodash-es/get";
 import { View, Text } from "react-native";
-import ItemRenderer, { TemplateItem } from "./ItemRenderer";
-import { PerformActionFn } from "../context/PerformActionContext";
+import ItemRenderer from "./ItemRenderer";
 import SharedPropsService from "../SharedPropsService";
+import { DataStoreType, TemplateProps } from "../types";
 
-type TemplateProps = {
-  item: TemplateItem;
-  renderItem?: any;
-  showModalSheet(routeKey: string, params: any): any;
-  performAction?: PerformActionFn;
-  updateDataStore(store: {}): void;
-  widgetRef?: React.RefObject<View>;
-  isVisible?: boolean;
-};
-
-class StandardWidgetRenderer extends React.PureComponent<TemplateProps> {
+class StandardWidgetRenderer extends React.PureComponent<
+  TemplateProps & { datastore: DataStoreType }
+> {
   widgetRef: React.RefObject<View>;
 
-  constructor(props: TemplateProps) {
+  constructor(props: any) {
     super(props);
     this.state = {
       isVisible: true,
@@ -44,11 +36,13 @@ class StandardWidgetRenderer extends React.PureComponent<TemplateProps> {
 
   render() {
     const { item, performAction, showModalSheet, ...restProps } = this.props;
-
     let itemProps = restProps;
     if (item.props) {
       const newItemProps = item.props;
-      itemProps = { ...itemProps, ...newItemProps };
+      itemProps = {
+        ...itemProps,
+        ...newItemProps,
+      };
     }
 
     const props: any = {
@@ -63,16 +57,15 @@ class StandardWidgetRenderer extends React.PureComponent<TemplateProps> {
       `${item.type}`,
       null
     );
-    // console.warn("Widget--->", Widget);
 
     if (!Widget || !Widget.Component)
       return (
-        <Text>
-          Error rendering type:{item.type} id:{item.id} not found
+        <Text key={item.id}>
+          Error type:{item.type} id:{item.id} not found
         </Text>
       );
     const WidgetToRender = Widget.Component;
-    return <WidgetToRender {...props} ref={this.widgetRef} />;
+    return <WidgetToRender key={item.id} {...props} ref={this.widgetRef} />;
   }
 }
 
