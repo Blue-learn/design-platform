@@ -13,19 +13,33 @@ chokidar
 		persistent: true,
 	})
 	.on('all', async (event, path) => {
-		console.log('event ->', event, ' ', 'path', path);
+		console.log(
+			'event ->',
+			event,
+			' ',
+			'path',
+			path,
+		);
+		const platform = process.platform;
+		const script_to_use =
+			platform === 'win32'
+				? 'powershell ./scripts/copy-watcher.ps1'
+				: `sh scripts/copy-watcher.sh ${path}`;
 		if (event === 'change') {
-			exec(`sh scripts/copy-watcher.sh ${path}`, (error, stdout, stderr) => {
-				if (error) {
-					console.log(`error: ${error.message}`);
-					return;
-				}
-				if (stderr) {
-					console.log(`stderr: ${stderr}`);
-					return;
-				}
-				console.log(`stdout: ${stdout}`);
-			});
+			exec(
+				script_to_use,
+				(error, stdout, stderr) => {
+					if (error) {
+						console.log(`error: ${error.message}`);
+						return;
+					}
+					if (stderr) {
+						console.log(`stderr: ${stderr}`);
+						return;
+					}
+					console.log(`stdout: ${stdout}`);
+				},
+			);
 			console.log(
 				'..............................................',
 			);
