@@ -2,17 +2,11 @@ import React from 'react';
 import createDataContext from './createDataContext';
 import {
 	DataStoreType,
+	GlobalActionType,
 	ScreenProps,
 	WidgetRegistry,
 } from '../types';
 import unionBy from 'lodash-es/unionBy';
-
-enum GlobalActionType {
-	SET_CONFIG = 'set_config',
-	SET_SCREEN_PROPS = 'set_screen_props',
-	SET_DATASTORE = 'set_datastore',
-	SET_DATASTORE_IN_PATH = 'SET_DATASTORE_IN_PATH',
-}
 
 type SetConfigAction = {
 	type: GlobalActionType.SET_CONFIG;
@@ -66,11 +60,17 @@ const GlobalReducer = (
 		case GlobalActionType.SET_DATASTORE:
 			return { ...state, datastore: action.payload };
 		case GlobalActionType.SET_DATASTORE_IN_PATH:
+			if (state.datastore === null)
+				return { ...state };
+
 			return {
 				...state,
 				datastore: {
 					...state.datastore,
-					[action.payload.path]: action.payload.data,
+					[action.payload.path]: {
+						...state.datastore[action.payload.path],
+						...action.payload.data,
+					},
 				},
 			};
 		default:
