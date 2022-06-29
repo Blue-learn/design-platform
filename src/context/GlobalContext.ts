@@ -6,8 +6,11 @@ import {
 	ScreenProps,
 	WidgetRegistry,
 } from '../types';
-import unionBy from 'lodash-es/unionBy';
 
+type PayloadSetDatastoreInPath = {
+	path: string;
+	data: any;
+};
 type SetConfigAction = {
 	type: GlobalActionType.SET_CONFIG;
 	payload: WidgetRegistry;
@@ -24,7 +27,7 @@ type SetScreenPropsAction = {
 
 type SetDatastoreInPath = {
 	type: GlobalActionType.SET_DATASTORE_IN_PATH;
-	payload: { path: string; data: any };
+	payload: PayloadSetDatastoreInPath;
 };
 
 type GlobalAction =
@@ -59,10 +62,9 @@ const GlobalReducer = (
 			};
 		case GlobalActionType.SET_DATASTORE:
 			return { ...state, datastore: action.payload };
-		case GlobalActionType.SET_DATASTORE_IN_PATH:
+		case GlobalActionType.SET_DATASTORE_IN_PATH: {
 			if (state.datastore === null)
 				return { ...state };
-
 			return {
 				...state,
 				datastore: {
@@ -73,6 +75,7 @@ const GlobalReducer = (
 					},
 				},
 			};
+		}
 		default:
 			return state;
 	}
@@ -107,7 +110,6 @@ const setDatastore = (dispatch: any) => {
 
 const setDataStoreInPath = (dispatch: any) => {
 	return (payload: any) => {
-		console.log(payload);
 		dispatch({
 			type: GlobalActionType.SET_DATASTORE_IN_PATH,
 			...payload,

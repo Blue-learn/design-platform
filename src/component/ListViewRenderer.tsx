@@ -102,7 +102,6 @@ class ListViewRenderer extends React.Component<
 						this.state.layoutStyle,
 					]}
 				></View>
-				{/* @ts-ignore */}
 				<RecyclerListView
 					layoutProvider={this._layoutProvider}
 					dataProvider={this.state.dataProvider}
