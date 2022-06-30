@@ -1,6 +1,10 @@
-import { PerformActionFn } from './context/PerformActionContext';
+import {
+	PerformActionFn,
+	TapAction,
+} from './context/PerformActionContext';
 import React from 'react';
 import { View } from 'react-native';
+import { initial } from 'lodash-es';
 
 export type WidgetItem = {
 	id: string;
@@ -57,3 +61,10 @@ export enum GlobalActionType {
 	SET_DATASTORE = 'set_datastore',
 	SET_DATASTORE_IN_PATH = 'SET_DATASTORE_IN_PATH',
 }
+
+export type PageType = {
+	onLoad: (
+		initialParameters?: any,
+	) => TemplateSchema;
+	actions: { [key in string]: TapAction };
+};
