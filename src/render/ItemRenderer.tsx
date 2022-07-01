@@ -1,13 +1,13 @@
 import React from 'react';
 import _isEmpty from 'lodash-es/isEmpty';
+import { withPerformActionContext } from '../context/PerformActionContext';
+import StandardWidgetRenderer from './StandardWidgetRenderer';
+import ShimmerWidgetRenderer from './ShimmerWidgetRenderer';
 import {
 	PerformActionFn,
 	PerformTapActionFn,
-	withPerformActionContext,
-} from '../context/PerformActionContext';
-import StandardWidgetRenderer from './StandardWidgetRenderer';
-import ShimmerWidgetRenderer from './ShimmerWidgetRenderer';
-import { WidgetItem } from '../types';
+	WidgetItem,
+} from '../types';
 import withGlobalContext from '../context/withGlobalContext';
 import { GlobalState } from '../context';
 
@@ -24,17 +24,10 @@ interface Props {
 }
 
 class ItemRenderer extends React.PureComponent<Props> {
-	boundPerformTapAction: PerformActionFn;
-
 	itemData: any;
 
 	constructor(props: Props) {
 		super(props);
-		// const { performTapAction } = props;
-		// if (performTapAction) {
-		// 	this.boundPerformTapAction =
-		// 		performTapAction();
-		// }
 	}
 
 	componentDidMount() {

@@ -1,6 +1,7 @@
 import React from 'react';
 import createDataContext from './createDataContext';
 import {
+	ActionMap,
 	DataStoreType,
 	GlobalActionType,
 	ScreenProps,
@@ -29,20 +30,27 @@ type SetDatastoreInPath = {
 	type: GlobalActionType.SET_DATASTORE_IN_PATH;
 	payload: PayloadSetDatastoreInPath;
 };
+type SetActions = {
+	type: GlobalActionType.SET_ACTIONS;
+	payload: PayloadSetDatastoreInPath;
+};
 
 type GlobalAction =
 	| SetConfigAction
 	| SetScreenPropsAction
 	| SetDatastoreAction
-	| SetDatastoreInPath;
+	| SetDatastoreInPath
+	| SetActions;
 
 export type GlobalState = {
 	config?: WidgetRegistry | null;
 	screenProps?: ScreenProps | null;
 	datastore: DataStoreType;
+	actions: any;
 };
 
 const initialState: GlobalState = {
+	actions: {},
 	config: null,
 	screenProps: null,
 	datastore: null,
@@ -74,6 +82,12 @@ const GlobalReducer = (
 						...action.payload.data,
 					},
 				},
+			};
+		}
+		case GlobalActionType.SET_ACTIONS: {
+			return {
+				...state,
+				actions: { ...action.payload },
 			};
 		}
 		default:
@@ -116,6 +130,14 @@ const setDataStoreInPath = (dispatch: any) => {
 		});
 	};
 };
+const setActions = (dispatch: any) => {
+	return (payload: any) => {
+		dispatch({
+			type: GlobalActionType.SET_ACTIONS,
+			payload,
+		});
+	};
+};
 
 export const {
 	Context,
@@ -130,6 +152,7 @@ export const {
 		setScreenProps,
 		setDatastore,
 		setDataStoreInPath,
+		setActions,
 	},
 	initialState,
 );
