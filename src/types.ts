@@ -98,10 +98,12 @@ export enum POSITION {
 	/** The widget is fixed to the top of the screen, and continues to appear even when you scroll down */
 	FIXED_TOP = 'position/fixed_top',
 	/** The  widget is present at the top of the page in the default state */
+	/** TODO */
 	ABSOLUTE_TOP = 'position/absolute_top',
 	/** The widget is fixed to the bottom of the screen, and continues to appear even when you scroll up */
 	FIXED_BOTTOM = 'position/fixed_bottom',
 	/** The  widget is present at the bottom of the page in the default state */
+	/** TODO */
 	ABSOLUTE_BOTTOM = 'position/absolute_bottom',
 	/** This is a position specific to MenuFab widget */
 	FAB = 'position/fab',
