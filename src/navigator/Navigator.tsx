@@ -130,7 +130,16 @@ const Navigator: React.FC<
 		ListOfWidget &&
 		ListOfWidget.filter(
 			(widgetItem) =>
-				widgetItem.position === POSITION.FIXED_BOTTOM,
+				widgetItem.position === POSITION.ABSOLUTE_TOP,
+		);
+	const absoluteBottomWidgetItems:
+		| undefined
+		| WidgetItem[] =
+		ListOfWidget &&
+		ListOfWidget.filter(
+			(widgetItem) =>
+				widgetItem.position ===
+				POSITION.ABSOLUTE_BOTTOM,
 		);
 
 	return (
@@ -139,12 +148,9 @@ const Navigator: React.FC<
 			{bodyWidgetItems && (
 				<FlashList
 					renderItem={_renderItem}
-					getItemType={({ type }: WidgetItem) => {
-						return type;
-					}}
 					data={bodyWidgetItems}
 					extraData={bodyWidgetItems}
-					estimatedItemSize={50}
+					estimatedItemSize={10}
 				/>
 			)}
 			{_map(fixedBottomWidgetItems, _renderItem)}
@@ -152,7 +158,7 @@ const Navigator: React.FC<
 				{_map(absoluteTopWidgetItems, _renderItem)}
 			</View>
 			<View style={styles.absoluteBottom}>
-				{_map(absoluteTopWidgetItems, _renderItem)}
+				{_map(absoluteBottomWidgetItems, _renderItem)}
 			</View>
 		</>
 	);
