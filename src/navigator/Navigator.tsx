@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
 	},
 	fab: {
 		position: 'absolute',
-		bottom: 20,
+		bottom: 16,
 		left: 0,
 		right: 0,
 	},
@@ -177,23 +177,6 @@ const Navigator: React.FC<
 			</View>
 		</>
 	);
-
-	// return (
-	// 	<View style={{ flex: 1 }}>
-	// 		{props.initData && (
-	// 			<ListViewRenderer
-	// 				id={props.initData.success.data.layout.id}
-	// 				datastore={
-	// 					props.initData.success.data.datastore
-	// 				}
-	// 				widgetItems={
-	// 					props.initData.success.data.layout.widgets
-	// 				}
-	// 				actions={props.actions}
-	// 			/>
-	// 		)}
-	// 	</View>
-	// );
 };
 
 export default Navigator;

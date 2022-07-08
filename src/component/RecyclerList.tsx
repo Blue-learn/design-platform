@@ -16,7 +16,7 @@ const heightsMapRef = { current: {} };
 
 /** Example usage
  * {
-	<ListViewRenderer
+	<RecyclerList
 		id={props.initData.success.data.layout.id}
 		datastore={
 			props.initData.success.data.datastore
@@ -28,7 +28,7 @@ const heightsMapRef = { current: {} };
 	/>;
 }*/
 
-class ListViewRenderer extends React.Component<
+class RecyclerList extends React.Component<
 	{
 		id: string;
 		widgetItems: WidgetItem[];
@@ -131,4 +131,4 @@ class ListViewRenderer extends React.Component<
 		);
 	}
 }
-export default ListViewRenderer;
+export default RecyclerList;
