@@ -3,7 +3,11 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
-import { ActivityIndicator } from 'react-native';
+import {
+	ActivityIndicator,
+	StyleSheet,
+	View,
+} from 'react-native';
 import SharedPropsService from '../SharedPropsService';
 import {
 	PageType,
@@ -17,6 +21,22 @@ import {
 	ListRenderItemInfo,
 } from '@shopify/flash-list';
 import ItemRenderer from '../render/ItemRenderer';
+import _map from 'lodash-es/map';
+
+const styles = StyleSheet.create({
+	absoluteTop: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		right: 0,
+	},
+	absoluteBottom: {
+		position: 'absolute',
+		bottom: 0,
+		left: 0,
+		right: 0,
+	},
+});
 
 const Navigator: React.FC<
 	PageType & ScreenProps
@@ -71,21 +91,17 @@ const Navigator: React.FC<
 			? props.initData.success.data.layout.widgets
 			: [];
 	const _renderItem = ({
-		item,
+		...props
 	}: ListRenderItemInfo<WidgetItem>) => {
 		return (
-			<>
-				<ItemRenderer
-					item={{
-						id: item.id,
-						type: item.type,
-					}}
-					state={state}
-				/>
-			</>
+			<ItemRenderer
+				item={props.item || props}
+				state={state}
+			/>
 		);
 	};
-	const headerFixedTopWidgetItems:
+
+	const fixedTopWidgetItems:
 		| undefined
 		| WidgetItem[] =
 		ListOfWidget &&
@@ -99,7 +115,16 @@ const Navigator: React.FC<
 			(widgetItem) =>
 				widgetItem.position == undefined,
 		);
-	const footerFixedBottomWidgetItems:
+	const fixedBottomWidgetItems:
+		| undefined
+		| WidgetItem[] =
+		ListOfWidget &&
+		ListOfWidget.filter(
+			(widgetItem) =>
+				widgetItem.position === POSITION.FIXED_BOTTOM,
+		);
+
+	const absoluteTopWidgetItems:
 		| undefined
 		| WidgetItem[] =
 		ListOfWidget &&
@@ -110,18 +135,7 @@ const Navigator: React.FC<
 
 	return (
 		<>
-			{headerFixedTopWidgetItems &&
-				headerFixedTopWidgetItems.map(
-					(widgetItem) => (
-						<ItemRenderer
-							item={{
-								id: widgetItem.id,
-								type: widgetItem.type,
-							}}
-							state={state}
-						/>
-					),
-				)}
+			{_map(fixedTopWidgetItems, _renderItem)}
 			{bodyWidgetItems && (
 				<FlashList
 					renderItem={_renderItem}
@@ -129,21 +143,17 @@ const Navigator: React.FC<
 						return type;
 					}}
 					data={bodyWidgetItems}
+					extraData={bodyWidgetItems}
 					estimatedItemSize={50}
 				/>
 			)}
-			{footerFixedBottomWidgetItems &&
-				footerFixedBottomWidgetItems.map(
-					(widgetItem) => (
-						<ItemRenderer
-							item={{
-								id: widgetItem.id,
-								type: widgetItem.type,
-							}}
-							state={state}
-						/>
-					),
-				)}
+			{_map(fixedBottomWidgetItems, _renderItem)}
+			<View style={styles.absoluteTop}>
+				{_map(absoluteTopWidgetItems, _renderItem)}
+			</View>
+			<View style={styles.absoluteBottom}>
+				{_map(absoluteTopWidgetItems, _renderItem)}
+			</View>
 		</>
 	);
 

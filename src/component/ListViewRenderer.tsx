@@ -14,6 +14,20 @@ import { GlobalState } from '../context';
 const { width } = Dimensions.get('window');
 const heightsMapRef = { current: {} };
 
+/** Example usage
+ * {
+	<ListViewRenderer
+		id={props.initData.success.data.layout.id}
+		datastore={
+			props.initData.success.data.datastore
+		}
+		widgetItems={
+			props.initData.success.data.layout.widgets
+		}
+		actions={props.actions}
+	/>;
+}*/
+
 class ListViewRenderer extends React.Component<
 	{
 		id: string;

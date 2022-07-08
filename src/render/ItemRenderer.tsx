@@ -4,7 +4,6 @@ import { withPerformActionContext } from '../context/PerformActionContext';
 import StandardWidgetRenderer from './StandardWidgetRenderer';
 import ShimmerWidgetRenderer from './ShimmerWidgetRenderer';
 import {
-	PerformActionFn,
 	PerformTapActionFn,
 	WidgetItem,
 } from '../types';
