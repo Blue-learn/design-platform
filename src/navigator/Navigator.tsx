@@ -36,6 +36,12 @@ const styles = StyleSheet.create({
 		left: 0,
 		right: 0,
 	},
+	fab: {
+		position: 'absolute',
+		bottom: 20,
+		left: 0,
+		right: 0,
+	},
 });
 
 const Navigator: React.FC<
@@ -141,6 +147,12 @@ const Navigator: React.FC<
 				widgetItem.position ===
 				POSITION.ABSOLUTE_BOTTOM,
 		);
+	const fabWidgetItems: undefined | WidgetItem[] =
+		ListOfWidget &&
+		ListOfWidget.filter(
+			(widgetItem) =>
+				widgetItem.position === POSITION.FAB,
+		);
 
 	return (
 		<>
@@ -156,6 +168,9 @@ const Navigator: React.FC<
 			{_map(fixedBottomWidgetItems, _renderItem)}
 			<View style={styles.absoluteTop}>
 				{_map(absoluteTopWidgetItems, _renderItem)}
+			</View>
+			<View style={styles.fab}>
+				{_map(fabWidgetItems, _renderItem)}
 			</View>
 			<View style={styles.absoluteBottom}>
 				{_map(absoluteBottomWidgetItems, _renderItem)}
