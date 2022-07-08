@@ -109,25 +109,11 @@ class RecyclerList extends React.Component<
 				/>
 			);
 		return (
-			<>
-				<View
-					style={[
-						{ height: 60, backgroundColor: 'red' },
-						this.state.layoutStyle,
-					]}
-				></View>
-				<RecyclerListView
-					layoutProvider={this._layoutProvider}
-					dataProvider={this.state.dataProvider}
-					rowRenderer={this._rowRenderer}
-				/>
-				<View
-					style={{
-						height: 60,
-						backgroundColor: 'red',
-					}}
-				></View>
-			</>
+			<RecyclerListView
+				layoutProvider={this._layoutProvider}
+				dataProvider={this.state.dataProvider}
+				rowRenderer={this._rowRenderer}
+			/>
 		);
 	}
 }
