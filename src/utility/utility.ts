@@ -1,33 +1,24 @@
-export const Utility = () => {
-	let _utility: any;
-	let _initialized = false;
+import { StandardUtilities } from '../types';
 
-	const initialize = () => {
-		if (!_initialized) {
-			_utility = Utility;
-			_initialized = true;
-		}
+export const standardUtilities: StandardUtilities =
+	{
+		/** todo **/
+		reloadPage(reloadParams?: any) {},
+		getFromDataStore(path: string): Promise<any> {
+			return Promise.resolve(undefined);
+		},
+		/** todo **/
+		scrollToId(options: any): void {},
+		setInDataStore(
+			path: string,
+			value?: any,
+		): Promise<any> {
+			return Promise.resolve(undefined);
+		},
+		/** todo **/
+		showToast(toastProps: any) {},
+		showLoader(loaderParams?: any) {},
+		hideLoader() {},
+		showPopup(params: any) {},
+		hidePopup() {},
 	};
-
-	const getInstance = () => {
-		initialize();
-		return _utility;
-	};
-
-	const modal = (isModal: boolean) => {};
-
-	const openLink = (link: string) => {};
-
-	const setDatastoreInPath = () => {};
-
-	const networkCall = () => {};
-
-	const showToast = () => {};
-
-	const showNotification = () => {};
-
-	return {
-		init: initialize,
-		getInstance,
-	};
-};

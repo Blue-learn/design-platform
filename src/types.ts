@@ -57,14 +57,18 @@ export enum GlobalActionType {
 }
 
 export type StandardUtilities = {
+	showLoader(loaderParams?: any): void;
+	hideLoader(): void;
+	showPopup(params: any): void;
+	hidePopup(): void;
 	showToast(toastProps: any): void;
 	reloadPage(reloadParams?: any): void;
-	scrollToId: (options: any) => void;
-	getFromDataStore: (path: string) => any;
-	setInDataStore: (
+	scrollToId(options: any): void;
+	getFromDataStore(path: string): Promise<any>;
+	setInDataStore(
 		path: string,
 		value?: any,
-	) => any;
+	): Promise<any>;
 };
 export type ActionFn = (
 	actionData: any,
@@ -76,11 +80,16 @@ export type PageActionMap = {
 };
 export type ActionMap = PageActionMap;
 
-export type PageType = {
+export type PageType<T> = {
 	onLoad: (
 		initialParameters?: any,
 	) => TemplateSchema;
-	actions: ActionMap;
+	actions?: ActionMap;
+	loadNext?(
+		initData: T,
+		action: TapAction,
+		dataStore: any,
+	): Promise<TemplateSchema>;
 };
 
 /** An enum to select the layout of a screen */

@@ -4,7 +4,7 @@ import {
 	TapAction,
 } from '../types';
 import { Context } from './GlobalContext';
-import { Utility } from '../utility';
+import { standardUtilities } from '../utility/utility';
 
 export const withPerformActionContext = (
 	WrappedComponent: any,
@@ -45,7 +45,7 @@ export const withPerformActionContext = (
 							state.actions[data.type](
 								data.payload,
 								state,
-								Utility,
+								standardUtilities,
 							);
 						break;
 					}
