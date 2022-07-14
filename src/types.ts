@@ -57,6 +57,7 @@ export enum GlobalActionType {
 }
 
 export type StandardUtilities = {
+	navigate(routeId: string): void;
 	showLoader(loaderParams?: any): void;
 	hideLoader(): void;
 	showPopup(params: any): void;
@@ -137,3 +138,37 @@ export type PerformActionFn = (
 
 export type PerformTapActionFn =
 	() => PerformActionFn;
+
+/**
+ * Use renderer/utils.ts/getScreenType() to evaluate
+ */
+export enum SCREEN_SIZE {
+	/**
+	 * Screen Width <576px
+	 */
+	X_SMALL = 'extra_small',
+
+	/**
+	 * Screen Width >=576px
+	 */
+	SMALL = 'small',
+
+	/**
+	 * Screen Width >=768px
+	 */
+	MEDIUM = 'medium',
+
+	/**
+	 * Screen Width >=992px
+	 */
+	LARGE = 'large',
+
+	/**
+	 * Screen Width >=1200px
+	 */
+	X_LARGE = 'extra_large',
+}
+
+export type OnScrollRef = {
+	onScroll(yValue: number): void;
+};

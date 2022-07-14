@@ -1,7 +1,6 @@
 import React from 'react';
 import createDataContext from './createDataContext';
 import {
-	ActionMap,
 	DataStoreType,
 	GlobalActionType,
 	ScreenProps,
