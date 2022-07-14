@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 });
 
 const Navigator: React.FC<
-	PageType & ScreenProps
+	PageType<any> & ScreenProps
 > = (props) => {
 	const [isLoading, toggleLoad] = useState(true);
 	const {

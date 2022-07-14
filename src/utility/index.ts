@@ -1,1 +1,1 @@
-export { Utility } from './utility';
+export { standardUtilities } from './utility';
