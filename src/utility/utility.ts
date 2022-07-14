@@ -1,8 +1,4 @@
-import {
-	DataStoreType,
-	SCREEN_SIZE,
-	StandardUtilities,
-} from '../types';
+import { SCREEN_SIZE } from '../types';
 import _isEqual from 'react-fast-compare';
 import { Dimensions } from 'react-native';
 import _forEach from 'lodash-es/forEach';
