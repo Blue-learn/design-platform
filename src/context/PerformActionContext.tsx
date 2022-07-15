@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import {
-	DataStoreType,
 	GlobalActionType,
 	StandardUtilities,
 	TapAction,
