@@ -206,11 +206,17 @@ const GlobalReducer = (
 			};
 		}
 		case GlobalActionType.SET_DATASTORE: {
-			const _template: TemplateSchema | null =
-				state.routeMap &&
-				state.routeMap[action.payload.routeId]
-					.template;
-			if (!_template) return { ...state };
+			const _template: TemplateSchema =
+				(state.routeMap &&
+					state.routeMap[action.payload.routeId]
+						.template) ||
+				EmptyTemplate;
+
+			if (
+				_template.success.data.layout.widgets
+					.length == 0
+			)
+				return { ...state };
 			return {
 				...state,
 				routeMap: {
@@ -224,11 +230,17 @@ const GlobalReducer = (
 			};
 		}
 		case GlobalActionType.SET_DATASTORE_IN_PATH: {
-			const _template: TemplateSchema | null =
-				state.routeMap &&
-				state.routeMap[action.payload.routeId]
-					.template;
-			if (!_template) return { ...state };
+			const _template: TemplateSchema =
+				(state.routeMap &&
+					state.routeMap[action.payload.routeId]
+						.template) ||
+				EmptyTemplate;
+
+			if (
+				_template.success.data.layout.widgets
+					.length == 0
+			)
+				return { ...state };
 			return {
 				...state,
 				routeMap: {

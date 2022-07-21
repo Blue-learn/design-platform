@@ -93,7 +93,7 @@ export type PageType<T> = {
 	onLoad: (
 		initialParameters?: any,
 	) => TemplateSchema;
-	template: TemplateSchema | null;
+	template?: TemplateSchema;
 	actions?: ActionMap;
 	loadNext?(
 		initData: T,
