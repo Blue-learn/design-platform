@@ -2,13 +2,13 @@ import React from 'react';
 import _isEmpty from 'lodash-es/isEmpty';
 import { withPerformActionContext } from '../context/PerformActionContext';
 import StandardWidgetRenderer from './StandardWidgetRenderer';
-import ShimmerWidgetRenderer from './ShimmerWidgetRenderer';
 import {
+	DataStoreType,
 	PerformTapActionFn,
 	WidgetItem,
 } from '../types';
 import withGlobalContext from '../context/withGlobalContext';
-import { GlobalState } from '../context';
+import ShimmerWidgetRenderer from './ShimmerWidgetRenderer';
 
 interface Props {
 	item: WidgetItem;
@@ -19,7 +19,8 @@ interface Props {
 	//from withPerformActionContext
 	performTapAction?: PerformTapActionFn;
 	//from withGlobalContext
-	state: GlobalState;
+	// state: GlobalState;
+	datastore: DataStoreType;
 }
 
 class ItemRenderer extends React.PureComponent<Props> {
@@ -47,14 +48,12 @@ class ItemRenderer extends React.PureComponent<Props> {
 			extraProps = {},
 			forwardedRef,
 			isShimmer,
-			state,
+			datastore,
 		} = this.props;
 
 		const itemData =
 			item.props ||
-			(state &&
-				state.datastore &&
-				state.datastore[item.id]);
+			(datastore && datastore[item.id]);
 
 		if (itemData !== this.itemData) {
 			this.itemData = itemData;
@@ -65,8 +64,7 @@ class ItemRenderer extends React.PureComponent<Props> {
 			_isEmpty(itemData)
 		) {
 			const errorObj = {
-				errorType:
-					'ERROR_TYPES.ITEM_RENDERING_SKIPPED',
+				errorType: 'ERROR_RENDERING_SKIPPED',
 				message: `Component ${item.type} not rendered. Missing props for id ${item.id}.`,
 			};
 			console.warn('Error ItemRender->', errorObj);
@@ -82,7 +80,7 @@ class ItemRenderer extends React.PureComponent<Props> {
 				ref={forwardedRef}
 				performAction={this.props.performTapAction}
 				item={item}
-				datastore={this.props.state.datastore}
+				datastore={datastore}
 				{...extraProps}
 				{...itemData}
 			/>

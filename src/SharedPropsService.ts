@@ -1,11 +1,20 @@
-import { ScreenProps } from './types';
+import {
+	RouteMap,
+	WidgetRegistry,
+} from './types';
 
-let _globalProps: ScreenProps = {
+type GlobalProps = {
+	widgetRegistry: WidgetRegistry;
+	routeMap: RouteMap;
+};
+
+let _globalProps: GlobalProps = {
 	widgetRegistry: {},
+	routeMap: {},
 };
 
 async function setGlobalProps(
-	props: ScreenProps,
+	props: GlobalProps,
 ) {
 	_globalProps = await props;
 }

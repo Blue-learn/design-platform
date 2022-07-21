@@ -2,11 +2,11 @@ import React from 'react';
 import _get from 'lodash-es/get';
 import { View, Text } from 'react-native';
 import ItemRenderer from './ItemRenderer';
-import SharedPropsService from '../SharedPropsService';
 import {
 	DataStoreType,
 	TemplateProps,
 } from '../types';
+import SharedPropsService from '../SharedPropsService';
 
 class StandardWidgetRenderer extends React.PureComponent<
 	TemplateProps & { datastore: DataStoreType }

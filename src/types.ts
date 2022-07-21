@@ -1,24 +1,31 @@
 import React from 'react';
 import { View } from 'react-native';
 
+export type MicroFrontendProps = {
+	routeMap: { [routeId: string]: PageType<any> };
+	routeCurrent: string;
+	widgetRegistry: WidgetRegistry;
+};
+export type RouteMap = {
+	[routeId: string]: PageType<any>;
+};
 export type WidgetItem = {
 	id: string;
 	type: string;
 	position?: POSITION;
 	props?: object;
 };
-export type ScreenProps = {
-	initData?: TemplateSchema;
-	widgetRegistry: WidgetRegistry;
+
+export type DataStoreType = {
+	[widgetId in string]: Object;
 };
-export type DataStoreType =
-	| { [keys in string]: Object }
-	| null;
+
 export type LayoutType = {
 	id: string;
 	type: string;
 	widgets: WidgetItem[];
 };
+
 export type TemplateSchema = {
 	isError: boolean;
 	success: {
@@ -49,11 +56,12 @@ export type TemplateProps = {
 };
 
 export enum GlobalActionType {
-	SET_CONFIG = 'set_config',
-	SET_SCREEN_PROPS = 'set_screen_props',
+	SET_WIDGET_REGISTRY = 'set_widget_registry',
 	SET_DATASTORE = 'set_datastore',
 	SET_DATASTORE_IN_PATH = 'SET_DATASTORE_IN_PATH',
 	SET_ACTIONS = 'SET_ACTIONS',
+	SET_ROUTE_MAP = 'SET_ROUTE_MAP',
+	SET_TEMPLATE_ROUTE = 'SET_TEMPLATE_ROUTE',
 }
 
 export type StandardUtilities = {
@@ -85,6 +93,7 @@ export type PageType<T> = {
 	onLoad: (
 		initialParameters?: any,
 	) => TemplateSchema;
+	template: TemplateSchema | null;
 	actions?: ActionMap;
 	loadNext?(
 		initData: T,

@@ -1,4 +1,8 @@
-import { SCREEN_SIZE } from '../types';
+import {
+	LAYOUTS,
+	SCREEN_SIZE,
+	TemplateSchema,
+} from '../types';
 import _isEqual from 'react-fast-compare';
 import { Dimensions } from 'react-native';
 import _forEach from 'lodash-es/forEach';
@@ -72,4 +76,18 @@ export const getUniqueId = (): string => {
 		.toString(36)
 		.replace(/[^a-z]+/g, '')
 		.substr(0, 5);
+};
+
+export const EmptyTemplate: TemplateSchema = {
+	isError: false,
+	success: {
+		data: {
+			layout: {
+				id: 'empty_template',
+				type: LAYOUTS.LIST,
+				widgets: [],
+			},
+			datastore: {},
+		},
+	},
 };
