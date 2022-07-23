@@ -79,13 +79,15 @@ export type StandardUtilities = {
 		value?: any,
 	): Promise<any>;
 };
-export type ActionFn = (
-	actionData: any,
-	dataStore: DataStoreType,
+
+export type ActionFunType = (
+	action: TapAction,
+	datastore: DataStoreType,
 	utilities: StandardUtilities,
 ) => Promise<any> | any;
+
 export type PageActionMap = {
-	[key: string]: ActionFn;
+	[key: string]: ActionFunType;
 };
 export type ActionMap = PageActionMap;
 
@@ -107,8 +109,8 @@ export enum LAYOUTS {
 	/** The widget are arranged in a list layout */
 	LIST = 'layouts/list',
 
-	/* todo */
 	/** The widget are arranged in a tab layout */
+	/* todo */
 	TAB = 'layouts/tab',
 }
 
@@ -130,9 +132,11 @@ export enum POSITION {
 /** Type definition for a tap action
  * @param type action type it can either be a custom type or the one of the predefined action types
  * @param data data that is required to be passed for the tap action
+ * @param routeId [Optional] performs action on specific routeId
  */
 export type TapAction<DataType = any> = {
 	type: string;
+	routeId?: string;
 	payload: DataType extends object
 		? { [k in keyof DataType]: DataType[k] }
 		: any;

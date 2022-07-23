@@ -4,13 +4,13 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
-import {
-	arePropsEqual,
-	EmptyTemplate,
-} from '../utility';
+import { arePropsEqual } from '../utility';
 import { MicroFrontendProps } from '../types';
 import { Context as GlobalContext } from '../context';
-import { ActivityIndicator } from 'react-native';
+import {
+	ActivityIndicator,
+	View,
+} from 'react-native';
 import SharedPropsService from '../SharedPropsService';
 import { PageRender } from '../page_render';
 
@@ -24,10 +24,17 @@ const MicroFrontend: React.FC<
 	const [isLoading, toggleLoad] = useState(true);
 	const {
 		state,
-		setActions,
 		setRouteMap,
 		setTemplateForRoute,
 	} = useContext(GlobalContext);
+	let template =
+		(state.routeMap != null &&
+			state.routeMap[routeCurrent].template) ||
+		null;
+	let actions =
+		(state.routeMap != null &&
+			state.routeMap[routeCurrent].actions) ||
+		null;
 
 	const _initGlobalProps = async () => {
 		toggleLoad(true);
@@ -45,13 +52,6 @@ const MicroFrontend: React.FC<
 				template: routeMap[routeCurrent].onLoad(),
 			});
 		}
-		if (routeMap[routeCurrent].actions == null) {
-			await setActions({
-				routeId: routeCurrent,
-				actions: routeMap[routeCurrent].actions,
-			});
-		}
-
 		toggleLoad(false);
 	};
 
@@ -60,22 +60,24 @@ const MicroFrontend: React.FC<
 	}, [routeCurrent]);
 
 	return (
-		<>
-			{!isLoading && state.routeMap && (
-				<PageRender
-					template={
-						state.routeMap[routeCurrent].template ||
-						EmptyTemplate
-					}
-					actions={
-						state.routeMap[routeCurrent].actions || {}
-					}
+		<View
+			style={{ backgroundColor: 'red', flex: 1 }}
+		>
+			{!isLoading &&
+				template != null &&
+				actions != null && (
+					<PageRender
+						template={template}
+						actions={actions}
+					/>
+				)}
+			{isLoading && (
+				<ActivityIndicator
+					size={'large'}
+					color={'green'}
 				/>
 			)}
-			{isLoading && (
-				<ActivityIndicator size={'large'} />
-			)}
-		</>
+		</View>
 	);
 };
 

@@ -1,35 +1,53 @@
-import React, { createContext, useReducer } from "react";
+import React, {
+	createContext,
+	useReducer,
+} from 'react';
 
 export interface ProviderProps {
-  children: React.ReactNode;
-  value?: any;
+	children: React.ReactNode;
+	value?: any;
 }
 
 interface Actions {
-  [key: string]: any;
+	[key: string]: Function;
 }
 
-export default (reducer: any, actions: Actions, initialState: any) => {
-  const Context = createContext(initialState);
+export default (
+	reducer: any,
+	actions: Actions,
+	initialState: any,
+) => {
+	const Context = createContext(initialState);
 
-  const Provider: React.FC = ({ children, value = {} }: ProviderProps) => {
-    const [state, dispatch] = useReducer(reducer, initialState);
+	const Provider: React.FC = ({
+		children,
+		value = {},
+	}: ProviderProps) => {
+		const [state, dispatch] = useReducer(
+			reducer,
+			initialState,
+		);
 
-    const boundActions = {};
-    for (const key in actions) {
-      boundActions[key] = actions[key](dispatch);
-    }
+		const boundActions = {};
+		for (const key in actions) {
+			boundActions[key] = actions[key](dispatch);
+		}
 
-    const mergedState = {
-      ...(state as any),
-      ...value,
-    };
-    return (
-      <Context.Provider value={{ state: mergedState, ...boundActions }}>
-        {children}
-      </Context.Provider>
-    );
-  };
+		const mergedState = {
+			...(state as any),
+			...value,
+		};
+		return (
+			<Context.Provider
+				value={{
+					state: mergedState,
+					...boundActions,
+				}}
+			>
+				{children}
+			</Context.Provider>
+		);
+	};
 
-  return { Context, Provider };
+	return { Context, Provider };
 };

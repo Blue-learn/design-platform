@@ -69,17 +69,18 @@ export const withPerformActionContext = (
 			};
 
 			const handlePerformAction = (
-				data: TapAction,
+				tapAction: TapAction,
 			) => {
-				switch (data.type) {
+				switch (tapAction.type) {
 					/**
 					 * Global Action Handle
 					 * */
-					case GlobalActionType.SET_DATASTORE_IN_PATH:
-						setDataStoreInPath(data);
+					case GlobalActionType.SET_DATASTORE_IN_PATH: {
+						setDataStoreInPath(tapAction);
 						break;
+					}
 					case GlobalActionType.SET_ACTIONS: {
-						setActions(data);
+						setActions(tapAction);
 						break;
 					}
 
@@ -87,14 +88,11 @@ export const withPerformActionContext = (
 						/**
 						 * Custom Action Handle
 						 * */
-						// console.warn('custom actions', actions);
-						// console.warn('custom data', data);
-						state.actions &&
-							Object.values(state.actions).length > 0 &&
-							data.type &&
-							data.payload &&
-							state.actions[data.type](
-								data.payload,
+						tapAction.routeId &&
+							state.routeMap[tapAction.routeId].actions[
+								tapAction.type
+							](
+								tapAction.payload,
 								state,
 								standardUtilities,
 							);

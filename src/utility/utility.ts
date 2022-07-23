@@ -79,7 +79,7 @@ export const getUniqueId = (): string => {
 };
 
 export const EmptyTemplate: TemplateSchema = {
-	isError: false,
+	isError: true,
 	success: {
 		data: {
 			layout: {

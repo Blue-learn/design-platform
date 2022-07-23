@@ -58,15 +58,11 @@ type GlobalAction =
 	| SetTemplateForRoute;
 
 export type GlobalState = {
-	widgetRegistry?: WidgetRegistry | null;
 	routeMap: RouteMap | null;
-	currentRouteId: string | null;
 };
 
 const initialState: GlobalState = {
-	widgetRegistry: null,
 	routeMap: null,
-	currentRouteId: null,
 };
 
 const setDataStorePageTypeData = (

@@ -48,11 +48,6 @@ class StandardWidgetRenderer extends React.PureComponent<
 		let itemProps: any = restProps;
 
 		if (item.props) {
-			// const newItemProps = item.props;
-			// itemProps = {
-			// 	...itemProps,
-			// 	...newItemProps,
-			// };
 			if (this.props?.datastore) {
 				itemProps = {
 					...item.props,
