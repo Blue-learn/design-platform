@@ -71,6 +71,10 @@ export const withPerformActionContext = (
 			const handleTriggerAction = (
 				action: Action,
 			) => {
+				console.warn(
+					'handleTriggerAction',
+					handleTriggerAction,
+				);
 				switch (action.type) {
 					/**
 					 * Global Action Handle
@@ -88,6 +92,7 @@ export const withPerformActionContext = (
 						/**
 						 * Custom Action Handle
 						 * */
+						console.warn('action', action);
 						action.routeId &&
 							state.routeMap[action.routeId].actions[
 								action.type

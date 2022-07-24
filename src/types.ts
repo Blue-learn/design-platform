@@ -44,7 +44,7 @@ export type WidgetRegistry = {
 	};
 };
 
-export type TemplateProps = {
+export type WidgetProps = {
 	item: WidgetItem;
 	renderItem?: Component;
 	triggerAction?: TriggerAction;

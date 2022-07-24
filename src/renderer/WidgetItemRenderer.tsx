@@ -4,12 +4,12 @@ import { View, Text } from 'react-native';
 import ItemRenderer from './WidgetRenderer';
 import {
 	Datastore,
-	TemplateProps,
+	WidgetProps,
 } from '../types';
 import SharedPropsService from '../SharedPropsService';
 
 class WidgetItemRenderer extends React.PureComponent<
-	TemplateProps & { datastore: Datastore }
+	WidgetProps & { datastore: Datastore }
 > {
 	widgetRef: React.RefObject<View>;
 
@@ -22,7 +22,7 @@ class WidgetItemRenderer extends React.PureComponent<
 	}
 
 	renderItem = (
-		item: TemplateProps,
+		item: WidgetProps,
 		extraProps: any = { isVisible: false },
 	) => {
 		return (
