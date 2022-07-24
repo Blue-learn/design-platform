@@ -2,7 +2,7 @@ import React from 'react';
 import createDataContext from './createDataContext';
 import {
 	ActionMap,
-	DataStoreType,
+	Datastore,
 	GlobalActionType,
 	RouteMap,
 	TemplateSchema,
@@ -22,7 +22,7 @@ type PayloadSetDatastoreInPath = {
 
 type PayloadSetDatastoreAction = {
 	routeId: string;
-	datastore: DataStoreType;
+	datastore: Datastore;
 };
 type SetDatastoreAction = {
 	type: GlobalActionType.SET_DATASTORE;
@@ -67,7 +67,7 @@ const initialState: GlobalState = {
 
 const setDataStorePageTypeData = (
 	template: TemplateSchema = EmptyTemplate,
-	datastore: DataStoreType = {},
+	datastore: Datastore = {},
 ): TemplateSchema => {
 	return {
 		success: {

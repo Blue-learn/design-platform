@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View } from 'react-native';
 
-export type MicroFrontendProps = {
-	routeMap: { [routeId: string]: PageType<any> };
-	routeCurrent: string;
-	widgetRegistry: WidgetRegistry;
-};
 export type RouteMap = {
 	[routeId: string]: PageType<any>;
 };
+
+export type MicroFrontendProps = {
+	routeMap: RouteMap;
+	routeCurrent: string;
+	widgetRegistry: WidgetRegistry;
+};
+
 export type WidgetItem = {
 	id: string;
 	type: string;
@@ -16,11 +18,11 @@ export type WidgetItem = {
 	props?: object;
 };
 
-export type DataStoreType = {
+export type Datastore = {
 	[widgetId in string]: Object;
 };
 
-export type LayoutType = {
+export type Layout = {
 	id: string;
 	type: string;
 	widgets: WidgetItem[];
@@ -30,8 +32,8 @@ export type TemplateSchema = {
 	isError: boolean;
 	success: {
 		data: {
-			layout: LayoutType;
-			datastore: DataStoreType;
+			layout: Layout;
+			datastore: Datastore;
 		};
 	};
 };
@@ -44,15 +46,9 @@ export type WidgetRegistry = {
 
 export type TemplateProps = {
 	item: WidgetItem;
-	renderItem?: any;
-	showModalSheet(
-		routeKey: string,
-		params: any,
-	): any;
+	renderItem?: Component;
 	performAction?: PerformActionFn;
-	updateDataStore(store: {}): void;
 	widgetRef?: React.RefObject<View>;
-	isVisible?: boolean;
 };
 
 export enum GlobalActionType {
@@ -80,33 +76,28 @@ export type StandardUtilities = {
 	): Promise<any>;
 };
 
-export type ActionFunType = (
+export type TriggerActionType = (
 	action: TapAction,
-	datastore: DataStoreType,
+	datastore: Datastore,
 	utilities: StandardUtilities,
 ) => Promise<any> | any;
 
 export type PageActionMap = {
-	[key: string]: ActionFunType;
+	[key: string]: TriggerActionType;
 };
 export type ActionMap = PageActionMap;
 
 export type PageType<T> = {
 	onLoad: (
 		initialParameters?: any,
-	) => TemplateSchema;
+	) => Promise<TemplateSchema>;
 	template?: TemplateSchema;
 	actions?: ActionMap;
-	loadNext?(
-		initData: T,
-		action: TapAction,
-		dataStore: any,
-	): Promise<TemplateSchema>;
 };
 
 /** An enum to select the layout of a screen */
 export enum LAYOUTS {
-	/** The widget are arranged in a list layout */
+	/** The widget is arranged in a list layout */
 	LIST = 'layouts/list',
 
 	/** The widget are arranged in a tab layout */
@@ -144,7 +135,6 @@ export type TapAction<DataType = any> = {
 
 export type PerformActionFn = (
 	tapAction: TapAction,
-	// boolUpdateDataStore?: boolean | undefined,
 ) => Promise<
 	any | { isError: boolean; err: Error }
 >;

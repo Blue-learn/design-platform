@@ -3,13 +3,13 @@ import _get from 'lodash-es/get';
 import { View, Text } from 'react-native';
 import ItemRenderer from './ItemRenderer';
 import {
-	DataStoreType,
+	Datastore,
 	TemplateProps,
 } from '../types';
 import SharedPropsService from '../SharedPropsService';
 
 class StandardWidgetRenderer extends React.PureComponent<
-	TemplateProps & { datastore: DataStoreType }
+	TemplateProps & { datastore: Datastore }
 > {
 	widgetRef: React.RefObject<View>;
 
@@ -38,12 +38,8 @@ class StandardWidgetRenderer extends React.PureComponent<
 	};
 
 	render() {
-		const {
-			item,
-			performAction,
-			showModalSheet,
-			...restProps
-		} = this.props;
+		const { item, performAction, ...restProps } =
+			this.props;
 
 		let itemProps: any = restProps;
 
@@ -62,7 +58,6 @@ class StandardWidgetRenderer extends React.PureComponent<
 			...itemProps,
 			renderItem: this.renderItem,
 			performAction,
-			showModalSheet,
 			isVisible: true,
 		};
 

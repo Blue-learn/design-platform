@@ -3,7 +3,7 @@ import _isEmpty from 'lodash-es/isEmpty';
 import { withPerformActionContext } from '../context/PerformActionContext';
 import StandardWidgetRenderer from './StandardWidgetRenderer';
 import {
-	DataStoreType,
+	Datastore,
 	PerformTapActionFn,
 	WidgetItem,
 } from '../types';
@@ -20,7 +20,7 @@ interface Props {
 	performTapAction?: PerformTapActionFn;
 	//from withGlobalContext
 	// state: GlobalState;
-	datastore: DataStoreType;
+	datastore: Datastore;
 }
 
 class ItemRenderer extends React.PureComponent<Props> {
