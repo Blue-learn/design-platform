@@ -22,9 +22,7 @@ export const withPerformActionContext = (
 				/** todo **/
 				reloadPage(reloadParams?: any) {},
 				getFromDataStore(path: string): Promise<any> {
-					return Promise.resolve(
-						get(state.datastore, path),
-					);
+					return Promise.resolve(get(state, path));
 				},
 				/** todo **/
 				scrollToId(options: any): void {},
