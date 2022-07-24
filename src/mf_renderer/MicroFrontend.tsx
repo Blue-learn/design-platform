@@ -47,9 +47,11 @@ const MicroFrontend: React.FC<
 		}
 
 		if (routeMap[routeCurrent].template == null) {
-			await setTemplateForRoute({
+			setTemplateForRoute({
 				routeId: routeCurrent,
-				template: routeMap[routeCurrent].onLoad(),
+				template: await routeMap[
+					routeCurrent
+				].onLoad(),
 			});
 		}
 		toggleLoad(false);
@@ -61,7 +63,7 @@ const MicroFrontend: React.FC<
 
 	return (
 		<View
-			style={{ backgroundColor: 'red', flex: 1 }}
+			style={{ backgroundColor: 'white', flex: 1 }}
 		>
 			{!isLoading &&
 				template != null &&
