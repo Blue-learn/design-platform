@@ -68,19 +68,19 @@ export const withPerformActionContext = (
 				navigate(routeId: string) {},
 			};
 
-			const handlePerformAction = (
-				tapAction: Action,
+			const handleTriggerAction = (
+				action: Action,
 			) => {
-				switch (tapAction.type) {
+				switch (action.type) {
 					/**
 					 * Global Action Handle
 					 * */
 					case GlobalActionTokens.SET_DATASTORE_IN_PATH: {
-						setDataStoreInPath(tapAction);
+						setDataStoreInPath(action);
 						break;
 					}
 					case GlobalActionTokens.SET_ACTIONS: {
-						setActions(tapAction);
+						setActions(action);
 						break;
 					}
 
@@ -88,11 +88,11 @@ export const withPerformActionContext = (
 						/**
 						 * Custom Action Handle
 						 * */
-						tapAction.routeId &&
-							state.routeMap[tapAction.routeId].actions[
-								tapAction.type
+						action.routeId &&
+							state.routeMap[action.routeId].actions[
+								action.type
 							](
-								tapAction.payload,
+								action.payload,
 								state,
 								standardUtilities,
 							);
@@ -105,7 +105,7 @@ export const withPerformActionContext = (
 				<WrappedComponent
 					{...props}
 					ref={ref}
-					performTapAction={handlePerformAction}
+					triggerAction={handleTriggerAction}
 				/>
 			);
 		},

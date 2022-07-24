@@ -16,10 +16,9 @@ interface Props {
 	isShimmer?: boolean;
 	onComponentMount?: (id: string) => void;
 	forwardedRef?: any;
-	//from withPerformActionContext
+	/** from withPerformActionContext **/
 	triggerAction?: TriggerAction;
-	//from withGlobalContext
-	// state: GlobalState;
+	/** from withGlobalContext **/
 	datastore: Datastore;
 }
 

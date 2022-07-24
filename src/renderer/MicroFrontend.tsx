@@ -6,7 +6,11 @@ import React, {
 } from 'react';
 import { arePropsEqual } from '../utility';
 import { MicroFrontendProps } from '../types';
-import { Context as GlobalContext } from '../context';
+
+import {
+	Provider as GlobalContextProvider,
+	Context as GlobalContextConsumer,
+} from '../context';
 import {
 	ActivityIndicator,
 	View,
@@ -26,7 +30,7 @@ const MicroFrontend: React.FC<
 		state,
 		setRouteMap,
 		setTemplateForRoute,
-	} = useContext(GlobalContext);
+	} = useContext(GlobalContextConsumer);
 	let template =
 		(state.routeMap != null &&
 			state.routeMap[routeCurrent].template) ||
@@ -83,7 +87,17 @@ const MicroFrontend: React.FC<
 	);
 };
 
+const MicroFrontendWithContext: React.FC<
+	MicroFrontendProps
+> = (props) => {
+	return (
+		<GlobalContextProvider>
+			<MicroFrontend {...props} />
+		</GlobalContextProvider>
+	);
+};
+
 export default memo(
-	MicroFrontend,
+	MicroFrontendWithContext,
 	arePropsEqual(['routeCurrent']),
 );
