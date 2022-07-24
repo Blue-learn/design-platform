@@ -10,7 +10,7 @@ import {
 	FlashList,
 	ListRenderItemInfo,
 } from '@shopify/flash-list';
-import ItemRenderer from '../render/ItemRenderer';
+import ItemRenderer from './WidgetRenderer';
 import _map from 'lodash-es/map';
 import { arePropsEqual } from '../utility';
 

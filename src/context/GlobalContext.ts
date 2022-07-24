@@ -3,14 +3,14 @@ import createDataContext from './createDataContext';
 import {
 	ActionMap,
 	Datastore,
-	GlobalActionType,
+	GlobalActionTokens,
 	RouteMap,
 	TemplateSchema,
 	WidgetRegistry,
 } from '../types';
 import { EmptyTemplate } from '../utility';
 type SetWidgetRegistryAction = {
-	type: GlobalActionType.SET_WIDGET_REGISTRY;
+	type: GlobalActionTokens.SET_WIDGET_REGISTRY;
 	payload: WidgetRegistry;
 };
 
@@ -25,24 +25,24 @@ type PayloadSetDatastoreAction = {
 	datastore: Datastore;
 };
 type SetDatastoreAction = {
-	type: GlobalActionType.SET_DATASTORE;
+	type: GlobalActionTokens.SET_DATASTORE;
 	payload: PayloadSetDatastoreAction;
 };
 
 type SetDatastoreInPath = {
-	type: GlobalActionType.SET_DATASTORE_IN_PATH;
+	type: GlobalActionTokens.SET_DATASTORE_IN_PATH;
 	payload: PayloadSetDatastoreInPath;
 };
 type SetActions = {
-	type: GlobalActionType.SET_ACTIONS;
+	type: GlobalActionTokens.SET_ACTIONS;
 	payload: { actions: ActionMap; routeId: string };
 };
 type SetRouteMap = {
-	type: GlobalActionType.SET_ROUTE_MAP;
+	type: GlobalActionTokens.SET_ROUTE_MAP;
 	payload: RouteMap;
 };
 type SetTemplateForRoute = {
-	type: GlobalActionType.SET_TEMPLATE_ROUTE;
+	type: GlobalActionTokens.SET_TEMPLATE_ROUTE;
 	payload: {
 		routeId: string;
 		template: TemplateSchema;
@@ -130,7 +130,7 @@ const setWidgetRegistry = (dispatch: any) => {
 	return (widgetRegistry: WidgetRegistry) => {
 		dispatch({
 			payload: { ...widgetRegistry },
-			type: GlobalActionType.SET_WIDGET_REGISTRY,
+			type: GlobalActionTokens.SET_WIDGET_REGISTRY,
 		});
 	};
 };
@@ -139,7 +139,7 @@ const setDatastore = (dispatch: any) => {
 	return (payload: SetDatastoreAction) => {
 		dispatch({
 			payload,
-			type: GlobalActionType.SET_DATASTORE,
+			type: GlobalActionTokens.SET_DATASTORE,
 		});
 	};
 };
@@ -148,7 +148,7 @@ const setDataStoreInPath = (dispatch: any) => {
 	return (payload: SetDatastoreInPath) => {
 		dispatch({
 			payload,
-			type: GlobalActionType.SET_DATASTORE_IN_PATH,
+			type: GlobalActionTokens.SET_DATASTORE_IN_PATH,
 		});
 	};
 };
@@ -156,7 +156,7 @@ const setActions = (dispatch: any) => {
 	return (payload: SetActions) => {
 		dispatch({
 			payload,
-			type: GlobalActionType.SET_ACTIONS,
+			type: GlobalActionTokens.SET_ACTIONS,
 		});
 	};
 };
@@ -164,7 +164,7 @@ const setRouteMap = (dispatch: any) => {
 	return (payload: SetRouteMap) => {
 		dispatch({
 			payload,
-			type: GlobalActionType.SET_ROUTE_MAP,
+			type: GlobalActionTokens.SET_ROUTE_MAP,
 		});
 	};
 };
@@ -172,7 +172,7 @@ const setTemplateForRoute = (dispatch: any) => {
 	return (payload: SetTemplateForRoute) => {
 		dispatch({
 			payload,
-			type: GlobalActionType.SET_TEMPLATE_ROUTE,
+			type: GlobalActionTokens.SET_TEMPLATE_ROUTE,
 		});
 	};
 };
@@ -182,13 +182,13 @@ const GlobalReducer = (
 	action: GlobalAction,
 ) => {
 	switch (action.type) {
-		case GlobalActionType.SET_ROUTE_MAP: {
+		case GlobalActionTokens.SET_ROUTE_MAP: {
 			return {
 				...state,
 				routeMap: { ...action.payload },
 			};
 		}
-		case GlobalActionType.SET_TEMPLATE_ROUTE: {
+		case GlobalActionTokens.SET_TEMPLATE_ROUTE: {
 			return {
 				...state,
 				routeMap: {
@@ -201,7 +201,7 @@ const GlobalReducer = (
 				},
 			};
 		}
-		case GlobalActionType.SET_DATASTORE: {
+		case GlobalActionTokens.SET_DATASTORE: {
 			const _template: TemplateSchema =
 				(state.routeMap &&
 					state.routeMap[action.payload.routeId]
@@ -225,7 +225,7 @@ const GlobalReducer = (
 				},
 			};
 		}
-		case GlobalActionType.SET_DATASTORE_IN_PATH: {
+		case GlobalActionTokens.SET_DATASTORE_IN_PATH: {
 			const _template: TemplateSchema =
 				(state.routeMap &&
 					state.routeMap[action.payload.routeId]
@@ -249,7 +249,7 @@ const GlobalReducer = (
 				},
 			};
 		}
-		case GlobalActionType.SET_ACTIONS: {
+		case GlobalActionTokens.SET_ACTIONS: {
 			const oldAction =
 				(state.routeMap &&
 					action.payload.routeId &&

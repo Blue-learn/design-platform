@@ -47,13 +47,14 @@ export type WidgetRegistry = {
 export type TemplateProps = {
 	item: WidgetItem;
 	renderItem?: Component;
-	performAction?: PerformActionFn;
+	triggerAction?: TriggerAction;
+	/** Todo **/
 	widgetRef?: React.RefObject<View>;
 };
 
-export enum GlobalActionType {
-	SET_WIDGET_REGISTRY = 'set_widget_registry',
-	SET_DATASTORE = 'set_datastore',
+export enum GlobalActionTokens {
+	SET_WIDGET_REGISTRY = 'SET_WIDGET_REGISTRY',
+	SET_DATASTORE = 'SET_DATASTORE',
 	SET_DATASTORE_IN_PATH = 'SET_DATASTORE_IN_PATH',
 	SET_ACTIONS = 'SET_ACTIONS',
 	SET_ROUTE_MAP = 'SET_ROUTE_MAP',
@@ -76,16 +77,15 @@ export type StandardUtilities = {
 	): Promise<any>;
 };
 
-export type TriggerActionType = (
-	action: TapAction,
+export type ActionFunction = (
+	action: Action,
 	datastore: Datastore,
 	utilities: StandardUtilities,
 ) => Promise<any> | any;
 
-export type PageActionMap = {
-	[key: string]: TriggerActionType;
+export type ActionMap = {
+	[key: string]: ActionFunction;
 };
-export type ActionMap = PageActionMap;
 
 export type PageType<T> = {
 	onLoad: (
@@ -125,7 +125,7 @@ export enum POSITION {
  * @param data data that is required to be passed for the tap action
  * @param routeId [Optional] performs action on specific routeId
  */
-export type TapAction<DataType = any> = {
+export type Action<DataType = any> = {
 	type: string;
 	routeId?: string;
 	payload: DataType extends object
@@ -133,18 +133,12 @@ export type TapAction<DataType = any> = {
 		: any;
 };
 
-export type PerformActionFn = (
-	tapAction: TapAction,
+export type TriggerAction = (
+	action: Action,
 ) => Promise<
 	any | { isError: boolean; err: Error }
 >;
 
-export type PerformTapActionFn =
-	() => PerformActionFn;
-
-/**
- * Use renderer/utils.ts/getScreenType() to evaluate
- */
 export enum SCREEN_SIZE {
 	/**
 	 * Screen Width <576px

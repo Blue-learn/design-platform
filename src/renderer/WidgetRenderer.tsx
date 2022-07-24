@@ -1,14 +1,14 @@
 import React from 'react';
 import _isEmpty from 'lodash-es/isEmpty';
 import { withPerformActionContext } from '../context/PerformActionContext';
-import StandardWidgetRenderer from './StandardWidgetRenderer';
+import WidgetItemRenderer from './WidgetItemRenderer';
 import {
 	Datastore,
-	PerformTapActionFn,
+	TriggerAction,
 	WidgetItem,
 } from '../types';
 import withGlobalContext from '../context/withGlobalContext';
-import ShimmerWidgetRenderer from './ShimmerWidgetRenderer';
+import ShimmerRenderer from './ShimmerRenderer';
 
 interface Props {
 	item: WidgetItem;
@@ -17,13 +17,13 @@ interface Props {
 	onComponentMount?: (id: string) => void;
 	forwardedRef?: any;
 	//from withPerformActionContext
-	performTapAction?: PerformTapActionFn;
+	triggerAction?: TriggerAction;
 	//from withGlobalContext
 	// state: GlobalState;
 	datastore: Datastore;
 }
 
-class ItemRenderer extends React.PureComponent<Props> {
+class WidgetRenderer extends React.PureComponent<Props> {
 	itemData: any;
 
 	constructor(props: Props) {
@@ -65,20 +65,20 @@ class ItemRenderer extends React.PureComponent<Props> {
 		) {
 			const errorObj = {
 				errorType: 'ERROR_RENDERING_SKIPPED',
-				message: `Component ${item.type} not rendered. Missing props for id ${item.id}.`,
+				message: `Component: ${item.type} not rendered. check props for id ${item.id}.`,
 			};
 			console.warn('Error ItemRender->', errorObj);
 			return null;
 		}
 
 		if (isShimmer)
-			return <ShimmerWidgetRenderer {...item} />;
+			return <ShimmerRenderer {...item} />;
 
 		return (
-			<StandardWidgetRenderer
+			<WidgetItemRenderer
 				key={`${item.id || item.type}`}
 				ref={forwardedRef}
-				performAction={this.props.performTapAction}
+				triggerAction={this.props.triggerAction}
 				item={item}
 				datastore={datastore}
 				{...extraProps}
@@ -88,14 +88,17 @@ class ItemRenderer extends React.PureComponent<Props> {
 	}
 }
 
-const ItemRendererWithRef = React.forwardRef(
+const WidgetRendererWithRef = React.forwardRef(
 	(props: Props, ref) => {
 		return (
-			<ItemRenderer {...props} forwardedRef={ref} />
+			<WidgetRenderer
+				{...props}
+				forwardedRef={ref}
+			/>
 		);
 	},
 );
 
 export default withGlobalContext(
-	withPerformActionContext(ItemRendererWithRef),
+	withPerformActionContext(WidgetRendererWithRef),
 );

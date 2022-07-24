@@ -1,14 +1,14 @@
 import React from 'react';
 import _get from 'lodash-es/get';
 import { View, Text } from 'react-native';
-import ItemRenderer from './ItemRenderer';
+import ItemRenderer from './WidgetRenderer';
 import {
 	Datastore,
 	TemplateProps,
 } from '../types';
 import SharedPropsService from '../SharedPropsService';
 
-class StandardWidgetRenderer extends React.PureComponent<
+class WidgetItemRenderer extends React.PureComponent<
 	TemplateProps & { datastore: Datastore }
 > {
 	widgetRef: React.RefObject<View>;
@@ -38,7 +38,7 @@ class StandardWidgetRenderer extends React.PureComponent<
 	};
 
 	render() {
-		const { item, performAction, ...restProps } =
+		const { item, triggerAction, ...restProps } =
 			this.props;
 
 		let itemProps: any = restProps;
@@ -57,7 +57,7 @@ class StandardWidgetRenderer extends React.PureComponent<
 		const props: any = {
 			...itemProps,
 			renderItem: this.renderItem,
-			performAction,
+			triggerAction: triggerAction,
 			isVisible: true,
 		};
 
@@ -88,4 +88,4 @@ class StandardWidgetRenderer extends React.PureComponent<
 	}
 }
 
-export default StandardWidgetRenderer;
+export default WidgetItemRenderer;

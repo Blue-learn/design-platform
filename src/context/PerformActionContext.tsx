@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import {
-	GlobalActionType,
+	GlobalActionTokens,
 	StandardUtilities,
-	TapAction,
+	Action,
 } from '../types';
 import { Context } from './GlobalContext';
 import { get } from 'lodash-es';
@@ -69,17 +69,17 @@ export const withPerformActionContext = (
 			};
 
 			const handlePerformAction = (
-				tapAction: TapAction,
+				tapAction: Action,
 			) => {
 				switch (tapAction.type) {
 					/**
 					 * Global Action Handle
 					 * */
-					case GlobalActionType.SET_DATASTORE_IN_PATH: {
+					case GlobalActionTokens.SET_DATASTORE_IN_PATH: {
 						setDataStoreInPath(tapAction);
 						break;
 					}
-					case GlobalActionType.SET_ACTIONS: {
+					case GlobalActionTokens.SET_ACTIONS: {
 						setActions(tapAction);
 						break;
 					}

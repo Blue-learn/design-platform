@@ -12,7 +12,7 @@ import {
 	View,
 } from 'react-native';
 import SharedPropsService from '../SharedPropsService';
-import { PageRender } from '../page_render';
+import PageRender from './PageRender';
 
 const MicroFrontend: React.FC<
 	MicroFrontendProps
