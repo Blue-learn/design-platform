@@ -3,6 +3,7 @@ import {
 	GlobalActionTokens,
 	StandardUtilities,
 	Action,
+	TemplateSchema,
 } from '../types';
 import { Context } from './GlobalContext';
 import { get } from 'lodash-es';
@@ -69,10 +70,10 @@ export const withPerformActionContext = (
 			const handleTriggerAction = (
 				action: Action,
 			) => {
-				console.warn(
-					'handleTriggerAction',
-					handleTriggerAction,
-				);
+				// console.warn(
+				// 	'handleTriggerAction',
+				// 	handleTriggerAction,
+				// );
 				switch (action.type) {
 					/**
 					 * Global Action Handle
@@ -90,13 +91,17 @@ export const withPerformActionContext = (
 						/**
 						 * Custom Action Handle
 						 * */
-						console.warn('action', action);
-						action.routeId &&
+						// console.warn('action', action);
+						let template: TemplateSchema =
+							action.routeId &&
+							state.routeMap[action.routeId].template;
+						template &&
+							action.routeId &&
 							state.routeMap[action.routeId].actions[
 								action.type
 							](
-								action.payload,
-								state,
+								action,
+								template.success.data.datastore,
 								standardUtilities,
 							);
 						break;
