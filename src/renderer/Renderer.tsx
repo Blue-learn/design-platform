@@ -2,13 +2,10 @@ import React from 'react';
 import _get from 'lodash-es/get';
 import { View, Text } from 'react-native';
 import ItemRenderer from './WidgetRenderer';
-import {
-	Datastore,
-	WidgetProps,
-} from '../types';
+import { Datastore, WidgetProps } from '../types';
 import SharedPropsService from '../SharedPropsService';
 
-class WidgetItemRenderer extends React.PureComponent<
+class Renderer extends React.PureComponent<
 	WidgetProps & { datastore: Datastore }
 > {
 	widgetRef: React.RefObject<View>;
@@ -88,4 +85,4 @@ class WidgetItemRenderer extends React.PureComponent<
 	}
 }
 
-export default WidgetItemRenderer;
+export default Renderer;

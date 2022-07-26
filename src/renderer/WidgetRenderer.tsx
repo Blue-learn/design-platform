@@ -1,7 +1,7 @@
 import React from 'react';
 import _isEmpty from 'lodash-es/isEmpty';
 import { withPerformActionContext } from '../context/PerformActionContext';
-import WidgetItemRenderer from './WidgetItemRenderer';
+import Renderer from './Renderer';
 import {
 	Datastore,
 	TriggerAction,
@@ -63,10 +63,13 @@ class WidgetRenderer extends React.PureComponent<Props> {
 			_isEmpty(itemData)
 		) {
 			const errorObj = {
-				errorType: 'ERROR_RENDERING_SKIPPED',
-				message: `Component: ${item.type} not rendered. check props for id ${item.id}.`,
+				errorType: 'ERROR: WIDGET RENDER SKIPPED',
+				message: `type-> ${item.type} id-> ${item.id} props-> ${item.props}.`,
 			};
-			console.warn('Error ItemRender->', errorObj);
+			console.warn(
+				errorObj.errorType,
+				errorObj.message,
+			);
 			return null;
 		}
 
@@ -74,7 +77,7 @@ class WidgetRenderer extends React.PureComponent<Props> {
 			return <ShimmerRenderer {...item} />;
 
 		return (
-			<WidgetItemRenderer
+			<Renderer
 				key={`${item.id || item.type}`}
 				ref={forwardedRef}
 				triggerAction={this.props.triggerAction}

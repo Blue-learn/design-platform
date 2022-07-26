@@ -67,7 +67,10 @@ export type StandardUtilities = {
 	scrollToId(options: any): void;
 	getFromDataStore(path: string): Promise<any>;
 	setInDataStore(
-		path: string,
+		/** @description routeId: Pass string value of RouteId from RouteMap. RouteMap->{routeId:{widgetId}} **/
+		routeId: string,
+		/** @description widgetId (Path): Use DOT(.) as deliminator to pass complete path for nested props **/
+		widgetId: string,
 		value?: any,
 	): Promise<any>;
 };
@@ -95,7 +98,7 @@ export enum LAYOUTS {
 	/** The widget is arranged in a list layout */
 	LIST = 'layouts/list',
 
-	/** The widget are arranged in a tab layout */
+	/** The widget is arranged in a tab layout */
 	/* todo */
 	TAB = 'layouts/tab',
 }
@@ -115,6 +118,7 @@ export enum POSITION {
 	/** TODO */
 	STICKY_TOP = 'position/sticky_top',
 }
+
 /** Type definition for a tap action
  * @param type action type it can either be a custom type or the one of the predefined action types
  * @param data data that is required to be passed for the tap action

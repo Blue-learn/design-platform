@@ -16,7 +16,7 @@ type SetWidgetRegistryAction = {
 
 type PayloadSetDatastoreInPath = {
 	routeId: string;
-	path: string;
+	widgetId: string;
 	data: any;
 };
 
@@ -89,8 +89,10 @@ const setDataStoreInPathPageTypeData = (
 		},
 		datastore: {
 			...template?.datastore,
-			[action.payload.path]: {
-				...template?.datastore[action.payload.path],
+			[action.payload.widgetId]: {
+				...template?.datastore[
+					action.payload.widgetId
+				],
 				...action.payload.data,
 			},
 		},

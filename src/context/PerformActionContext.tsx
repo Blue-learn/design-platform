@@ -28,11 +28,12 @@ export const withPerformActionContext = (
 				/** todo **/
 				scrollToId(options: any): void {},
 				setInDataStore(
-					path: string,
+					routeId,
+					widgetId: string,
 					value?: any,
 				): Promise<any> {
 					return new Promise(async (resolve) => {
-						if (typeof path === 'undefined') {
+						if (typeof widgetId === 'undefined') {
 							console.warn('path parameter missing');
 							resolve(state.datastore);
 							return;
@@ -40,7 +41,7 @@ export const withPerformActionContext = (
 
 						const previousValue = get(
 							state.datastore,
-							path,
+							widgetId,
 						);
 						// if previousValue is undefined, then setting undefined again is not allowed
 						if (previousValue === value) {
@@ -49,7 +50,7 @@ export const withPerformActionContext = (
 							return;
 						}
 
-						await setDataStoreInPath(path, value);
+						await setDataStoreInPath(widgetId, value);
 						resolve(state.datastore);
 					});
 				},
@@ -72,12 +73,15 @@ export const withPerformActionContext = (
 			) => {
 				switch (action.type) {
 					/**
-					 * Global Action Handle
+					 * Global Action Handle - Update Datastore for routeId -> widgetId
 					 * */
 					case GlobalActionTokens.SET_DATASTORE_IN_PATH: {
 						setDataStoreInPath(action);
 						break;
 					}
+					/**
+					 * Global Action Handle - Set Action map for routeId
+					 * */
 					case GlobalActionTokens.SET_ACTIONS: {
 						setActions(action);
 						break;
