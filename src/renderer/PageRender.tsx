@@ -49,7 +49,7 @@ const PageRender: React.FC<PageRenderProps> = ({
 	const fabWI: WidgetItem[] = [];
 
 	const _layoutMapping = () => {
-		template.success.data.layout.widgets.map(
+		template.layout.widgets.map(
 			(widgetItem) => {
 				switch (widgetItem.position) {
 					case POSITION.FIXED_TOP: {
@@ -87,7 +87,7 @@ const PageRender: React.FC<PageRenderProps> = ({
 		return (
 			<ItemRenderer
 				item={props.item || props}
-				datastore={template.success.data.datastore}
+				datastore={template.datastore}
 			/>
 		);
 	};

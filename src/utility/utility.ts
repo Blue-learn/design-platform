@@ -79,15 +79,10 @@ export const getUniqueId = (): string => {
 };
 
 export const EmptyTemplate: TemplateSchema = {
-	isError: true,
-	success: {
-		data: {
-			layout: {
-				id: 'empty_template',
-				type: LAYOUTS.LIST,
-				widgets: [],
-			},
-			datastore: {},
-		},
+	layout: {
+		id: 'empty_template',
+		type: LAYOUTS.LIST,
+		widgets: [],
 	},
+	datastore: {},
 };

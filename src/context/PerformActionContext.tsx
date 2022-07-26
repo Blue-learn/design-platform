@@ -96,7 +96,7 @@ export const withPerformActionContext = (
 								action.type
 							](
 								action,
-								template.success.data.datastore,
+								template.datastore,
 								standardUtilities,
 							);
 						break;

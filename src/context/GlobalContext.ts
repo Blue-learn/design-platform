@@ -70,18 +70,13 @@ const setDataStorePageTypeData = (
 	datastore: Datastore = {},
 ): TemplateSchema => {
 	return {
-		success: {
-			data: {
-				layout: {
-					...template?.success.data.layout,
-				},
-				datastore: {
-					...template?.success.data.datastore,
-					...datastore,
-				},
-			},
+		layout: {
+			...template?.layout,
 		},
-		isError: false,
+		datastore: {
+			...template?.datastore,
+			...datastore,
+		},
 	};
 };
 const setDataStoreInPathPageTypeData = (
@@ -89,23 +84,16 @@ const setDataStoreInPathPageTypeData = (
 	action: SetDatastoreInPath,
 ): TemplateSchema => {
 	return {
-		success: {
-			data: {
-				layout: {
-					...template?.success.data.layout,
-				},
-				datastore: {
-					...template?.success.data.datastore,
-					[action.payload.path]: {
-						...template?.success.data.datastore[
-							action.payload.path
-						],
-						...action.payload.data,
-					},
-				},
+		layout: {
+			...template?.layout,
+		},
+		datastore: {
+			...template?.datastore,
+			[action.payload.path]: {
+				...template?.datastore[action.payload.path],
+				...action.payload.data,
 			},
 		},
-		isError: false,
 	};
 };
 
@@ -208,10 +196,7 @@ const GlobalReducer = (
 						.template) ||
 				EmptyTemplate;
 
-			if (
-				_template.success.data.layout.widgets
-					.length == 0
-			)
+			if (_template.layout.widgets.length == 0)
 				return { ...state };
 			return {
 				...state,
@@ -232,10 +217,7 @@ const GlobalReducer = (
 						.template) ||
 				EmptyTemplate;
 
-			if (
-				_template.success.data.layout.widgets
-					.length == 0
-			)
+			if (_template.layout.widgets.length == 0)
 				return { ...state };
 			return {
 				...state,

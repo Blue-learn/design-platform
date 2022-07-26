@@ -29,13 +29,8 @@ export type Layout = {
 };
 
 export type TemplateSchema = {
-	isError: boolean;
-	success: {
-		data: {
-			layout: Layout;
-			datastore: Datastore;
-		};
-	};
+	layout: Layout;
+	datastore: Datastore;
 };
 
 export type WidgetRegistry = {
