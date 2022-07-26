@@ -27,10 +27,10 @@ export const withPerformActionContext = (
 				},
 				/** todo **/
 				scrollToId(options: any): void {},
-				setInDataStore(
+				setDatastore(
 					routeId,
 					widgetId: string,
-					value?: any,
+					payload?: any,
 				): Promise<any> {
 					return new Promise(async (resolve) => {
 						if (typeof widgetId === 'undefined') {
@@ -44,13 +44,16 @@ export const withPerformActionContext = (
 							widgetId,
 						);
 						// if previousValue is undefined, then setting undefined again is not allowed
-						if (previousValue === value) {
+						if (previousValue === payload) {
 							console.warn('value is same');
 							resolve(state.datastore);
 							return;
 						}
-
-						await setDataStoreInPath(widgetId, value);
+						await setDataStoreInPath({
+							routeId,
+							widgetId,
+							payload,
+						});
 						resolve(state.datastore);
 					});
 				},

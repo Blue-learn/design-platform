@@ -49,36 +49,34 @@ const PageRender: React.FC<PageRenderProps> = ({
 	const fabWI: WidgetItem[] = [];
 
 	const _layoutMapping = () => {
-		template.layout.widgets.map(
-			(widgetItem) => {
-				switch (widgetItem.position) {
-					case POSITION.FIXED_TOP: {
-						fixedTopWI.push(widgetItem);
-						break;
-					}
-					case POSITION.FIXED_BOTTOM: {
-						fixedBottomWI.push(widgetItem);
-						break;
-					}
-					case POSITION.ABSOLUTE_TOP: {
-						absoluteTopWI.push(widgetItem);
-						break;
-					}
-					case POSITION.ABSOLUTE_BOTTOM: {
-						absoluteBottomWI.push(widgetItem);
-						break;
-					}
-					case POSITION.FAB: {
-						fabWI.push(widgetItem);
-						break;
-					}
-					default: {
-						bodyWI.push(widgetItem);
-						break;
-					}
+		template.layout.widgets.map((widgetItem) => {
+			switch (widgetItem.position) {
+				case POSITION.FIXED_TOP: {
+					fixedTopWI.push(widgetItem);
+					break;
 				}
-			},
-		);
+				case POSITION.FIXED_BOTTOM: {
+					fixedBottomWI.push(widgetItem);
+					break;
+				}
+				case POSITION.ABSOLUTE_TOP: {
+					absoluteTopWI.push(widgetItem);
+					break;
+				}
+				case POSITION.ABSOLUTE_BOTTOM: {
+					absoluteBottomWI.push(widgetItem);
+					break;
+				}
+				case POSITION.FAB: {
+					fabWI.push(widgetItem);
+					break;
+				}
+				default: {
+					bodyWI.push(widgetItem);
+					break;
+				}
+			}
+		});
 	};
 
 	const _renderItem = ({
@@ -91,6 +89,7 @@ const PageRender: React.FC<PageRenderProps> = ({
 			/>
 		);
 	};
+
 	_layoutMapping();
 
 	return (

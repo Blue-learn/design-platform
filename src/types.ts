@@ -66,12 +66,12 @@ export type StandardUtilities = {
 	reloadPage(reloadParams?: any): void;
 	scrollToId(options: any): void;
 	getFromDataStore(path: string): Promise<any>;
-	setInDataStore(
+	setDatastore(
 		/** @description routeId: Pass string value of RouteId from RouteMap. RouteMap->{routeId:{widgetId}} **/
 		routeId: string,
 		/** @description widgetId (Path): Use DOT(.) as deliminator to pass complete path for nested props **/
 		widgetId: string,
-		value?: any,
+		props?: any,
 	): Promise<any>;
 };
 

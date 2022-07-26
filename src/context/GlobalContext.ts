@@ -15,7 +15,6 @@ type SetWidgetRegistryAction = {
 };
 
 type PayloadSetDatastoreInPath = {
-	routeId: string;
 	widgetId: string;
 	data: any;
 };
@@ -31,6 +30,8 @@ type SetDatastoreAction = {
 
 type SetDatastoreInPath = {
 	type: GlobalActionTokens.SET_DATASTORE_IN_PATH;
+	routeId: string;
+	widgetId: string;
 	payload: PayloadSetDatastoreInPath;
 };
 type SetActions = {
@@ -89,11 +90,9 @@ const setDataStoreInPathPageTypeData = (
 		},
 		datastore: {
 			...template?.datastore,
-			[action.payload.widgetId]: {
-				...template?.datastore[
-					action.payload.widgetId
-				],
-				...action.payload.data,
+			[action.widgetId]: {
+				...template?.datastore[action.widgetId],
+				...action.payload,
 			},
 		},
 	};
@@ -135,9 +134,9 @@ const setDatastore = (dispatch: any) => {
 };
 
 const setDataStoreInPath = (dispatch: any) => {
-	return (payload: SetDatastoreInPath) => {
+	return (action: SetDatastoreInPath) => {
 		dispatch({
-			payload,
+			...action,
 			type: GlobalActionTokens.SET_DATASTORE_IN_PATH,
 		});
 	};
@@ -215,21 +214,22 @@ const GlobalReducer = (
 		case GlobalActionTokens.SET_DATASTORE_IN_PATH: {
 			const _template: TemplateSchema =
 				(state.routeMap &&
-					state.routeMap[action.payload.routeId]
-						.template) ||
+					state.routeMap[action.routeId].template) ||
 				EmptyTemplate;
-
 			if (_template.layout.widgets.length == 0)
 				return { ...state };
 			return {
 				...state,
 				routeMap: {
 					...state.routeMap,
-					[action.payload.routeId]:
-						setDataStoreInPathPageTypeData(
+					[action.routeId]: {
+						...(state.routeMap &&
+							state.routeMap[action.routeId]),
+						template: setDataStoreInPathPageTypeData(
 							_template,
 							action,
 						),
+					},
 				},
 			};
 		}
