@@ -65,12 +65,14 @@ export type StandardUtilities = {
 	showToast(toastProps: any): void;
 	reloadPage(reloadParams?: any): void;
 	scrollToId(options: any): void;
-	getFromDataStore(path: string): Promise<any>;
+	/** @description Pass path as string for nested props. Example, routeMap.${action.routeId}.template.***your_custom_path***    **/
+	getDatastore(path: string): Promise<any>;
 	setDatastore(
 		/** @description routeId: Pass string value of RouteId from RouteMap. RouteMap->{routeId:{widgetId}} **/
 		routeId: string,
 		/** @description widgetId (Path): Use DOT(.) as deliminator to pass complete path for nested props **/
 		widgetId: string,
+		/** @description New value will be merged with exist value **/
 		props?: any,
 	): Promise<any>;
 };

@@ -22,7 +22,7 @@ export const withPerformActionContext = (
 			const standardUtilities: StandardUtilities = {
 				/** todo **/
 				reloadPage(reloadParams?: any) {},
-				getFromDataStore(path: string): Promise<any> {
+				getDatastore(path: string): Promise<any> {
 					return Promise.resolve(get(state, path));
 				},
 				/** todo **/
@@ -43,7 +43,8 @@ export const withPerformActionContext = (
 							state.datastore,
 							widgetId,
 						);
-						// if previousValue is undefined, then setting undefined again is not allowed
+
+						/** if previousValue is undefined, then setting undefined again is not allowed **/
 						if (previousValue === payload) {
 							console.warn('value is same');
 							resolve(state.datastore);

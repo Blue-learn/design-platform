@@ -9,6 +9,7 @@ import {
 	WidgetRegistry,
 } from '../types';
 import { EmptyTemplate } from '../utility';
+
 type SetWidgetRegistryAction = {
 	type: GlobalActionTokens.SET_WIDGET_REGISTRY;
 	payload: WidgetRegistry;
