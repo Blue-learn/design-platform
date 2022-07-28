@@ -71,7 +71,8 @@ export type StandardUtilities = {
 	showToast(toastProps: any): void;
 	/** todo **/
 	reloadPage(reloadParams?: any): void;
-	/** todo **/
+
+	/** @description Scroll to Index by passing RouteId and scroll to position as Index in options prop***/
 	scrollToId(options: ScrollToIdOptions): void;
 
 	/** @description Returns complete main state of app. Pass custom path as string to access nested props.
@@ -186,6 +187,7 @@ export type OnScrollRef = {
 };
 
 export type ScrollToIdOptions = {
-	widgetId: string;
+	index: number;
+	routeId: string;
 	viewOffset?: number;
 };

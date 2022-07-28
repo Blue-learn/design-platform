@@ -45,6 +45,7 @@ const MicroFrontend: React.FC<
 		await SharedPropsService.setGlobalProps({
 			widgetRegistry: widgetRegistry,
 			routeMap: routeMap,
+			ref: {},
 		});
 		if (state.routeMap == null) {
 			await setRouteMap(routeMap);

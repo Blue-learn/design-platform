@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
 	ActionMap,
@@ -13,6 +13,7 @@ import {
 import ItemRenderer from './WidgetRenderer';
 import _map from 'lodash-es/map';
 import { arePropsEqual } from '../utility';
+import SharedPropsService from '../SharedPropsService';
 
 const styles = StyleSheet.create({
 	absoluteTop: {
@@ -38,16 +39,24 @@ type PageRenderProps = {
 	template: TemplateSchema;
 	actions: ActionMap;
 };
+
 const PageRender: React.FC<PageRenderProps> = ({
 	template,
 }) => {
+	const OnScrollRef = React.useRef(null);
 	const fixedTopWI: WidgetItem[] = [];
 	const bodyWI: WidgetItem[] = [];
 	const fixedBottomWI: WidgetItem[] = [];
 	const absoluteTopWI: WidgetItem[] = [];
 	const absoluteBottomWI: WidgetItem[] = [];
 	const fabWI: WidgetItem[] = [];
-
+	const setRef = async (ref: any) => {
+		OnScrollRef.current = ref;
+		await SharedPropsService.setWidgetRefMap(
+			template.layout.id,
+			OnScrollRef.current,
+		);
+	};
 	const _layoutMapping = () => {
 		template.layout.widgets.map((widgetItem) => {
 			switch (widgetItem.position) {
@@ -96,6 +105,7 @@ const PageRender: React.FC<PageRenderProps> = ({
 		<>
 			{_map(fixedTopWI, _renderItem)}
 			<FlashList
+				ref={setRef}
 				renderItem={_renderItem}
 				data={bodyWI}
 				extraData={bodyWI}

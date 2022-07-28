@@ -7,6 +7,7 @@ import {
 } from '../types';
 import { Context } from './GlobalContext';
 import { get } from 'lodash-es';
+import SharedPropsService from '../SharedPropsService';
 
 export const withPerformActionContext = (
 	WrappedComponent: any,
@@ -23,10 +24,28 @@ export const withPerformActionContext = (
 				/** todo **/
 				reloadPage(reloadParams?: any) {},
 				getDatastore(path: string): Promise<any> {
-					return Promise.resolve(get(state, path));
+					return path
+						? Promise.resolve(get(state, path))
+						: state;
 				},
 				/** todo **/
-				scrollToId(options: any): void {},
+				scrollToId({
+					index,
+					routeId,
+					viewOffset,
+				}): void {
+					let _ref =
+						SharedPropsService.getWidgetRef(routeId);
+
+					setTimeout(() => {
+						index &&
+							_ref.scrollToIndex({
+								index,
+								animated: true,
+								viewOffset,
+							});
+					}, 16);
+				},
 				setDatastore(
 					routeId,
 					widgetId: string,
