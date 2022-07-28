@@ -57,16 +57,28 @@ export enum GlobalActionTokens {
 }
 
 export type StandardUtilities = {
+	/** todo **/
 	navigate(routeId: string): void;
+	/** todo **/
 	showLoader(loaderParams?: any): void;
+	/** todo **/
 	hideLoader(): void;
+	/** todo **/
 	showPopup(params: any): void;
+	/** todo **/
 	hidePopup(): void;
+	/** todo **/
 	showToast(toastProps: any): void;
+	/** todo **/
 	reloadPage(reloadParams?: any): void;
-	scrollToId(options: any): void;
-	/** @description Pass path as string for nested props. Example, routeMap.${action.routeId}.template.***your_custom_path***    **/
-	getDatastore(path: string): Promise<any>;
+	/** todo **/
+	scrollToId(options: ScrollToIdOptions): void;
+
+	/** @description Returns complete main state of app. Pass custom path as string to access nested props.
+	 * Example-> routeMap.${action.routeId}.template.***your_custom_path_to_props***    **/
+	getDatastore(path?: string): Promise<any>;
+
+	/** @description Set or Update Datastore by pass routeId, widgetId, Props[Optional] **/
 	setDatastore(
 		/** @description routeId: Pass string value of RouteId from RouteMap. RouteMap->{routeId:{widgetId}} **/
 		routeId: string,
@@ -103,6 +115,8 @@ export enum LAYOUTS {
 	/** The widget is arranged in a tab layout */
 	/* todo */
 	TAB = 'layouts/tab',
+
+	MODAL = 'layout/modal',
 }
 
 /** An enum to decide on the positioning of a widget */
@@ -169,4 +183,9 @@ export enum SCREEN_SIZE {
 
 export type OnScrollRef = {
 	onScroll(yValue: number): void;
+};
+
+export type ScrollToIdOptions = {
+	widgetId: string;
+	viewOffset?: number;
 };
