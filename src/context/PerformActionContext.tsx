@@ -39,8 +39,6 @@ export const withPerformActionContext = (
 					clear: (callBack) =>
 						AsyncStorage.clear(callBack),
 				},
-				/** todo **/
-				reloadPage(reloadParams?: any) {},
 				getDatastore(path: string): Promise<any> {
 					return path
 						? Promise.resolve(get(state, path))
@@ -94,6 +92,8 @@ export const withPerformActionContext = (
 						resolve(state.datastore);
 					});
 				},
+				/** todo **/
+				reloadPage(reloadParams?: any) {},
 				/** todo **/
 				showToast(toastProps: any) {},
 				/** todo **/
