@@ -28,8 +28,7 @@ export const withPerformActionContext = (
 						? Promise.resolve(get(state, path))
 						: state;
 				},
-				/** todo **/
-				scrollToId({
+				scrollToIndex({
 					index,
 					routeId,
 					viewOffset,

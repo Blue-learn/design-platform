@@ -73,7 +73,7 @@ export type StandardUtilities = {
 	reloadPage(reloadParams?: any): void;
 
 	/** @description Scroll to Index by passing RouteId and scroll to position as Index in options prop***/
-	scrollToId(options: ScrollToIdOptions): void;
+	scrollToIndex(options: ScrollToIdOptions): void;
 
 	/** @description Returns complete main state of app. Pass custom path as string to access nested props.
 	 * Example-> routeMap.${action.routeId}.template.***your_custom_path_to_props***    **/
