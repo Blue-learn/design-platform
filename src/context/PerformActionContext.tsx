@@ -8,6 +8,8 @@ import {
 import { Context } from './GlobalContext';
 import { get } from 'lodash-es';
 import SharedPropsService from '../SharedPropsService';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const withPerformActionContext = (
 	WrappedComponent: any,
@@ -21,6 +23,22 @@ export const withPerformActionContext = (
 			} = useContext(Context);
 
 			const standardUtilities: StandardUtilities = {
+				network: {
+					get: async (url, payload) =>
+						await axios.get(url, payload),
+					post: async (url, payload) =>
+						await axios.post(url, payload),
+				},
+				asyncStorage: {
+					get: (key, callBack) =>
+						AsyncStorage.getItem(key, callBack),
+					set: (key, value, callBack) =>
+						AsyncStorage.setItem(key, value, callBack),
+					remove: (key, callBack) =>
+						AsyncStorage.removeItem(key, callBack),
+					clear: (callBack) =>
+						AsyncStorage.clear(callBack),
+				},
 				/** todo **/
 				reloadPage(reloadParams?: any) {},
 				getDatastore(path: string): Promise<any> {
