@@ -100,7 +100,6 @@ const MicroFrontend: React.FC<
 };
 
 const Stack = createNativeStackNavigator();
-
 const MicroFrontendWithNavigation: React.FC<
 	MicroFrontendProps
 > = (props) => {
