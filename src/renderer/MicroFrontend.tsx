@@ -108,9 +108,19 @@ const MicroFrontendWithNavigation: React.FC<
 			<Stack.Navigator>
 				{Object.keys(props.routeMap).map(
 					(routeId) => {
+						const renderMF = () =>
+							React.useMemo(
+								() => (
+									<MicroFrontend
+										{...props}
+										routeCurrent={routeId}
+									/>
+								),
+								[routeId],
+							);
 						return (
 							<Stack.Screen name={routeId}>
-								{(_) => <MicroFrontend {...props} />}
+								{renderMF}
 							</Stack.Screen>
 						);
 					},
