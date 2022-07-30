@@ -9,7 +9,7 @@ import {
 	StyleSheet,
 	View,
 } from 'react-native';
-import BottomSheet from '../Components/BottomSheet';
+import BottomSheet from '../components/BottomSheet';
 import SharedPropsService from '../SharedPropsService';
 import {
 	ActionMap,
