@@ -98,6 +98,7 @@ export type StandardUtilities = {
 	/** @description navigate to page  **/
 	/** @param routeId as string from RouteMap **/
 	navigate(routeId: string): void;
+	goBack(): void;
 	/** todo **/
 	showLoader(loaderParams?: any): void;
 	/** todo **/

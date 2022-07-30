@@ -6,6 +6,7 @@ import React, {
 } from 'react';
 import { arePropsEqual } from '../utility';
 import {
+	LAYOUTS,
 	MicroFrontendProps,
 	TemplateSchema,
 } from '../types';
@@ -78,7 +79,10 @@ const MicroFrontend: React.FC<
 
 	return (
 		<View
-			style={{ backgroundColor: 'white', flex: 1 }}
+			style={{
+				backgroundColor: 'transparent',
+				flex: 1,
+			}}
 		>
 			{!isLoading &&
 				template != null &&
@@ -105,7 +109,9 @@ const MicroFrontendWithNavigation: React.FC<
 > = (props) => {
 	return (
 		<NavigationContainer ref={navigationRef}>
-			<Stack.Navigator>
+			<Stack.Navigator
+				screenOptions={{ headerShown: false }}
+			>
 				{Object.keys(props.routeMap).map(
 					(routeId) => {
 						const renderMF = () =>
@@ -118,8 +124,14 @@ const MicroFrontendWithNavigation: React.FC<
 								),
 								[routeId],
 							);
+
 						return (
-							<Stack.Screen name={routeId}>
+							<Stack.Screen
+								name={routeId}
+								options={{
+									presentation: 'transparentModal',
+								}}
+							>
 								{renderMF}
 							</Stack.Screen>
 						);

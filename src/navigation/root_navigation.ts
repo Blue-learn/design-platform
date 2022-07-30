@@ -7,6 +7,10 @@ import {
 export const navigationRef =
 	createNavigationContainerRef();
 
+export function goBack() {
+	navigationRef.goBack();
+}
+
 /** @description Navigate to an existing Micro-frontend Page initially created by routeMap **/
 export function navigateToRoute(
 	name: string,

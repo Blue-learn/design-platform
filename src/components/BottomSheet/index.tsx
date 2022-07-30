@@ -9,8 +9,10 @@ import {
 	StyleProp,
 	ViewStyle,
 	PanResponderInstance,
-	Text,
+	NativeEventSubscription,
+	BackHandler,
 } from 'react-native';
+import { goBack } from '../../navigation/root_navigation';
 
 export interface BottomSheetProps {
 	height: number;
@@ -37,6 +39,7 @@ class BottomSheet extends Component<
 	BottomSheetProps,
 	BottomSheetState
 > {
+	private backHandler: NativeEventSubscription;
 	constructor(props: BottomSheetProps) {
 		super(props);
 		this.state = {
@@ -101,9 +104,23 @@ class BottomSheet extends Component<
 			},
 		});
 	}
+	onBackPress = () => {
+		console.warn('back pressed....');
+		return true;
+	};
 
 	componentDidMount() {
 		this.show();
+		BackHandler.addEventListener(
+			'hardwareBackPress',
+			this.onBackPress,
+		);
+	}
+	componentWillUnmount() {
+		BackHandler.removeEventListener(
+			'hardwareBackPress',
+			this.onBackPress,
+		);
 	}
 
 	show() {
@@ -112,6 +129,7 @@ class BottomSheet extends Component<
 
 	close() {
 		this.setModalVisible(false);
+		goBack();
 	}
 
 	render() {
@@ -123,7 +141,7 @@ class BottomSheet extends Component<
 			dragIconColor,
 			dragIconStyle,
 			draggable = true,
-			onRequestClose,
+			// onRequestClose,
 			onClose = () => this.close(),
 			radius,
 		} = this.props;
@@ -137,7 +155,7 @@ class BottomSheet extends Component<
 			<Modal
 				transparent
 				visible={modalVisible}
-				onRequestClose={onRequestClose}
+				onRequestClose={this.close.bind(this)}
 			>
 				<View
 					style={[

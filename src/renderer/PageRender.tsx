@@ -5,6 +5,7 @@ import {
 import _map from 'lodash-es/map';
 import React, { memo } from 'react';
 import {
+	BackHandler,
 	Dimensions,
 	StyleSheet,
 	View,
@@ -20,6 +21,7 @@ import {
 } from '../types';
 import { arePropsEqual } from '../utility';
 import ItemRenderer from './WidgetRenderer';
+import { useFocusEffect } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
 	absoluteTop: {
@@ -132,14 +134,33 @@ const PageRender: React.FC<PageRenderProps> = ({
 			</View>
 		</>
 	);
+	/*	useFocusEffect(
+		React.useCallback(() => {
+			const onBackPress = () => {
+				console.warn('back pressed....');
+				return true;
+			};
+
+			BackHandler.addEventListener(
+				'hardwareBackPress',
+				onBackPress,
+			);
+
+			return () =>
+				BackHandler.removeEventListener(
+					'hardwareBackPress',
+					onBackPress,
+				);
+		}, []),
+	);*/
 
 	if (template.layout.type === LAYOUTS.MODAL) {
 		return (
 			<BottomSheet
-				height={Dimensions.get('screen').height * 0.5}
+				height={Dimensions.get('screen').height * 0.6}
 				hasDraggableIcon={true}
 				sheetBackgroundColor={
-					properties?.style.backgroundColor
+					properties?.style?.backgroundColor
 				}
 			>
 				{_child}
