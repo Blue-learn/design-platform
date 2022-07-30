@@ -134,25 +134,6 @@ const PageRender: React.FC<PageRenderProps> = ({
 			</View>
 		</>
 	);
-	/*	useFocusEffect(
-		React.useCallback(() => {
-			const onBackPress = () => {
-				console.warn('back pressed....');
-				return true;
-			};
-
-			BackHandler.addEventListener(
-				'hardwareBackPress',
-				onBackPress,
-			);
-
-			return () =>
-				BackHandler.removeEventListener(
-					'hardwareBackPress',
-					onBackPress,
-				);
-		}, []),
-	);*/
 
 	if (template.layout.type === LAYOUTS.MODAL) {
 		return (

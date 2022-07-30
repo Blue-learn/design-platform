@@ -75,6 +75,7 @@ class BottomSheet extends Component<
 				if (typeof closeFunction === 'function')
 					closeFunction();
 			});
+			goBack();
 		}
 	}
 
@@ -104,23 +105,9 @@ class BottomSheet extends Component<
 			},
 		});
 	}
-	onBackPress = () => {
-		console.warn('back pressed....');
-		return true;
-	};
 
 	componentDidMount() {
 		this.show();
-		BackHandler.addEventListener(
-			'hardwareBackPress',
-			this.onBackPress,
-		);
-	}
-	componentWillUnmount() {
-		BackHandler.removeEventListener(
-			'hardwareBackPress',
-			this.onBackPress,
-		);
 	}
 
 	show() {
@@ -129,7 +116,6 @@ class BottomSheet extends Component<
 
 	close() {
 		this.setModalVisible(false);
-		goBack();
 	}
 
 	render() {
