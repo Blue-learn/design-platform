@@ -95,6 +95,8 @@ export type StandardUtilities = {
 				| undefined,
 		) => void;
 	};
+	/** @description navigate to page  **/
+	/** @param routeId as string from RouteMap **/
 	navigate(routeId: string): void;
 	/** todo **/
 	showLoader(loaderParams?: any): void;

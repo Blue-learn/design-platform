@@ -10,6 +10,7 @@ import { get } from 'lodash-es';
 import SharedPropsService from '../SharedPropsService';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { navigateToRoute } from '../navigation/root_navigation';
 
 export const withPerformActionContext = (
 	WrappedComponent: any,
@@ -105,7 +106,9 @@ export const withPerformActionContext = (
 				/** todo **/
 				hidePopup() {},
 				/** todo **/
-				navigate(routeId: string) {},
+				navigate(routeId: string) {
+					navigateToRoute(routeId, {});
+				},
 			};
 
 			const handleTriggerAction = (

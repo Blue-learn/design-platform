@@ -21,6 +21,10 @@ import {
 import SharedPropsService from '../SharedPropsService';
 import PageRender from './PageRender';
 
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { navigationRef } from '../navigation/root_navigation';
+
 const MicroFrontend: React.FC<
 	MicroFrontendProps
 > = ({
@@ -95,16 +99,39 @@ const MicroFrontend: React.FC<
 	);
 };
 
+const Stack = createNativeStackNavigator();
+
+const MicroFrontendWithNavigation: React.FC<
+	MicroFrontendProps
+> = (props) => {
+	return (
+		<NavigationContainer ref={navigationRef}>
+			<Stack.Navigator>
+				{Object.keys(props.routeMap).map(
+					(routeId) => {
+						return (
+							<Stack.Screen name={routeId}>
+								{(_) => {
+									return <MicroFrontend {...props} />;
+								}}
+							</Stack.Screen>
+						);
+					},
+				)}
+			</Stack.Navigator>
+		</NavigationContainer>
+	);
+};
+
 const MicroFrontendWithContext: React.FC<
 	MicroFrontendProps
 > = (props) => {
 	return (
 		<GlobalContextProvider>
-			<MicroFrontend {...props} />
+			<MicroFrontendWithNavigation {...props} />
 		</GlobalContextProvider>
 	);
 };
-
 export default memo(
 	MicroFrontendWithContext,
 	arePropsEqual(['routeCurrent']),
