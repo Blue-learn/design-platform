@@ -1,19 +1,25 @@
-import React, { memo, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
-import {
-	ActionMap,
-	POSITION,
-	TemplateSchema,
-	WidgetItem,
-} from '../types';
 import {
 	FlashList,
 	ListRenderItemInfo,
 } from '@shopify/flash-list';
-import ItemRenderer from './WidgetRenderer';
 import _map from 'lodash-es/map';
-import { arePropsEqual } from '../utility';
+import React, { memo } from 'react';
+import {
+	Dimensions,
+	StyleSheet,
+	View,
+} from 'react-native';
+import BottomSheet from '../Components/BottomSheet';
 import SharedPropsService from '../SharedPropsService';
+import {
+	ActionMap,
+	LAYOUTS,
+	POSITION,
+	TemplateSchema,
+	WidgetItem,
+} from '../types';
+import { arePropsEqual } from '../utility';
+import ItemRenderer from './WidgetRenderer';
 
 const styles = StyleSheet.create({
 	absoluteTop: {
@@ -35,13 +41,16 @@ const styles = StyleSheet.create({
 		right: 0,
 	},
 });
+
 type PageRenderProps = {
 	template: TemplateSchema;
 	actions: ActionMap;
+	properties?: { style: any };
 };
 
 const PageRender: React.FC<PageRenderProps> = ({
 	template,
+	properties,
 }) => {
 	const OnScrollRef = React.useRef(null);
 	const fixedTopWI: WidgetItem[] = [];
@@ -101,7 +110,7 @@ const PageRender: React.FC<PageRenderProps> = ({
 
 	_layoutMapping();
 
-	return (
+	const _child = (
 		<>
 			{_map(fixedTopWI, _renderItem)}
 			<FlashList
@@ -123,6 +132,22 @@ const PageRender: React.FC<PageRenderProps> = ({
 			</View>
 		</>
 	);
+
+	if (template.layout.type === LAYOUTS.MODAL) {
+		return (
+			<BottomSheet
+				height={Dimensions.get('screen').height * 0.5}
+				hasDraggableIcon={true}
+				sheetBackgroundColor={
+					properties?.style.backgroundColor
+				}
+			>
+				{_child}
+			</BottomSheet>
+		);
+	} else {
+		return _child;
+	}
 };
 
 export default memo(
