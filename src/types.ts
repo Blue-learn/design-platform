@@ -26,7 +26,7 @@ export type Datastore = {
 
 export type Layout = {
 	id: string;
-	type: string;
+	type: LAYOUTS;
 	widgets: WidgetItem[];
 };
 

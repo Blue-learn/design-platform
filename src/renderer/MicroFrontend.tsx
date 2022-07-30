@@ -5,7 +5,10 @@ import React, {
 	useState,
 } from 'react';
 import { arePropsEqual } from '../utility';
-import { MicroFrontendProps } from '../types';
+import {
+	MicroFrontendProps,
+	TemplateSchema,
+} from '../types';
 
 import {
 	Provider as GlobalContextProvider,
@@ -31,7 +34,7 @@ const MicroFrontend: React.FC<
 		setRouteMap,
 		setTemplateForRoute,
 	} = useContext(GlobalContextConsumer);
-	let template =
+	let template: TemplateSchema | null =
 		(state.routeMap != null &&
 			state.routeMap[routeCurrent].template) ||
 		null;
@@ -66,6 +69,9 @@ const MicroFrontend: React.FC<
 		_initGlobalProps();
 	}, [routeCurrent]);
 
+	const properties: any =
+		template?.datastore[routeCurrent];
+
 	return (
 		<View
 			style={{ backgroundColor: 'white', flex: 1 }}
@@ -76,6 +82,7 @@ const MicroFrontend: React.FC<
 					<PageRender
 						template={template}
 						actions={actions}
+						properties={properties}
 					/>
 				)}
 			{isLoading && (
