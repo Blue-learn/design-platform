@@ -111,9 +111,7 @@ const MicroFrontendWithNavigation: React.FC<
 					(routeId) => {
 						return (
 							<Stack.Screen name={routeId}>
-								{(_) => {
-									return <MicroFrontend {...props} />;
-								}}
+								{(_) => <MicroFrontend {...props} />}
 							</Stack.Screen>
 						);
 					},
