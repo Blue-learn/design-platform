@@ -21,7 +21,6 @@ import {
 } from '../types';
 import { arePropsEqual } from '../utility';
 import ItemRenderer from './WidgetRenderer';
-import { useFocusEffect } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
 	absoluteTop: {

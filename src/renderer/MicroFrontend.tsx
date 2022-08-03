@@ -108,7 +108,11 @@ const MicroFrontendWithNavigation: React.FC<
 	MicroFrontendProps
 > = (props) => {
 	return (
-		<NavigationContainer ref={navigationRef}>
+		<NavigationContainer
+			independent
+			ref={navigationRef}
+		>
+			{/* @ts-ignore */}
 			<Stack.Navigator
 				screenOptions={{ headerShown: false }}
 			>
