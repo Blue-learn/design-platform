@@ -5,7 +5,6 @@ import {
 import _map from 'lodash-es/map';
 import React, { memo } from 'react';
 import {
-	BackHandler,
 	Dimensions,
 	StyleSheet,
 	View,
