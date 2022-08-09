@@ -152,5 +152,5 @@ const PageRender: React.FC<PageRenderProps> = ({
 
 export default memo(
 	PageRender,
-	arePropsEqual(['template']),
+	arePropsEqual(['template', 'actions']),
 );
