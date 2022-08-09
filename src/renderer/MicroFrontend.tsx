@@ -25,6 +25,7 @@ import PageRender from './PageRender';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { navigationRef } from '../navigation/root_navigation';
+import { standardUtilitiesHook } from '../hook';
 
 const MicroFrontend: React.FC<
 	MicroFrontendProps
@@ -39,6 +40,9 @@ const MicroFrontend: React.FC<
 		setRouteMap,
 		setTemplateForRoute,
 	} = useContext(GlobalContextConsumer);
+
+	const standardUtilities =
+		standardUtilitiesHook();
 	let template: TemplateSchema | null =
 		(state.routeMap != null &&
 			state.routeMap[routeCurrent].template) ||
@@ -62,9 +66,9 @@ const MicroFrontend: React.FC<
 		if (routeMap[routeCurrent].template == null) {
 			setTemplateForRoute({
 				routeId: routeCurrent,
-				template: await routeMap[
-					routeCurrent
-				].onLoad(),
+				template: await routeMap[routeCurrent].onLoad(
+					standardUtilities,
+				),
 			});
 		}
 		toggleLoad(false);

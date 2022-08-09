@@ -143,7 +143,7 @@ export type ActionMap = {
 
 export type PageType<T> = {
 	onLoad: (
-		initialParameters?: any,
+		standardUtilities: StandardUtilities,
 	) => Promise<TemplateSchema>;
 	template?: TemplateSchema;
 	actions?: ActionMap;
