@@ -12,7 +12,7 @@ export function goBack() {
 }
 
 /** @description Navigate to an existing Micro-frontend Page initially created by routeMap **/
-export function navigateToRoute(
+export function goToRoute(
 	name: string,
 	params: any,
 ) {

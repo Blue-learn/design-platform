@@ -9,7 +9,7 @@ import { get } from 'lodash-es';
 import SharedPropsService from '../SharedPropsService';
 import {
 	goBack,
-	navigateToRoute,
+	goToRoute,
 } from '../navigation/root_navigation';
 
 const standardUtilitiesRaw = (
@@ -62,12 +62,6 @@ const standardUtilitiesRaw = (
 		payload?: any,
 	): Promise<any> {
 		return new Promise(async (resolve) => {
-			if (typeof widgetId === 'undefined') {
-				console.warn('path parameter missing');
-				resolve(state.datastore);
-				return;
-			}
-
 			const previousValue = get(
 				state.datastore,
 				widgetId,
@@ -101,7 +95,7 @@ const standardUtilitiesRaw = (
 	hidePopup() {},
 	/** todo **/
 	navigate(routeId: string) {
-		navigateToRoute(routeId, {});
+		goToRoute(routeId, {});
 	},
 	goBack,
 });
