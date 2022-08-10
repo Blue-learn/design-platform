@@ -15,11 +15,13 @@ import {
 	ActionMap,
 	LAYOUTS,
 	POSITION,
+	StandardUtilities,
 	TemplateSchema,
 	WidgetItem,
 } from '../types';
 import { arePropsEqual } from '../utility';
 import ItemRenderer from './WidgetRenderer';
+import { standardUtilitiesHook } from '../hook';
 
 const styles = StyleSheet.create({
 	absoluteTop: {
@@ -46,7 +48,9 @@ type PageRenderProps = {
 	template: TemplateSchema;
 	actions: ActionMap;
 	properties?: { style: any };
-	onEndReached?: () => void;
+	onEndReached?: (
+		standardUtilities: StandardUtilities,
+	) => void;
 };
 
 const PageRender: React.FC<PageRenderProps> = ({
@@ -61,6 +65,12 @@ const PageRender: React.FC<PageRenderProps> = ({
 	const absoluteTopWI: WidgetItem[] = [];
 	const absoluteBottomWI: WidgetItem[] = [];
 	const fabWI: WidgetItem[] = [];
+
+	const standardUtilities =
+		standardUtilitiesHook();
+	const onEndReachedX = () =>
+		onEndReached && onEndReached(standardUtilities);
+
 	const setRef = async (ref: any) => {
 		OnScrollRef.current = ref;
 		await SharedPropsService.setWidgetRefMap(
@@ -121,7 +131,7 @@ const PageRender: React.FC<PageRenderProps> = ({
 				data={bodyWI}
 				extraData={bodyWI}
 				estimatedItemSize={10}
-				onEndReached={onEndReached}
+				onEndReached={onEndReachedX}
 				onEndReachedThreshold={0.5}
 			/>
 			{_map(fixedBottomWI, _renderItem)}
