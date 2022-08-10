@@ -74,11 +74,18 @@ const PageRender: React.FC<PageRenderProps> = ({
 	const absoluteTopWI: WidgetItem[] = [];
 	const absoluteBottomWI: WidgetItem[] = [];
 	const fabWI: WidgetItem[] = [];
+
+	let callOnScrollEnd = false;
 	const standardUtilities =
 		standardUtilitiesHook();
-
+	const EnableOnEndReach = () =>
+		(callOnScrollEnd = true);
 	const onEndReachedX = () => {
 		onEndReached && onEndReached(standardUtilities);
+	};
+	const onScroll = () => {
+		callOnScrollEnd && onEndReachedX();
+		callOnScrollEnd = false;
 	};
 
 	const setRef = async (ref: any) => {
@@ -142,8 +149,9 @@ const PageRender: React.FC<PageRenderProps> = ({
 				data={bodyWI}
 				extraData={bodyWI}
 				estimatedItemSize={10}
-				onEndReached={onEndReachedX}
 				showsHorizontalScrollIndicator={false}
+				onEndReached={EnableOnEndReach}
+				onMomentumScrollEnd={onScroll}
 			/>
 			{_map(fixedBottomWI, _renderItem)}
 			<View style={styles.absoluteTop}>
