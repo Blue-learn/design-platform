@@ -6,7 +6,6 @@ import React, {
 } from 'react';
 import { arePropsEqual } from '../utility';
 import {
-	LAYOUTS,
 	MicroFrontendProps,
 	TemplateSchema,
 } from '../types';
@@ -95,6 +94,9 @@ const MicroFrontend: React.FC<
 						template={template}
 						actions={actions}
 						properties={properties}
+						onEndReached={
+							routeMap[routeCurrent].onEndReached
+						}
 					/>
 				)}
 			{isLoading && (

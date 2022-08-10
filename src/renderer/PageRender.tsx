@@ -46,11 +46,13 @@ type PageRenderProps = {
 	template: TemplateSchema;
 	actions: ActionMap;
 	properties?: { style: any };
+	onEndReached?: () => void;
 };
 
 const PageRender: React.FC<PageRenderProps> = ({
 	template,
 	properties,
+	onEndReached,
 }) => {
 	const OnScrollRef = React.useRef(null);
 	const fixedTopWI: WidgetItem[] = [];
@@ -119,6 +121,8 @@ const PageRender: React.FC<PageRenderProps> = ({
 				data={bodyWI}
 				extraData={bodyWI}
 				estimatedItemSize={10}
+				onEndReached={onEndReached}
+				onEndReachedThreshold={0.5}
 			/>
 			{_map(fixedBottomWI, _renderItem)}
 			<View style={styles.absoluteTop}>

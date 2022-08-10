@@ -145,6 +145,7 @@ export type PageType<T> = {
 	onLoad: (
 		standardUtilities: StandardUtilities,
 	) => Promise<TemplateSchema>;
+	onEndReached?: () => void;
 	template?: TemplateSchema;
 	actions?: ActionMap;
 };
