@@ -3,9 +3,18 @@ import {
 	ListRenderItemInfo,
 } from '@shopify/flash-list';
 import _map from 'lodash-es/map';
-import React, { memo } from 'react';
+import React, {
+	memo,
+	useCallback,
+	useEffect,
+	useState,
+} from 'react';
 import {
 	Dimensions,
+	InteractionManager,
+	NativeEventEmitter,
+	NativeScrollEvent,
+	NativeSyntheticEvent,
 	StyleSheet,
 	View,
 } from 'react-native';
@@ -65,11 +74,12 @@ const PageRender: React.FC<PageRenderProps> = ({
 	const absoluteTopWI: WidgetItem[] = [];
 	const absoluteBottomWI: WidgetItem[] = [];
 	const fabWI: WidgetItem[] = [];
-
 	const standardUtilities =
 		standardUtilitiesHook();
-	const onEndReachedX = () =>
+
+	const onEndReachedX = () => {
 		onEndReached && onEndReached(standardUtilities);
+	};
 
 	const setRef = async (ref: any) => {
 		OnScrollRef.current = ref;
@@ -78,6 +88,7 @@ const PageRender: React.FC<PageRenderProps> = ({
 			OnScrollRef.current,
 		);
 	};
+
 	const _layoutMapping = () => {
 		template.layout.widgets.map((widgetItem) => {
 			switch (widgetItem.position) {
@@ -132,7 +143,7 @@ const PageRender: React.FC<PageRenderProps> = ({
 				extraData={bodyWI}
 				estimatedItemSize={10}
 				onEndReached={onEndReachedX}
-				onEndReachedThreshold={0.5}
+				showsHorizontalScrollIndicator={false}
 			/>
 			{_map(fixedBottomWI, _renderItem)}
 			<View style={styles.absoluteTop}>
