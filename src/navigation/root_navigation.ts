@@ -23,7 +23,8 @@ export function goToRoute(
 }
 
 /** @description create a new Micro-frontend page with new props.
- *  @param pushRoute use to create dynamic new route with new props   **/
+ *  @function pushRoute use to create dynamic new route with new props
+ *  @param args accepts  as routeId, props **/
 export function pushRoute(...args: any[]) {
 	if (navigationRef.isReady()) {
 		navigationRef.dispatch(
