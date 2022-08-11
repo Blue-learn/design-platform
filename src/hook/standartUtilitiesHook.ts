@@ -1,7 +1,6 @@
 import { useContext } from 'react';
-import { Context } from '../context/GlobalContext';
-
-import { useState, useMemo } from 'react';
+import { Context } from '../context';
+import { useMemo } from 'react';
 import { StandardUtilities } from '../types';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
