@@ -3,18 +3,9 @@ import {
 	ListRenderItemInfo,
 } from '@shopify/flash-list';
 import _map from 'lodash-es/map';
-import React, {
-	memo,
-	useCallback,
-	useEffect,
-	useState,
-} from 'react';
+import React, { memo } from 'react';
 import {
 	Dimensions,
-	InteractionManager,
-	NativeEventEmitter,
-	NativeScrollEvent,
-	NativeSyntheticEvent,
 	StyleSheet,
 	View,
 } from 'react-native';
