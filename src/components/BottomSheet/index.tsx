@@ -10,7 +10,6 @@ import {
 	ViewStyle,
 	PanResponderInstance,
 	NativeEventSubscription,
-	BackHandler,
 } from 'react-native';
 import { goBack } from '../../navigation/root_navigation';
 
@@ -127,7 +126,6 @@ class BottomSheet extends Component<
 			dragIconColor,
 			dragIconStyle,
 			draggable = true,
-			// onRequestClose,
 			onClose = () => this.close(),
 			radius,
 		} = this.props;
