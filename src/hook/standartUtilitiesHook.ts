@@ -15,12 +15,7 @@ const standardUtilitiesRaw = (
 	state: any,
 	setDataStoreInPath: (payload: any) => any,
 ): StandardUtilities => ({
-	network: {
-		get: async (url, payload) =>
-			await axios.get(url, payload),
-		post: async (url, payload) =>
-			await axios.post(url, payload),
-	},
+	network: axios,
 	asyncStorage: {
 		get: (key, callBack) =>
 			AsyncStorage.getItem(key, callBack),

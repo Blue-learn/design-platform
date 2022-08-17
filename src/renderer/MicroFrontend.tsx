@@ -138,6 +138,7 @@ const MicroFrontendWithNavigation: React.FC<
 						return (
 							<Stack.Screen
 								name={routeId}
+								key={routeId}
 								options={{
 									presentation: 'transparentModal',
 								}}

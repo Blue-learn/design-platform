@@ -79,7 +79,7 @@ class Renderer extends React.PureComponent<
 			<WidgetToRender
 				key={item.id}
 				{...props}
-				ref={this.widgetRef}
+				// ref={this.widgetRef}
 			/>
 		);
 	}

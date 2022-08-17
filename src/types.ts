@@ -1,5 +1,8 @@
 import { CallbackWithResult } from '@react-native-async-storage/async-storage/lib/typescript/types';
-import { AxiosResponse } from 'axios';
+import {
+	AxiosResponse,
+	AxiosStatic,
+} from 'axios';
 import React, { Component } from 'react';
 import { View } from 'react-native';
 
@@ -59,23 +62,14 @@ export enum GlobalActionTokens {
 }
 
 export type StandardUtilities = {
-	network: {
-		get: (
-			url: string,
-			payload?: { params: any },
-		) => Promise<AxiosResponse<any, any>>;
-		post: (
-			url: string,
-			payload: any,
-		) => Promise<AxiosResponse<any, any>>;
-	};
+	network: AxiosStatic;
 	asyncStorage: {
 		get: (
 			key: string,
 			callBack?: () =>
 				| CallbackWithResult<string>
 				| undefined,
-		) => void;
+		) => Promise<string | null>;
 		set: (
 			key: string,
 			value: any,
