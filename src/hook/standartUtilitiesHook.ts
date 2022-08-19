@@ -14,6 +14,7 @@ import {
 const standardUtilitiesRaw = (
 	state: any,
 	setDataStoreInPath: (payload: any) => any,
+	setLayout: (payload: any) => any,
 ): StandardUtilities => ({
 	network: axios,
 	asyncStorage: {
@@ -75,6 +76,12 @@ const standardUtilitiesRaw = (
 			resolve(state.datastore);
 		});
 	},
+	setLayout(routeId, template) {
+		setLayout({
+			routeId,
+			template,
+		});
+	},
 	/** todo **/
 	reloadPage(reloadParams?: any) {},
 	/** todo **/
@@ -96,7 +103,7 @@ const standardUtilitiesRaw = (
 
 export const standardUtilitiesHook =
 	(): StandardUtilities => {
-		const { setDataStoreInPath, state } =
+		const { setDataStoreInPath, state, setLayout } =
 			useContext(Context);
 
 		return useMemo(
@@ -104,6 +111,7 @@ export const standardUtilitiesHook =
 				standardUtilitiesRaw(
 					state,
 					setDataStoreInPath,
+					setLayout,
 				),
 			[],
 		);
