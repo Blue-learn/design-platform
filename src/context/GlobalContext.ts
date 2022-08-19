@@ -35,16 +35,27 @@ type SetDatastoreInPath = {
 	widgetId: string;
 	payload: PayloadSetDatastoreInPath;
 };
+
 type SetActions = {
 	type: GlobalActionTokens.SET_ACTIONS;
 	payload: { actions: ActionMap; routeId: string };
 };
+
 type SetRouteMap = {
 	type: GlobalActionTokens.SET_ROUTE_MAP;
 	payload: RouteMap;
 };
+
 type SetTemplateForRoute = {
 	type: GlobalActionTokens.SET_TEMPLATE_ROUTE;
+	payload: {
+		routeId: string;
+		template: TemplateSchema;
+	};
+};
+
+type SetLayout = {
+	type: GlobalActionTokens.SET_LAYOUT;
 	payload: {
 		routeId: string;
 		template: TemplateSchema;
@@ -57,7 +68,8 @@ type GlobalAction =
 	| SetDatastoreInPath
 	| SetActions
 	| SetRouteMap
-	| SetTemplateForRoute;
+	| SetTemplateForRoute
+	| SetLayout;
 
 export type GlobalState = {
 	routeMap: RouteMap | null;
@@ -142,6 +154,7 @@ const setDataStoreInPath = (dispatch: any) => {
 		});
 	};
 };
+
 const setActions = (dispatch: any) => {
 	return (payload: SetActions) => {
 		dispatch({
@@ -150,6 +163,7 @@ const setActions = (dispatch: any) => {
 		});
 	};
 };
+
 const setRouteMap = (dispatch: any) => {
 	return (payload: SetRouteMap) => {
 		dispatch({
@@ -158,11 +172,21 @@ const setRouteMap = (dispatch: any) => {
 		});
 	};
 };
+
 const setTemplateForRoute = (dispatch: any) => {
 	return (payload: SetTemplateForRoute) => {
 		dispatch({
 			payload,
 			type: GlobalActionTokens.SET_TEMPLATE_ROUTE,
+		});
+	};
+};
+
+const setLayout = (dispatch: any) => {
+	return (payload: SetLayout) => {
+		dispatch({
+			payload,
+			type: GlobalActionTokens.SET_LAYOUT,
 		});
 	};
 };
@@ -178,6 +202,7 @@ const GlobalReducer = (
 				routeMap: { ...action.payload },
 			};
 		}
+
 		case GlobalActionTokens.SET_TEMPLATE_ROUTE: {
 			return {
 				...state,
@@ -191,6 +216,7 @@ const GlobalReducer = (
 				},
 			};
 		}
+
 		case GlobalActionTokens.SET_DATASTORE: {
 			const _template: TemplateSchema =
 				(state.routeMap &&
@@ -212,6 +238,7 @@ const GlobalReducer = (
 				},
 			};
 		}
+
 		case GlobalActionTokens.SET_DATASTORE_IN_PATH: {
 			const _template: TemplateSchema =
 				(state.routeMap &&
@@ -234,6 +261,7 @@ const GlobalReducer = (
 				},
 			};
 		}
+
 		case GlobalActionTokens.SET_ACTIONS: {
 			const oldAction =
 				(state.routeMap &&
@@ -257,6 +285,23 @@ const GlobalReducer = (
 				},
 			};
 		}
+
+		case GlobalActionTokens.SET_LAYOUT: {
+			if (!state.routeMap) return;
+
+			return {
+				...state,
+				routeMap: {
+					...state.routeMap,
+					[action.payload.routeId]: {
+						...(state.routeMap &&
+							state.routeMap[action.payload.routeId]),
+						template: action.payload.template,
+					},
+				},
+			};
+		}
+
 		default:
 			return state;
 	}
@@ -277,6 +322,7 @@ export const {
 		setActions,
 		setRouteMap,
 		setTemplateForRoute,
+		setLayout,
 	},
 	initialState,
 );

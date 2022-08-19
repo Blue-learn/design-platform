@@ -1,5 +1,8 @@
 import { CallbackWithResult } from '@react-native-async-storage/async-storage/lib/typescript/types';
-import { AxiosResponse } from 'axios';
+import {
+	AxiosResponse,
+	AxiosStatic,
+} from 'axios';
 import React, { Component } from 'react';
 import { View } from 'react-native';
 
@@ -56,26 +59,18 @@ export enum GlobalActionTokens {
 	SET_ACTIONS = 'SET_ACTIONS',
 	SET_ROUTE_MAP = 'SET_ROUTE_MAP',
 	SET_TEMPLATE_ROUTE = 'SET_TEMPLATE_ROUTE',
+	SET_LAYOUT = 'SET_LAYOUT',
 }
 
 export type StandardUtilities = {
-	network: {
-		get: (
-			url: string,
-			payload?: { params: any },
-		) => Promise<AxiosResponse<any, any>>;
-		post: (
-			url: string,
-			payload: any,
-		) => Promise<AxiosResponse<any, any>>;
-	};
+	network: AxiosStatic;
 	asyncStorage: {
 		get: (
 			key: string,
 			callBack?: () =>
 				| CallbackWithResult<string>
 				| undefined,
-		) => void;
+		) => Promise<string | null>;
 		set: (
 			key: string,
 			value: any,
@@ -129,6 +124,7 @@ export type StandardUtilities = {
 		/** @description New value will be merged with exist value **/
 		props?: any,
 	): Promise<any>;
+	setLayout(routeId: string, layout: Layout): void;
 };
 
 export type ActionFunction = (
