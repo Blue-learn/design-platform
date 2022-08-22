@@ -27,6 +27,11 @@ export const arePropsEqual = (
 			filterProps(nextProps, allowedProps),
 			filterProps(prevProps, allowedProps),
 		);
+		console.log(
+			'Equal Check --------------> ',
+			isEqual,
+		);
+
 		return isEqual;
 	};
 };

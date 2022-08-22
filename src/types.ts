@@ -129,7 +129,7 @@ export type StandardUtilities = {
 };
 
 export type ActionFunction = (
-	action: Action,
+	action: Action<any>,
 	datastore: Datastore,
 	utilities: StandardUtilities,
 ) => Promise<any> | any;
@@ -182,16 +182,14 @@ export enum POSITION {
  * @param data data that is required to be passed for the tap action
  * @param routeId [Optional] performs action on specific routeId
  */
-export type Action<DataType = any> = {
+export type Action<DataType> = {
 	type: string;
 	routeId?: string;
-	payload: DataType extends object
-		? { [k in keyof DataType]: DataType[k] }
-		: any;
+	payload: DataType;
 };
 
 export type TriggerAction = (
-	action: Action,
+	action: Action<any>,
 ) => Promise<
 	any | { isError: boolean; err: Error }
 >;

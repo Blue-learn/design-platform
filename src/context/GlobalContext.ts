@@ -289,6 +289,22 @@ const GlobalReducer = (
 		case GlobalActionTokens.SET_LAYOUT: {
 			if (!state.routeMap) return;
 
+			// console.log({name: "Old length", length: } );
+			console.log(
+				{
+					name: 'Old length',
+					length:
+						state.routeMap[action.payload.routeId]
+							.template?.layout.widgets.length,
+				},
+				{
+					name: 'New length',
+					length:
+						action.payload.template.layout.widgets
+							.length,
+				},
+			);
+
 			return {
 				...state,
 				routeMap: {

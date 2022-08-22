@@ -1,17 +1,20 @@
-// import {
-// 	FlashList,
-// 	ListRenderItemInfo,
-// } from '@shopify/flash-list';
 import _map from 'lodash-es/map';
-import React, { memo } from 'react';
+import React, {
+	memo,
+	useCallback,
+	useContext,
+	useRef,
+} from 'react';
 import {
 	Dimensions,
-	StyleSheet,
-	View,
 	FlatList,
 	ListRenderItemInfo,
+	StyleSheet,
+	View,
 } from 'react-native';
 import BottomSheet from '../components/BottomSheet';
+import { Context } from '../context';
+import { standardUtilitiesHook } from '../hook';
 import SharedPropsService from '../SharedPropsService';
 import {
 	ActionMap,
@@ -23,7 +26,6 @@ import {
 } from '../types';
 import { arePropsEqual } from '../utility';
 import ItemRenderer from './WidgetRenderer';
-import { standardUtilitiesHook } from '../hook';
 
 const styles = StyleSheet.create({
 	absoluteTop: {
@@ -67,20 +69,21 @@ const PageRender: React.FC<PageRenderProps> = ({
 	const absoluteTopWI: WidgetItem[] = [];
 	const absoluteBottomWI: WidgetItem[] = [];
 	const fabWI: WidgetItem[] = [];
+	const callOnScrollEnd = useRef(false);
 
-	let callOnScrollEnd = false;
 	const standardUtilities =
 		standardUtilitiesHook();
-	const EnableOnEndReach = () =>
-		(callOnScrollEnd = true);
-	const onEndReachedX = () => {
-		onEndReached && onEndReached(standardUtilities);
 
-	};
-	const onScroll = () => {
-		callOnScrollEnd && onEndReachedX();
-		callOnScrollEnd = false;
-	};
+	const EnableOnEndReach = () =>
+		(callOnScrollEnd.current = true);
+
+	const onScroll = useCallback(() => {
+		if (callOnScrollEnd.current) {
+			if (!onEndReached) return;
+			onEndReached(standardUtilities);
+			callOnScrollEnd.current = false;
+		}
+	}, []);
 
 	const setRef = async (ref: any) => {
 		OnScrollRef.current = ref;
@@ -135,13 +138,14 @@ const PageRender: React.FC<PageRenderProps> = ({
 	_layoutMapping();
 
 	const _child = (
-		<View style={{ flex: 1 }}>
+		<>
 			{_map(fixedTopWI, _renderItem)}
 			<FlatList
 				ref={setRef}
 				renderItem={_renderItem}
 				data={bodyWI}
 				extraData={bodyWI}
+				// estimatedItemSize={10}
 				showsHorizontalScrollIndicator={false}
 				onEndReached={EnableOnEndReach}
 				onMomentumScrollEnd={onScroll}
@@ -156,7 +160,7 @@ const PageRender: React.FC<PageRenderProps> = ({
 			<View style={styles.absoluteBottom}>
 				{_map(absoluteBottomWI, _renderItem)}
 			</View>
-		</View>
+		</>
 	);
 
 	if (template.layout.type === LAYOUTS.MODAL) {
