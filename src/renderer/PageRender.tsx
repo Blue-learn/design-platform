@@ -1,13 +1,15 @@
-import {
-	FlashList,
-	ListRenderItemInfo,
-} from '@shopify/flash-list';
+// import {
+// 	FlashList,
+// 	ListRenderItemInfo,
+// } from '@shopify/flash-list';
 import _map from 'lodash-es/map';
 import React, { memo } from 'react';
 import {
 	Dimensions,
 	StyleSheet,
 	View,
+	FlatList,
+	ListRenderItemInfo,
 } from 'react-native';
 import BottomSheet from '../components/BottomSheet';
 import SharedPropsService from '../SharedPropsService';
@@ -73,6 +75,7 @@ const PageRender: React.FC<PageRenderProps> = ({
 		(callOnScrollEnd = true);
 	const onEndReachedX = () => {
 		onEndReached && onEndReached(standardUtilities);
+
 	};
 	const onScroll = () => {
 		callOnScrollEnd && onEndReachedX();
@@ -132,14 +135,13 @@ const PageRender: React.FC<PageRenderProps> = ({
 	_layoutMapping();
 
 	const _child = (
-		<>
+		<View style={{ flex: 1 }}>
 			{_map(fixedTopWI, _renderItem)}
-			<FlashList
+			<FlatList
 				ref={setRef}
 				renderItem={_renderItem}
 				data={bodyWI}
 				extraData={bodyWI}
-				estimatedItemSize={10}
 				showsHorizontalScrollIndicator={false}
 				onEndReached={EnableOnEndReach}
 				onMomentumScrollEnd={onScroll}
@@ -154,7 +156,7 @@ const PageRender: React.FC<PageRenderProps> = ({
 			<View style={styles.absoluteBottom}>
 				{_map(absoluteBottomWI, _renderItem)}
 			</View>
-		</>
+		</View>
 	);
 
 	if (template.layout.type === LAYOUTS.MODAL) {

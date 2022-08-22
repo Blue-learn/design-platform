@@ -41,6 +41,7 @@ export type TemplateSchema = {
 export type WidgetRegistry = {
 	[key: string]: {
 		Component?: JSX.Element;
+		Mock?: { args?: any; argsType?: any };
 	};
 };
 

@@ -164,5 +164,5 @@ const MicroFrontendWithContext: React.FC<
 };
 export default memo(
 	MicroFrontendWithContext,
-	arePropsEqual(['routeCurrent']),
+	arePropsEqual(['routeCurrent', 'routeMap']),
 );

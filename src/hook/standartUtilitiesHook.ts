@@ -113,6 +113,6 @@ export const standardUtilitiesHook =
 					setDataStoreInPath,
 					setLayout,
 				),
-			[],
+			[state],
 		);
 	};
