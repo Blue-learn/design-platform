@@ -19,9 +19,9 @@ export const triggerActionHook =
 		const standardUtilities =
 			standardUtilitiesHook();
 
-		return <(action: Action) => Promise<any>>(
+		return <(action: Action<any>) => Promise<any>>(
 			useMemo(
-				() => (action: Action) => {
+				() => (action: Action<any>) => {
 					switch (action.type) {
 						/**
 						 * Global Action Handle - Update Datastore for routeId -> widgetId
