@@ -26,6 +26,7 @@ import {
 } from '../types';
 import { arePropsEqual } from '../utility';
 import ItemRenderer from './WidgetRenderer';
+import ShimmerRenderer from './ShimmerRenderer';
 
 const styles = StyleSheet.create({
 	absoluteTop: {
@@ -49,6 +50,7 @@ const styles = StyleSheet.create({
 });
 
 type PageRenderProps = {
+	loading: WidgetItem[];
 	template: TemplateSchema;
 	actions: ActionMap;
 	properties?: { style: any };
@@ -58,6 +60,7 @@ type PageRenderProps = {
 };
 
 const PageRender: React.FC<PageRenderProps> = ({
+	loading = [],
 	template,
 	properties,
 	onEndReached,
@@ -137,6 +140,21 @@ const PageRender: React.FC<PageRenderProps> = ({
 
 	_layoutMapping();
 
+	const _renderLoading = () => (
+		<>
+			{loading.map((widgetItem) => (
+				<View
+					style={{
+						marginTop: 16,
+						marginHorizontal: 16,
+					}}
+				>
+					<ShimmerRenderer {...widgetItem} />
+				</View>
+			))}
+		</>
+	);
+
 	const _child = (
 		<>
 			{_map(fixedTopWI, _renderItem)}
@@ -145,11 +163,11 @@ const PageRender: React.FC<PageRenderProps> = ({
 				renderItem={_renderItem}
 				data={bodyWI}
 				extraData={bodyWI}
-				// estimatedItemSize={10}
 				onEndReachedThreshold={0.5}
 				showsHorizontalScrollIndicator={false}
 				onEndReached={EnableOnEndReach}
 				onMomentumScrollEnd={onScroll}
+				ListFooterComponent={_renderLoading}
 			/>
 			{_map(fixedBottomWI, _renderItem)}
 			<View style={styles.absoluteTop}>

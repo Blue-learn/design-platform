@@ -111,6 +111,9 @@ const MicroFrontend: React.FC<
 				template != null &&
 				actions != null && (
 					<PageRender
+						loading={
+							routeMap[routeCurrent].loading || []
+						}
 						template={template}
 						actions={actions}
 						properties={properties}
