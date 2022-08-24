@@ -42,6 +42,7 @@ const MicroFrontend: React.FC<
 
 	const standardUtilities =
 		standardUtilitiesHook();
+
 	let template: TemplateSchema | null =
 		(state.routeMap != null &&
 			state.routeMap[routeCurrent].template) ||
