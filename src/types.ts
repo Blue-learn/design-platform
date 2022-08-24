@@ -1,11 +1,7 @@
 import { CallbackWithResult } from '@react-native-async-storage/async-storage/lib/typescript/types';
-import {
-	AxiosResponse,
-	AxiosStatic,
-} from 'axios';
+import { AxiosStatic } from 'axios';
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { template } from 'lodash-es';
 
 export type RouteMap = {
 	[routeId: string]: PageType<any>;
