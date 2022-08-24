@@ -9,6 +9,8 @@ import {
 	Dimensions,
 	FlatList,
 	ListRenderItemInfo,
+	RefreshControl,
+	RefreshControlProps,
 	StyleSheet,
 	View,
 } from 'react-native';
@@ -57,6 +59,7 @@ type PageRenderProps = {
 	onEndReached?: (
 		standardUtilities: StandardUtilities,
 	) => void;
+	onRefresh?: () => void;
 };
 
 const PageRender: React.FC<PageRenderProps> = ({
@@ -64,7 +67,10 @@ const PageRender: React.FC<PageRenderProps> = ({
 	template,
 	properties,
 	onEndReached,
+	onRefresh = () => {},
 }) => {
+	const [isFetching, setIsFetching] =
+		React.useState(false);
 	const OnScrollRef = React.useRef(null);
 	const fixedTopWI: WidgetItem[] = [];
 	const bodyWI: WidgetItem[] = [];
@@ -168,6 +174,12 @@ const PageRender: React.FC<PageRenderProps> = ({
 				onEndReached={EnableOnEndReach}
 				onMomentumScrollEnd={onScroll}
 				ListFooterComponent={_renderLoading}
+				refreshControl={
+					<RefreshControl
+						refreshing={isFetching}
+						onRefresh={onRefresh}
+					/>
+				}
 			/>
 			{_map(fixedBottomWI, _renderItem)}
 			<View style={styles.absoluteTop}>

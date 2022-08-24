@@ -53,7 +53,17 @@ const MicroFrontend: React.FC<
 		(state.routeMap != null &&
 			state.routeMap[routeCurrent].actions) ||
 		null;
-
+	const buildTemplate = async () => {
+		if (routeMap[routeCurrent].template == null) {
+			setTemplateForRoute({
+				routeId: routeCurrent,
+				template: await routeMap[routeCurrent].onLoad(
+					standardUtilities,
+					extraProps,
+				),
+			});
+		}
+	};
 	const _initGlobalProps = async () => {
 		toggleLoad(true);
 		await SharedPropsService.setGlobalProps({
@@ -65,15 +75,7 @@ const MicroFrontend: React.FC<
 			await setRouteMap(routeMap);
 		}
 
-		if (routeMap[routeCurrent].template == null) {
-			setTemplateForRoute({
-				routeId: routeCurrent,
-				template: await routeMap[routeCurrent].onLoad(
-					standardUtilities,
-					extraProps,
-				),
-			});
-		}
+		await buildTemplate();
 		toggleLoad(false);
 	};
 
@@ -122,6 +124,7 @@ const MicroFrontend: React.FC<
 						onEndReached={
 							routeMap[routeCurrent].onEndReached
 						}
+						onRefresh={_initGlobalProps}
 					/>
 				)}
 			{isLoading && (
