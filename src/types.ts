@@ -5,6 +5,7 @@ import {
 } from 'axios';
 import React, { Component } from 'react';
 import { View } from 'react-native';
+import { template } from 'lodash-es';
 
 export type RouteMap = {
 	[routeId: string]: PageType<any>;
@@ -143,6 +144,7 @@ export type ActionMap = {
 };
 
 export type PageType<T> = {
+	loading?: WidgetItem[];
 	onLoad: (
 		standardUtilities: StandardUtilities,
 	) => Promise<TemplateSchema>;

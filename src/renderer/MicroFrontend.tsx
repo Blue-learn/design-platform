@@ -25,6 +25,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { navigationRef } from '../navigation/root_navigation';
 import { standardUtilitiesHook } from '../hook';
+import ShimmerRenderer from './ShimmerRenderer';
 
 const MicroFrontend: React.FC<
 	MicroFrontendProps
@@ -81,6 +82,24 @@ const MicroFrontend: React.FC<
 	const properties: any =
 		template?.datastore[routeCurrent];
 
+	if (isLoading) {
+		return (
+			<>
+				{routeMap[routeCurrent].loading?.map(
+					(widgetItem) => (
+						<View
+							style={{
+								marginTop: 16,
+								marginHorizontal: 16,
+							}}
+						>
+							<ShimmerRenderer {...widgetItem} />
+						</View>
+					),
+				)}
+			</>
+		);
+	}
 	return (
 		<View
 			style={{
