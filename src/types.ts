@@ -60,7 +60,7 @@ export enum GlobalActionTokens {
 	SET_ACTIONS = 'SET_ACTIONS',
 	SET_ROUTE_MAP = 'SET_ROUTE_MAP',
 	SET_TEMPLATE_ROUTE = 'SET_TEMPLATE_ROUTE',
-	SET_LAYOUT = 'SET_LAYOUT',
+	APPEND_WIDGETS = 'APPEND_WIDGETS',
 }
 
 export type StandardUtilities = {
@@ -125,7 +125,11 @@ export type StandardUtilities = {
 		/** @description New value will be merged with exist value **/
 		props?: any,
 	): Promise<any>;
-	setLayout(routeId: string, layout: Layout): void;
+	appendWidgets(
+		routeId: string,
+		datastore: Datastore,
+		widgets: WidgetItem[],
+	): void;
 };
 
 export type ActionFunction = (

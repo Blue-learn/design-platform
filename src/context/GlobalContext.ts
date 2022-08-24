@@ -4,8 +4,10 @@ import {
 	ActionMap,
 	Datastore,
 	GlobalActionTokens,
+	LAYOUTS,
 	RouteMap,
 	TemplateSchema,
+	WidgetItem,
 	WidgetRegistry,
 } from '../types';
 import { EmptyTemplate } from '../utility';
@@ -54,11 +56,12 @@ type SetTemplateForRoute = {
 	};
 };
 
-type SetLayout = {
-	type: GlobalActionTokens.SET_LAYOUT;
+type AppenWidgets = {
+	type: GlobalActionTokens.APPEND_WIDGETS;
 	payload: {
 		routeId: string;
-		template: TemplateSchema;
+		widgets: WidgetItem[];
+		datastore: Datastore;
 	};
 };
 
@@ -69,7 +72,7 @@ type GlobalAction =
 	| SetActions
 	| SetRouteMap
 	| SetTemplateForRoute
-	| SetLayout;
+	| AppenWidgets;
 
 export type GlobalState = {
 	routeMap: RouteMap | null;
@@ -93,6 +96,22 @@ const setDataStorePageTypeData = (
 		},
 	};
 };
+
+// const mergeLayout = (
+// 	template: TemplateSchema = EmptyTemplate,
+// 	datastore: Datastore = {},
+// ): TemplateSchema => {
+// 	return {
+// 		layout: {
+// 			...template?.layout,
+// 		},
+// 		datastore: {
+// 			...template?.datastore,
+// 			...datastore,
+// 		},
+// 	};
+// };
+
 const setDataStoreInPathPageTypeData = (
 	template: TemplateSchema = EmptyTemplate,
 	action: SetDatastoreInPath,
@@ -182,11 +201,11 @@ const setTemplateForRoute = (dispatch: any) => {
 	};
 };
 
-const setLayout = (dispatch: any) => {
-	return (payload: SetLayout) => {
+const appendWidgets = (dispatch: any) => {
+	return (payload: AppenWidgets) => {
 		dispatch({
 			payload,
-			type: GlobalActionTokens.SET_LAYOUT,
+			type: GlobalActionTokens.APPEND_WIDGETS,
 		});
 	};
 };
@@ -286,24 +305,35 @@ const GlobalReducer = (
 			};
 		}
 
-		case GlobalActionTokens.SET_LAYOUT: {
+		case GlobalActionTokens.APPEND_WIDGETS: {
 			if (!state.routeMap) return;
 
-			// console.log({name: "Old length", length: } );
 			console.log(
-				{
-					name: 'Old length',
-					length:
-						state.routeMap[action.payload.routeId]
-							.template?.layout.widgets.length,
-				},
-				{
-					name: 'New length',
-					length:
-						action.payload.template.layout.widgets
-							.length,
-				},
+				'--------- Append call recived ---------',
 			);
+
+			const combined_template: TemplateSchema = {
+				datastore: {
+					...state.routeMap[action.payload.routeId]
+						.template?.datastore,
+					...action.payload.datastore,
+				},
+				layout: {
+					id: state.routeMap[action.payload.routeId]
+						.template?.layout.id as string,
+					type: state.routeMap[action.payload.routeId]
+						.template?.layout.type as LAYOUTS,
+					widgets: [
+						...((state.routeMap &&
+							state.routeMap[action.payload.routeId]
+								.template?.layout
+								.widgets) as WidgetItem[]),
+						...action.payload.widgets,
+					],
+				},
+			};
+
+			console.log(combined_template);
 
 			return {
 				...state,
@@ -312,7 +342,7 @@ const GlobalReducer = (
 					[action.payload.routeId]: {
 						...(state.routeMap &&
 							state.routeMap[action.payload.routeId]),
-						template: action.payload.template,
+						template: combined_template,
 					},
 				},
 			};
@@ -338,7 +368,7 @@ export const {
 		setActions,
 		setRouteMap,
 		setTemplateForRoute,
-		setLayout,
+		appendWidgets,
 	},
 	initialState,
 );

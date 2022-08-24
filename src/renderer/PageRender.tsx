@@ -146,6 +146,7 @@ const PageRender: React.FC<PageRenderProps> = ({
 				data={bodyWI}
 				extraData={bodyWI}
 				// estimatedItemSize={10}
+				onEndReachedThreshold={0.5}
 				showsHorizontalScrollIndicator={false}
 				onEndReached={EnableOnEndReach}
 				onMomentumScrollEnd={onScroll}

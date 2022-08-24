@@ -6,7 +6,10 @@ import {
 } from '../types';
 import { useContext, useMemo } from 'react';
 import { Context } from '../context';
-import { standardUtilitiesHook } from './standartUtilitiesHook';
+import {
+	standardUtilitiesHook,
+	standardUtilitiesRaw,
+} from './standartUtilitiesHook';
 
 export const triggerActionHook =
 	(): TriggerAction => {
@@ -14,10 +17,20 @@ export const triggerActionHook =
 			setDataStoreInPath,
 			setActions,
 			state,
+			appendWidgets,
 		} = useContext(Context);
 
-		const standardUtilities =
-			standardUtilitiesHook();
+		const standardUtilities = standardUtilitiesRaw(
+			state,
+			setDataStoreInPath,
+			appendWidgets,
+		);
+
+		// console.log(
+		// 	state.routeMap?.NEWS?.template?.datastore[
+		// 		'NEWSCARD64'
+		// 	],
+		// );
 
 		return <(action: Action<any>) => Promise<any>>(
 			useMemo(
