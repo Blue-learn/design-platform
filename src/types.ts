@@ -15,6 +15,7 @@ export type MicroFrontendProps = {
 	routeMap: RouteMap;
 	routeCurrent: string;
 	widgetRegistry: WidgetRegistry;
+	extraProps?: any;
 };
 
 export type WidgetItem = {
@@ -147,6 +148,7 @@ export type PageType<T> = {
 	loading?: WidgetItem[];
 	onLoad: (
 		standardUtilities: StandardUtilities,
+		extraProps?: any,
 	) => Promise<TemplateSchema>;
 	onEndReached?: (
 		standardUtilities: StandardUtilities,

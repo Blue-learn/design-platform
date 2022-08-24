@@ -33,6 +33,7 @@ const MicroFrontend: React.FC<
 	routeMap,
 	routeCurrent,
 	widgetRegistry,
+	extraProps = {},
 }) => {
 	const [isLoading, toggleLoad] = useState(true);
 	const {
@@ -69,6 +70,7 @@ const MicroFrontend: React.FC<
 				routeId: routeCurrent,
 				template: await routeMap[routeCurrent].onLoad(
 					standardUtilities,
+					extraProps,
 				),
 			});
 		}
