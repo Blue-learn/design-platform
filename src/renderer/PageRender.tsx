@@ -79,7 +79,10 @@ const PageRender: React.FC<PageRenderProps> = ({
 	const absoluteBottomWI: WidgetItem[] = [];
 	const fabWI: WidgetItem[] = [];
 	const callOnScrollEnd = useRef(false);
-
+	const onRefreshX = async () => {
+		await onRefresh();
+		setIsFetching(false);
+	};
 	const standardUtilities =
 		standardUtilitiesHook();
 
@@ -177,7 +180,7 @@ const PageRender: React.FC<PageRenderProps> = ({
 				refreshControl={
 					<RefreshControl
 						refreshing={isFetching}
-						onRefresh={onRefresh}
+						onRefresh={onRefreshX}
 					/>
 				}
 			/>
