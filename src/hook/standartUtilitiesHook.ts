@@ -1,14 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { get } from 'lodash-es';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { Context } from '../context';
 import {
 	goBack,
 	goToRoute,
 } from '../navigation/root_navigation';
 import SharedPropsService from '../SharedPropsService';
-import { StandardUtilities } from '../types';
+import {
+	StandardUtilities,
+	WidgetItem,
+} from '../types';
 
 export const standardUtilitiesRaw = (
 	state: any,
@@ -115,6 +118,7 @@ export const standardUtilitiesHook =
 		const {
 			setDataStoreInPath,
 			appendWidgets,
+			setLoaderForRoute,
 			state,
 		} = useContext(Context);
 
@@ -197,9 +201,21 @@ export const standardUtilitiesHook =
 				/** todo **/
 				showToast(toastProps: any) {},
 				/** todo **/
-				showLoader(loaderParams?: any) {},
-				/** todo **/
-				hideLoader() {},
+				showLoader(
+					routeId: string,
+					widgetItems: WidgetItem[],
+				) {
+					setLoaderForRoute({
+						routeId,
+						widgetItems,
+					});
+				},
+				hideLoader(routeId: string) {
+					setLoaderForRoute({
+						routeId,
+						widgetItems: [],
+					});
+				},
 				/** todo **/
 				showPopup(params: any) {},
 				/** todo **/
@@ -211,26 +227,7 @@ export const standardUtilitiesHook =
 				goBack,
 			});
 
-		// console.log(
-		// 	'State in utilities in useMemo----> ',
-		// 	state.routeMap?.NEWS?.template?.layout?.widgets
-		// 		?.length,
-		// );
-
-		return standardUtilitiesRaw();
-
-		// return useMemo(() => {
-		// 	// This section is working properly and receiving correct no. of widgets
-
-		// 	console.log(
-		// 		'State in utilities in useMemo----> ',
-		// 		state.routeMap?.NEWS?.template?.layout
-		// 			?.widgets?.length,
-		// 	);
-		// 	return standardUtilitiesRaw(
-		// 		state,
-		// 		setDataStoreInPath,
-		// 		setLayout,
-		// 	);
-		// }, []);
+		return useMemo(() => {
+			return standardUtilitiesRaw();
+		}, []);
 	};

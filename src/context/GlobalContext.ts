@@ -55,6 +55,11 @@ type SetTemplateForRoute = {
 		template: TemplateSchema;
 	};
 };
+type SetLoaderForRoute = {
+	type: GlobalActionTokens.SET_LOADER_IN_PATH;
+	routeId: string;
+	widgetItems: WidgetItem[];
+};
 
 type AppenWidgets = {
 	type: GlobalActionTokens.APPEND_WIDGETS;
@@ -72,7 +77,8 @@ type GlobalAction =
 	| SetActions
 	| SetRouteMap
 	| SetTemplateForRoute
-	| AppenWidgets;
+	| AppenWidgets
+	| SetLoaderForRoute;
 
 export type GlobalState = {
 	routeMap: RouteMap | null;
@@ -182,6 +188,14 @@ const setActions = (dispatch: any) => {
 		});
 	};
 };
+const setLoaderForRoute = (dispatch: any) => {
+	return (payload: SetLoaderForRoute) => {
+		dispatch({
+			payload,
+			type: GlobalActionTokens.SET_LOADER_IN_PATH,
+		});
+	};
+};
 
 const setRouteMap = (dispatch: any) => {
 	return (payload: SetRouteMap) => {
@@ -280,6 +294,26 @@ const GlobalReducer = (
 				},
 			};
 		}
+		case GlobalActionTokens.SET_LOADER_IN_PATH: {
+			const _widgetItemsShimmer: WidgetItem[] =
+				(state.routeMap &&
+					state.routeMap[action.routeId].loading) ||
+				[];
+
+			if (_widgetItemsShimmer.length == 0)
+				return { ...state };
+			return {
+				...state,
+				routeMap: {
+					...state.routeMap,
+					[action.routeId]: {
+						...(state.routeMap &&
+							state.routeMap[action.routeId]),
+						loading: [...action.widgetItems],
+					},
+				},
+			};
+		}
 
 		case GlobalActionTokens.SET_ACTIONS: {
 			const oldAction =
@@ -369,6 +403,7 @@ export const {
 		setRouteMap,
 		setTemplateForRoute,
 		appendWidgets,
+		setLoaderForRoute
 	},
 	initialState,
 );

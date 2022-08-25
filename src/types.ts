@@ -3,6 +3,9 @@ import { AxiosStatic } from 'axios';
 import React, { Component } from 'react';
 import { View } from 'react-native';
 
+/**Todo** /
+ * Need to remove @react-native-async-storage/async-storage,axios, 'react-native', react from Types
+ */
 export type RouteMap = {
 	[routeId: string]: PageType<any>;
 };
@@ -55,6 +58,7 @@ export enum GlobalActionTokens {
 	SET_WIDGET_REGISTRY = 'SET_WIDGET_REGISTRY',
 	SET_DATASTORE = 'SET_DATASTORE',
 	SET_DATASTORE_IN_PATH = 'SET_DATASTORE_IN_PATH',
+	SET_LOADER_IN_PATH = 'SET_LOADER_IN_PATH',
 	SET_ACTIONS = 'SET_ACTIONS',
 	SET_ROUTE_MAP = 'SET_ROUTE_MAP',
 	SET_TEMPLATE_ROUTE = 'SET_TEMPLATE_ROUTE',
@@ -94,10 +98,11 @@ export type StandardUtilities = {
 	navigate(routeId: string): void;
 	/** @description navigate to previous page  **/
 	goBack(): void;
-	/** todo **/
-	showLoader(loaderParams?: any): void;
-	/** todo **/
-	hideLoader(): void;
+	showLoader(
+		routeId: string,
+		widgetItems: WidgetItem[],
+	): void;
+	hideLoader(routeId: string): void;
 	/** todo **/
 	showPopup(params: any): void;
 	/** todo **/
