@@ -26,12 +26,6 @@ export const triggerActionHook =
 			appendWidgets,
 		);
 
-		// console.log(
-		// 	state.routeMap?.NEWS?.template?.datastore[
-		// 		'NEWSCARD64'
-		// 	],
-		// );
-
 		return <(action: Action<any>) => Promise<any>>(
 			useMemo(
 				() => (action: Action<any>) => {
