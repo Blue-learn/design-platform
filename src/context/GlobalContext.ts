@@ -342,10 +342,6 @@ const GlobalReducer = (
 		case GlobalActionTokens.APPEND_WIDGETS: {
 			if (!state.routeMap) return;
 
-			console.log(
-				'--------- Append call recived ---------',
-			);
-
 			const combined_template: TemplateSchema = {
 				datastore: {
 					...state.routeMap[action.payload.routeId]
@@ -366,8 +362,6 @@ const GlobalReducer = (
 					],
 				},
 			};
-
-			console.log(combined_template);
 
 			return {
 				...state,
@@ -403,7 +397,7 @@ export const {
 		setRouteMap,
 		setTemplateForRoute,
 		appendWidgets,
-		setLoaderForRoute
+		setLoaderForRoute,
 	},
 	initialState,
 );
