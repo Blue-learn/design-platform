@@ -6,7 +6,10 @@ import {
 } from '../types';
 import { useContext, useMemo } from 'react';
 import { Context } from '../context';
-import { standardUtilitiesHook } from './standartUtilitiesHook';
+import {
+	standardUtilitiesHook,
+	standardUtilitiesRaw,
+} from './standartUtilitiesHook';
 
 export const triggerActionHook =
 	(): TriggerAction => {
@@ -14,14 +17,18 @@ export const triggerActionHook =
 			setDataStoreInPath,
 			setActions,
 			state,
+			appendWidgets,
 		} = useContext(Context);
 
-		const standardUtilities =
-			standardUtilitiesHook();
+		const standardUtilities = standardUtilitiesRaw(
+			state,
+			setDataStoreInPath,
+			appendWidgets,
+		);
 
-		return <(action: Action) => Promise<any>>(
+		return <(action: Action<any>) => Promise<any>>(
 			useMemo(
-				() => (action: Action) => {
+				() => (action: Action<any>) => {
 					switch (action.type) {
 						/**
 						 * Global Action Handle - Update Datastore for routeId -> widgetId

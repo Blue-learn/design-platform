@@ -1,11 +1,11 @@
 import { CallbackWithResult } from '@react-native-async-storage/async-storage/lib/typescript/types';
-import {
-	AxiosResponse,
-	AxiosStatic,
-} from 'axios';
+import { AxiosStatic } from 'axios';
 import React, { Component } from 'react';
 import { View } from 'react-native';
 
+/**Todo** /
+ * Need to remove @react-native-async-storage/async-storage,axios, 'react-native', react from Types
+ */
 export type RouteMap = {
 	[routeId: string]: PageType<any>;
 };
@@ -14,6 +14,7 @@ export type MicroFrontendProps = {
 	routeMap: RouteMap;
 	routeCurrent: string;
 	widgetRegistry: WidgetRegistry;
+	extraProps?: any;
 };
 
 export type WidgetItem = {
@@ -41,6 +42,7 @@ export type TemplateSchema = {
 export type WidgetRegistry = {
 	[key: string]: {
 		Component?: JSX.Element;
+		Mock?: { args?: any; argsType?: any };
 	};
 };
 
@@ -56,10 +58,11 @@ export enum GlobalActionTokens {
 	SET_WIDGET_REGISTRY = 'SET_WIDGET_REGISTRY',
 	SET_DATASTORE = 'SET_DATASTORE',
 	SET_DATASTORE_IN_PATH = 'SET_DATASTORE_IN_PATH',
+	SET_LOADER_IN_PATH = 'SET_LOADER_IN_PATH',
 	SET_ACTIONS = 'SET_ACTIONS',
 	SET_ROUTE_MAP = 'SET_ROUTE_MAP',
 	SET_TEMPLATE_ROUTE = 'SET_TEMPLATE_ROUTE',
-	SET_LAYOUT = 'SET_LAYOUT',
+	APPEND_WIDGETS = 'APPEND_WIDGETS',
 }
 
 export type StandardUtilities = {
@@ -95,10 +98,11 @@ export type StandardUtilities = {
 	navigate(routeId: string): void;
 	/** @description navigate to previous page  **/
 	goBack(): void;
-	/** todo **/
-	showLoader(loaderParams?: any): void;
-	/** todo **/
-	hideLoader(): void;
+	showLoader(
+		routeId: string,
+		widgetItems: WidgetItem[],
+	): void;
+	hideLoader(routeId: string): void;
 	/** todo **/
 	showPopup(params: any): void;
 	/** todo **/
@@ -124,11 +128,15 @@ export type StandardUtilities = {
 		/** @description New value will be merged with exist value **/
 		props?: any,
 	): Promise<any>;
-	setLayout(routeId: string, layout: Layout): void;
+	appendWidgets(
+		routeId: string,
+		datastore: Datastore,
+		widgets: WidgetItem[],
+	): void;
 };
 
 export type ActionFunction = (
-	action: Action,
+	action: Action<any>,
 	datastore: Datastore,
 	utilities: StandardUtilities,
 ) => Promise<any> | any;
@@ -138,8 +146,10 @@ export type ActionMap = {
 };
 
 export type PageType<T> = {
+	loading?: WidgetItem[];
 	onLoad: (
 		standardUtilities: StandardUtilities,
+		extraProps?: any,
 	) => Promise<TemplateSchema>;
 	onEndReached?: (
 		standardUtilities: StandardUtilities,
@@ -181,16 +191,14 @@ export enum POSITION {
  * @param data data that is required to be passed for the tap action
  * @param routeId [Optional] performs action on specific routeId
  */
-export type Action<DataType = any> = {
+export type Action<DataType> = {
 	type: string;
 	routeId?: string;
-	payload: DataType extends object
-		? { [k in keyof DataType]: DataType[k] }
-		: any;
+	payload: DataType;
 };
 
 export type TriggerAction = (
-	action: Action,
+	action: Action<any>,
 ) => Promise<
 	any | { isError: boolean; err: Error }
 >;

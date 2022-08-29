@@ -4,8 +4,10 @@ import {
 	ActionMap,
 	Datastore,
 	GlobalActionTokens,
+	LAYOUTS,
 	RouteMap,
 	TemplateSchema,
+	WidgetItem,
 	WidgetRegistry,
 } from '../types';
 import { EmptyTemplate } from '../utility';
@@ -53,12 +55,18 @@ type SetTemplateForRoute = {
 		template: TemplateSchema;
 	};
 };
+type SetLoaderForRoute = {
+	type: GlobalActionTokens.SET_LOADER_IN_PATH;
+	routeId: string;
+	widgetItems: WidgetItem[];
+};
 
-type SetLayout = {
-	type: GlobalActionTokens.SET_LAYOUT;
+type AppenWidgets = {
+	type: GlobalActionTokens.APPEND_WIDGETS;
 	payload: {
 		routeId: string;
-		template: TemplateSchema;
+		widgets: WidgetItem[];
+		datastore: Datastore;
 	};
 };
 
@@ -69,7 +77,8 @@ type GlobalAction =
 	| SetActions
 	| SetRouteMap
 	| SetTemplateForRoute
-	| SetLayout;
+	| AppenWidgets
+	| SetLoaderForRoute;
 
 export type GlobalState = {
 	routeMap: RouteMap | null;
@@ -93,6 +102,22 @@ const setDataStorePageTypeData = (
 		},
 	};
 };
+
+// const mergeLayout = (
+// 	template: TemplateSchema = EmptyTemplate,
+// 	datastore: Datastore = {},
+// ): TemplateSchema => {
+// 	return {
+// 		layout: {
+// 			...template?.layout,
+// 		},
+// 		datastore: {
+// 			...template?.datastore,
+// 			...datastore,
+// 		},
+// 	};
+// };
+
 const setDataStoreInPathPageTypeData = (
 	template: TemplateSchema = EmptyTemplate,
 	action: SetDatastoreInPath,
@@ -163,6 +188,14 @@ const setActions = (dispatch: any) => {
 		});
 	};
 };
+const setLoaderForRoute = (dispatch: any) => {
+	return (payload: SetLoaderForRoute) => {
+		dispatch({
+			payload,
+			type: GlobalActionTokens.SET_LOADER_IN_PATH,
+		});
+	};
+};
 
 const setRouteMap = (dispatch: any) => {
 	return (payload: SetRouteMap) => {
@@ -182,11 +215,11 @@ const setTemplateForRoute = (dispatch: any) => {
 	};
 };
 
-const setLayout = (dispatch: any) => {
-	return (payload: SetLayout) => {
+const appendWidgets = (dispatch: any) => {
+	return (payload: AppenWidgets) => {
 		dispatch({
 			payload,
-			type: GlobalActionTokens.SET_LAYOUT,
+			type: GlobalActionTokens.APPEND_WIDGETS,
 		});
 	};
 };
@@ -261,6 +294,26 @@ const GlobalReducer = (
 				},
 			};
 		}
+		case GlobalActionTokens.SET_LOADER_IN_PATH: {
+			const _widgetItemsShimmer: WidgetItem[] =
+				(state.routeMap &&
+					state.routeMap[action.routeId].loading) ||
+				[];
+
+			if (_widgetItemsShimmer.length == 0)
+				return { ...state };
+			return {
+				...state,
+				routeMap: {
+					...state.routeMap,
+					[action.routeId]: {
+						...(state.routeMap &&
+							state.routeMap[action.routeId]),
+						loading: [...action.widgetItems],
+					},
+				},
+			};
+		}
 
 		case GlobalActionTokens.SET_ACTIONS: {
 			const oldAction =
@@ -286,8 +339,29 @@ const GlobalReducer = (
 			};
 		}
 
-		case GlobalActionTokens.SET_LAYOUT: {
+		case GlobalActionTokens.APPEND_WIDGETS: {
 			if (!state.routeMap) return;
+
+			const combined_template: TemplateSchema = {
+				datastore: {
+					...state.routeMap[action.payload.routeId]
+						.template?.datastore,
+					...action.payload.datastore,
+				},
+				layout: {
+					id: state.routeMap[action.payload.routeId]
+						.template?.layout.id as string,
+					type: state.routeMap[action.payload.routeId]
+						.template?.layout.type as LAYOUTS,
+					widgets: [
+						...((state.routeMap &&
+							state.routeMap[action.payload.routeId]
+								.template?.layout
+								.widgets) as WidgetItem[]),
+						...action.payload.widgets,
+					],
+				},
+			};
 
 			return {
 				...state,
@@ -296,7 +370,7 @@ const GlobalReducer = (
 					[action.payload.routeId]: {
 						...(state.routeMap &&
 							state.routeMap[action.payload.routeId]),
-						template: action.payload.template,
+						template: combined_template,
 					},
 				},
 			};
@@ -322,7 +396,8 @@ export const {
 		setActions,
 		setRouteMap,
 		setTemplateForRoute,
-		setLayout,
+		appendWidgets,
+		setLoaderForRoute,
 	},
 	initialState,
 );

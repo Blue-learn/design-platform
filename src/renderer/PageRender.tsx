@@ -1,15 +1,22 @@
-import {
-	FlashList,
-	ListRenderItemInfo,
-} from '@shopify/flash-list';
 import _map from 'lodash-es/map';
-import React, { memo } from 'react';
+import React, {
+	memo,
+	useCallback,
+	useContext,
+	useRef,
+} from 'react';
 import {
 	Dimensions,
+	FlatList,
+	ListRenderItemInfo,
+	RefreshControl,
+	RefreshControlProps,
 	StyleSheet,
 	View,
 } from 'react-native';
 import BottomSheet from '../components/BottomSheet';
+import { Context } from '../context';
+import { standardUtilitiesHook } from '../hook';
 import SharedPropsService from '../SharedPropsService';
 import {
 	ActionMap,
@@ -21,7 +28,7 @@ import {
 } from '../types';
 import { arePropsEqual } from '../utility';
 import ItemRenderer from './WidgetRenderer';
-import { standardUtilitiesHook } from '../hook';
+import ShimmerRenderer from './ShimmerRenderer';
 
 const styles = StyleSheet.create({
 	absoluteTop: {
@@ -45,19 +52,25 @@ const styles = StyleSheet.create({
 });
 
 type PageRenderProps = {
+	loading: WidgetItem[];
 	template: TemplateSchema;
 	actions: ActionMap;
 	properties?: { style: any };
 	onEndReached?: (
 		standardUtilities: StandardUtilities,
 	) => void;
+	onRefresh?: () => void;
 };
 
 const PageRender: React.FC<PageRenderProps> = ({
+	loading = [],
 	template,
 	properties,
 	onEndReached,
+	onRefresh = () => {},
 }) => {
+	const [isFetching, setIsFetching] =
+		React.useState(false);
 	const OnScrollRef = React.useRef(null);
 	const fixedTopWI: WidgetItem[] = [];
 	const bodyWI: WidgetItem[] = [];
@@ -65,19 +78,21 @@ const PageRender: React.FC<PageRenderProps> = ({
 	const absoluteTopWI: WidgetItem[] = [];
 	const absoluteBottomWI: WidgetItem[] = [];
 	const fabWI: WidgetItem[] = [];
+	const callOnScrollEnd = useRef(false);
 
-	let callOnScrollEnd = false;
 	const standardUtilities =
 		standardUtilitiesHook();
+
 	const EnableOnEndReach = () =>
-		(callOnScrollEnd = true);
-	const onEndReachedX = () => {
-		onEndReached && onEndReached(standardUtilities);
-	};
-	const onScroll = () => {
-		callOnScrollEnd && onEndReachedX();
-		callOnScrollEnd = false;
-	};
+		(callOnScrollEnd.current = true);
+
+	const onScroll = useCallback(() => {
+		if (callOnScrollEnd.current) {
+			if (!onEndReached) return;
+			onEndReached(standardUtilities);
+			callOnScrollEnd.current = false;
+		}
+	}, []);
 
 	const setRef = async (ref: any) => {
 		OnScrollRef.current = ref;
@@ -131,18 +146,40 @@ const PageRender: React.FC<PageRenderProps> = ({
 
 	_layoutMapping();
 
+	const _renderLoading = () => (
+		<>
+			{loading.map((widgetItem) => (
+				<View
+					style={{
+						marginTop: 16,
+						marginHorizontal: 16,
+					}}
+				>
+					<ShimmerRenderer {...widgetItem} />
+				</View>
+			))}
+		</>
+	);
+
 	const _child = (
 		<>
 			{_map(fixedTopWI, _renderItem)}
-			<FlashList
+			<FlatList
 				ref={setRef}
 				renderItem={_renderItem}
 				data={bodyWI}
 				extraData={bodyWI}
-				estimatedItemSize={10}
+				onEndReachedThreshold={0.5}
 				showsHorizontalScrollIndicator={false}
 				onEndReached={EnableOnEndReach}
 				onMomentumScrollEnd={onScroll}
+				// ListFooterComponent={_renderLoading}
+				refreshControl={
+					<RefreshControl
+						refreshing={isFetching}
+						onRefresh={onRefresh}
+					/>
+				}
 			/>
 			{_map(fixedBottomWI, _renderItem)}
 			<View style={styles.absoluteTop}>

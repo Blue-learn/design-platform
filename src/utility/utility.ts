@@ -27,6 +27,7 @@ export const arePropsEqual = (
 			filterProps(nextProps, allowedProps),
 			filterProps(prevProps, allowedProps),
 		);
+
 		return isEqual;
 	};
 };

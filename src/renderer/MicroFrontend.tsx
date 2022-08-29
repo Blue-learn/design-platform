@@ -25,6 +25,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { navigationRef } from '../navigation/root_navigation';
 import { standardUtilitiesHook } from '../hook';
+import ShimmerRenderer from './ShimmerRenderer';
 
 const MicroFrontend: React.FC<
 	MicroFrontendProps
@@ -32,6 +33,7 @@ const MicroFrontend: React.FC<
 	routeMap,
 	routeCurrent,
 	widgetRegistry,
+	extraProps = {},
 }) => {
 	const [isLoading, toggleLoad] = useState(true);
 	const {
@@ -42,6 +44,7 @@ const MicroFrontend: React.FC<
 
 	const standardUtilities =
 		standardUtilitiesHook();
+
 	let template: TemplateSchema | null =
 		(state.routeMap != null &&
 			state.routeMap[routeCurrent].template) ||
@@ -50,7 +53,17 @@ const MicroFrontend: React.FC<
 		(state.routeMap != null &&
 			state.routeMap[routeCurrent].actions) ||
 		null;
-
+	const buildTemplate = async () => {
+		if (routeMap[routeCurrent].template == null) {
+			setTemplateForRoute({
+				routeId: routeCurrent,
+				template: await routeMap[routeCurrent].onLoad(
+					standardUtilities,
+					extraProps,
+				),
+			});
+		}
+	};
 	const _initGlobalProps = async () => {
 		toggleLoad(true);
 		await SharedPropsService.setGlobalProps({
@@ -62,14 +75,7 @@ const MicroFrontend: React.FC<
 			await setRouteMap(routeMap);
 		}
 
-		if (routeMap[routeCurrent].template == null) {
-			setTemplateForRoute({
-				routeId: routeCurrent,
-				template: await routeMap[routeCurrent].onLoad(
-					standardUtilities,
-				),
-			});
-		}
+		await buildTemplate();
 		toggleLoad(false);
 	};
 
@@ -80,6 +86,24 @@ const MicroFrontend: React.FC<
 	const properties: any =
 		template?.datastore[routeCurrent];
 
+	if (isLoading) {
+		return (
+			<>
+				{routeMap[routeCurrent].loading?.map(
+					(widgetItem) => (
+						<View
+							style={{
+								marginTop: 16,
+								marginHorizontal: 16,
+							}}
+						>
+							<ShimmerRenderer {...widgetItem} />
+						</View>
+					),
+				)}
+			</>
+		);
+	}
 	return (
 		<View
 			style={{
@@ -91,12 +115,16 @@ const MicroFrontend: React.FC<
 				template != null &&
 				actions != null && (
 					<PageRender
+						loading={
+							routeMap[routeCurrent].loading || []
+						}
 						template={template}
 						actions={actions}
 						properties={properties}
 						onEndReached={
 							routeMap[routeCurrent].onEndReached
 						}
+						onRefresh={_initGlobalProps}
 					/>
 				)}
 			{isLoading && (
@@ -164,5 +192,5 @@ const MicroFrontendWithContext: React.FC<
 };
 export default memo(
 	MicroFrontendWithContext,
-	arePropsEqual(['routeCurrent']),
+	arePropsEqual(['routeCurrent', 'routeMap']),
 );
