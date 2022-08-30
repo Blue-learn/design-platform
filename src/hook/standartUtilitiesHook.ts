@@ -33,11 +33,6 @@ export const standardUtilitiesRaw = (
 		if (path) {
 			return Promise.resolve(get(state, path));
 		} else {
-			// console.log(
-			// 	'State in utilities ----> ',
-			// 	state.routeMap?.NEWS?.template?.layout
-			// 		?.widgets?.length,
-			// );
 			return state;
 		}
 	},
@@ -139,11 +134,6 @@ export const standardUtilitiesHook =
 					if (path) {
 						return Promise.resolve(get(state, path));
 					} else {
-						// console.log(
-						// 	'State in utilities ----> ',
-						// 	state.routeMap?.NEWS?.template?.layout
-						// 		?.widgets?.length,
-						// );
 						return state;
 					}
 				},

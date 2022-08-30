@@ -176,7 +176,7 @@ const PageRender: React.FC<PageRenderProps> = ({
 				showsHorizontalScrollIndicator={false}
 				onEndReached={EnableOnEndReach}
 				onMomentumScrollEnd={onScroll}
-				ListFooterComponent={_renderLoading}
+				// ListFooterComponent={_renderLoading}
 				refreshControl={
 					<RefreshControl
 						refreshing={isFetching}
