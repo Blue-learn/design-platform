@@ -81,7 +81,7 @@ const MicroFrontend: React.FC<
 
 	useEffect(() => {
 		_initGlobalProps();
-	}, [routeCurrent]);
+	}, [routeCurrent, extraProps]);
 
 	const properties: any =
 		template?.datastore[routeCurrent];
@@ -149,6 +149,7 @@ const MicroFrontendWithNavigation: React.FC<
 			{/* @ts-ignore */}
 			<Stack.Navigator
 				screenOptions={{ headerShown: false }}
+				initialRouteName={props.routeCurrent}
 			>
 				{Object.keys(props.routeMap).map(
 					(routeId) => {
@@ -160,7 +161,7 @@ const MicroFrontendWithNavigation: React.FC<
 										routeCurrent={routeId}
 									/>
 								),
-								[routeId],
+								[routeId, props],
 							);
 
 						return (
@@ -192,5 +193,9 @@ const MicroFrontendWithContext: React.FC<
 };
 export default memo(
 	MicroFrontendWithContext,
-	arePropsEqual(['routeCurrent', 'routeMap']),
+	arePropsEqual([
+		'routeCurrent',
+		'routeMap',
+		'extraProps',
+	]),
 );
