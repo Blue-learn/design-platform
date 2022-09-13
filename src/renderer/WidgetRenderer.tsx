@@ -1,106 +1,131 @@
-import React from 'react';
+import React, {
+	FC,
+	useContext,
+	useMemo,
+} from 'react';
 import _isEmpty from 'lodash-es/isEmpty';
-import { withPerformActionContext } from '../context/PerformActionContext';
-import Renderer from './Renderer';
 import {
-	Datastore,
-	TriggerAction,
+	Action,
+	GlobalActionTokens,
+	TemplateSchema,
 	WidgetItem,
 } from '../types';
-import withGlobalContext from '../context/withGlobalContext';
 import ShimmerRenderer from './ShimmerRenderer';
+import _get from 'lodash-es/get';
+import SharedPropsService from '../SharedPropsService';
+import { Context as GlobalContextConsumer } from '../context';
+import { withPerformActionContext } from '../context/PerformActionContext';
+import {
+	standardUtilitiesRaw,
+	triggerActionHook,
+} from '../hook';
 
-interface Props {
+type RenderItemProps = {
 	item: WidgetItem;
-	extraProps?: any;
-	isShimmer?: boolean;
-	onComponentMount?: (id: string) => void;
-	forwardedRef?: any;
-	/** from withPerformActionContext **/
-	triggerAction?: TriggerAction;
-	/** from withGlobalContext **/
-	datastore: Datastore;
-}
+	isLoading?: boolean;
+	/** @description render component directly from MicroFrontEnd Page **/
+	routeId?: string;
+};
 
-class WidgetRenderer extends React.PureComponent<Props> {
-	itemData: any;
+const RenderItem: FC<RenderItemProps> = ({
+	item,
+	isLoading,
+	routeId = null,
+}) => {
+	const {
+		state,
+		setActions,
+		setDataStoreInPath,
+		appendWidgets,
+	} = useContext(GlobalContextConsumer);
+	const standardUtilities = standardUtilitiesRaw(
+		state,
+		setDataStoreInPath,
+		appendWidgets,
+	);
+	const triggerActionX = (action: Action<any>) => {
+		switch (action.type) {
+			/**
+			 * Global Action Handle - Update Datastore for routeId -> widgetId
+			 * */
+			case GlobalActionTokens.SET_DATASTORE_IN_PATH: {
+				if (setDataStoreInPath) {
+					setDataStoreInPath(action);
+				}
+				break;
+			}
+			/**
+			 * Global Action Handle - Set Action map for routeId
+			 * */
+			case GlobalActionTokens.SET_ACTIONS: {
+				if (setActions) {
+					setActions(action);
+				}
+				break;
+			}
 
-	constructor(props: Props) {
-		super(props);
-	}
+			default: {
+				/**
+				 * Custom Action Handle
+				 * */
+				const template: TemplateSchema =
+					action.routeId &&
+					state.routeMap &&
+					state.routeMap[action.routeId].template;
 
-	componentDidMount() {
-		const { item, onComponentMount } = this.props;
+				const actionsMap =
+					template &&
+					action.routeId &&
+					state.routeMap &&
+					state.routeMap[action.routeId].actions;
 
-		if (
-			onComponentMount &&
-			!_isEmpty(item) &&
-			(!_isEmpty(item.props) ||
-				!_isEmpty(this.itemData))
-		)
-			onComponentMount(item.id || '');
-	}
-
-	render() {
-		const {
-			item,
-			extraProps = {},
-			forwardedRef,
-			isShimmer,
-			datastore,
-		} = this.props;
-
-		const itemData =
-			item.props ||
-			(datastore && datastore[item.id]);
-
-		if (itemData !== this.itemData) {
-			this.itemData = itemData;
+				if (
+					actionsMap != null &&
+					template.datastore != null
+				) {
+					actionsMap[action.type](
+						action,
+						template?.datastore,
+						standardUtilities,
+					);
+				}
+				break;
+			}
 		}
+	};
+	if (!item) return <></>;
+	if (isLoading)
+		return <ShimmerRenderer {...item} />;
 
-		if (
-			_isEmpty(item.props) &&
-			_isEmpty(itemData)
-		) {
-			const errorObj = {
-				errorType: 'ERROR: WIDGET RENDER SKIPPED',
-				message: `type-> ${item.type} id-> ${item.id} props-> ${item.props}.`,
+	const renderItem = (item: WidgetItem) => {
+		const Widget: any = _get(
+			SharedPropsService.getPropsValue(
+				'widgetRegistry',
+			),
+			`${item.type}`,
+			null,
+		);
+		if (routeId !== null) {
+			item.props = {
+				...item.props,
+				...(routeId &&
+					state.routeMap[routeId].template.datastore[
+						item.id
+					]),
 			};
-			console.warn(
-				errorObj.errorType,
-				errorObj.message,
-			);
-			return null;
 		}
-
-		if (isShimmer)
-			return <ShimmerRenderer {...item} />;
-
 		return (
-			<Renderer
-				key={`${item.id || item.type}`}
-				ref={forwardedRef}
-				triggerAction={this.props.triggerAction}
-				item={item}
-				datastore={datastore}
-				{...extraProps}
-				{...itemData}
+			<Widget.Component
+				key={item.id}
+				{...item.props}
+				renderItem={renderItem}
+				triggerAction={triggerActionX}
 			/>
 		);
-	}
-}
+	};
+	return renderItem(item);
+};
 
-const WidgetRendererWithRef = React.forwardRef(
-	(props: Props, ref) => {
-		return (
-			<WidgetRenderer
-				{...props}
-				forwardedRef={ref}
-			/>
-		);
-	},
-);
-
-export default withGlobalContext(
-	withPerformActionContext(WidgetRendererWithRef),
+export default withPerformActionContext(
+	RenderItem,
 );

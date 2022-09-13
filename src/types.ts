@@ -47,11 +47,12 @@ export type WidgetRegistry = {
 };
 
 export type WidgetProps = {
-	item: WidgetItem;
+	item?: WidgetItem;
 	renderItem?: Component;
 	triggerAction?: TriggerAction;
 	/** Todo **/
 	widgetRef?: React.RefObject<View>;
+	action?: Action<any>;
 };
 
 export enum GlobalActionTokens {

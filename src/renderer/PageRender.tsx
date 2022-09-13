@@ -2,7 +2,6 @@ import _map from 'lodash-es/map';
 import React, {
 	memo,
 	useCallback,
-	useContext,
 	useRef,
 } from 'react';
 import {
@@ -10,12 +9,10 @@ import {
 	FlatList,
 	ListRenderItemInfo,
 	RefreshControl,
-	RefreshControlProps,
 	StyleSheet,
 	View,
 } from 'react-native';
 import BottomSheet from '../components/BottomSheet';
-import { Context } from '../context';
 import { standardUtilitiesHook } from '../hook';
 import SharedPropsService from '../SharedPropsService';
 import {
@@ -26,9 +23,11 @@ import {
 	TemplateSchema,
 	WidgetItem,
 } from '../types';
-import { arePropsEqual } from '../utility';
-import ItemRenderer from './WidgetRenderer';
-import ShimmerRenderer from './ShimmerRenderer';
+import {
+	arePropsEqual,
+	EmptyTemplate,
+} from '../utility';
+import RenderItem from './WidgetRenderer';
 
 const styles = StyleSheet.create({
 	absoluteTop: {
@@ -60,6 +59,7 @@ type PageRenderProps = {
 		standardUtilities: StandardUtilities,
 	) => void;
 	onRefresh?: () => void;
+	routeId: string;
 };
 
 const PageRender: React.FC<PageRenderProps> = ({
@@ -68,6 +68,7 @@ const PageRender: React.FC<PageRenderProps> = ({
 	properties,
 	onEndReached,
 	onRefresh = () => {},
+	routeId,
 }) => {
 	const [isFetching, setIsFetching] =
 		React.useState(false);
@@ -134,32 +135,18 @@ const PageRender: React.FC<PageRenderProps> = ({
 	};
 
 	const _renderItem = ({
-		...props
+		item,
 	}: ListRenderItemInfo<WidgetItem>) => {
 		return (
-			<ItemRenderer
-				item={props.item || props}
-				datastore={template.datastore}
+			<RenderItem
+				item={item}
+				routeId={routeId}
+				isLoading={isFetching}
 			/>
 		);
 	};
 
 	_layoutMapping();
-
-	const _renderLoading = () => (
-		<>
-			{loading.map((widgetItem) => (
-				<View
-					style={{
-						marginTop: 16,
-						marginHorizontal: 16,
-					}}
-				>
-					<ShimmerRenderer {...widgetItem} />
-				</View>
-			))}
-		</>
-	);
 
 	const _child = (
 		<>
@@ -173,7 +160,6 @@ const PageRender: React.FC<PageRenderProps> = ({
 				showsHorizontalScrollIndicator={false}
 				onEndReached={EnableOnEndReach}
 				onMomentumScrollEnd={onScroll}
-				// ListFooterComponent={_renderLoading}
 				refreshControl={
 					<RefreshControl
 						refreshing={isFetching}

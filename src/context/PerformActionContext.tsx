@@ -11,7 +11,7 @@ export const withPerformActionContext = (
 			return (
 				<WrappedComponent
 					{...props}
-					ref={ref}
+					// ref={ref}
 					triggerAction={triggerAction}
 				/>
 			);

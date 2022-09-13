@@ -103,21 +103,6 @@ const setDataStorePageTypeData = (
 	};
 };
 
-// const mergeLayout = (
-// 	template: TemplateSchema = EmptyTemplate,
-// 	datastore: Datastore = {},
-// ): TemplateSchema => {
-// 	return {
-// 		layout: {
-// 			...template?.layout,
-// 		},
-// 		datastore: {
-// 			...template?.datastore,
-// 			...datastore,
-// 		},
-// 	};
-// };
-
 const setDataStoreInPathPageTypeData = (
 	template: TemplateSchema = EmptyTemplate,
 	action: SetDatastoreInPath,
