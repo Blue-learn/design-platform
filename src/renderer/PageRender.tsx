@@ -2,6 +2,7 @@ import _map from 'lodash-es/map';
 import React, {
 	memo,
 	useCallback,
+	useContext,
 	useRef,
 } from 'react';
 import {
@@ -13,7 +14,6 @@ import {
 	View,
 } from 'react-native';
 import BottomSheet from '../components/BottomSheet';
-import { standardUtilitiesHook } from '../hook';
 import SharedPropsService from '../SharedPropsService';
 import {
 	ActionMap,
@@ -23,11 +23,10 @@ import {
 	TemplateSchema,
 	WidgetItem,
 } from '../types';
-import {
-	arePropsEqual,
-	EmptyTemplate,
-} from '../utility';
+import { arePropsEqual } from '../utility';
 import RenderItem from './WidgetRenderer';
+import { standardUtilitiesRaw } from '../utility/standartUtility';
+import { Context as GlobalContextConsumer } from '../context';
 
 const styles = StyleSheet.create({
 	absoluteTop: {
@@ -70,6 +69,12 @@ const PageRender: React.FC<PageRenderProps> = ({
 	onRefresh = () => {},
 	routeId,
 }) => {
+	const {
+		state,
+		setDataStoreInPath,
+		appendWidgets,
+	} = useContext(GlobalContextConsumer);
+
 	const [isFetching, setIsFetching] =
 		React.useState(false);
 	const OnScrollRef = React.useRef(null);
@@ -80,9 +85,11 @@ const PageRender: React.FC<PageRenderProps> = ({
 	const absoluteBottomWI: WidgetItem[] = [];
 	const fabWI: WidgetItem[] = [];
 	const callOnScrollEnd = useRef(false);
-
-	const standardUtilities =
-		standardUtilitiesHook();
+	const standardUtilities = standardUtilitiesRaw(
+		state,
+		setDataStoreInPath,
+		appendWidgets,
+	);
 
 	const EnableOnEndReach = () =>
 		(callOnScrollEnd.current = true);

@@ -15,10 +15,7 @@ import _get from 'lodash-es/get';
 import SharedPropsService from '../SharedPropsService';
 import { Context as GlobalContextConsumer } from '../context';
 import { withPerformActionContext } from '../context/PerformActionContext';
-import {
-	standardUtilitiesRaw,
-	triggerActionHook,
-} from '../hook';
+import { standardUtilitiesRaw } from '../utility/standartUtility';
 
 type RenderItemProps = {
 	item: WidgetItem;

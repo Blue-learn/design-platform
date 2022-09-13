@@ -24,8 +24,8 @@ import PageRender from './PageRender';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { navigationRef } from '../navigation/root_navigation';
-import { standardUtilitiesHook } from '../hook';
 import ShimmerRenderer from './ShimmerRenderer';
+import { standardUtilitiesRaw } from '../utility/standartUtility';
 
 const MicroFrontend: React.FC<
 	MicroFrontendProps
@@ -40,10 +40,15 @@ const MicroFrontend: React.FC<
 		state,
 		setRouteMap,
 		setTemplateForRoute,
+		setDataStoreInPath,
+		appendWidgets,
 	} = useContext(GlobalContextConsumer);
 
-	const standardUtilities =
-		standardUtilitiesHook();
+	const standardUtilities = standardUtilitiesRaw(
+		state,
+		setDataStoreInPath,
+		appendWidgets,
+	);
 
 	let template: TemplateSchema | null =
 		(state.routeMap != null &&
