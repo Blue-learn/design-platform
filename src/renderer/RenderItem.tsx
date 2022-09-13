@@ -1,9 +1,4 @@
-import React, {
-	FC,
-	useContext,
-	useMemo,
-} from 'react';
-import _isEmpty from 'lodash-es/isEmpty';
+import React, { FC, useContext } from 'react';
 import {
 	Action,
 	GlobalActionTokens,
@@ -16,6 +11,7 @@ import SharedPropsService from '../SharedPropsService';
 import { Context as GlobalContextConsumer } from '../context';
 import { withPerformActionContext } from '../context/PerformActionContext';
 import { standardUtilitiesRaw } from '../utility/standartUtility';
+import { isEmpty } from 'lodash-es';
 
 type RenderItemProps = {
 	item: WidgetItem;
@@ -40,7 +36,7 @@ const RenderItem: FC<RenderItemProps> = ({
 		setDataStoreInPath,
 		appendWidgets,
 	);
-	const triggerActionX = (action: Action<any>) => {
+	const triggerAction = (action: Action<any>) => {
 		switch (action.type) {
 			/**
 			 * Global Action Handle - Update Datastore for routeId -> widgetId
@@ -111,12 +107,16 @@ const RenderItem: FC<RenderItemProps> = ({
 					]),
 			};
 		}
+		if (isEmpty(item.props)) {
+			console.warn('[ Render Skipped ] ', item);
+			return <></>;
+		}
 		return (
 			<Widget.Component
 				key={item.id}
 				{...item.props}
 				renderItem={renderItem}
-				triggerAction={triggerActionX}
+				triggerAction={triggerAction}
 			/>
 		);
 	};

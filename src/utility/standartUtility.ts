@@ -1,17 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { get } from 'lodash-es';
-import { useContext, useMemo } from 'react';
-import { Context } from '../context';
 import {
 	goBack,
 	goToRoute,
 } from '../navigation/root_navigation';
 import SharedPropsService from '../SharedPropsService';
-import {
-	StandardUtilities,
-	WidgetItem,
-} from '../types';
+import { StandardUtilities } from '../types';
 
 export const standardUtilitiesRaw = (
 	state: any,
