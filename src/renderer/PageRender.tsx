@@ -24,7 +24,7 @@ import {
 	WidgetItem,
 } from '../types';
 import { arePropsEqual } from '../utility';
-import RenderItem from './WidgetRenderer';
+import RenderItem from './RenderItem';
 import { standardUtilitiesRaw } from '../utility/standartUtility';
 import { Context as GlobalContextConsumer } from '../context';
 

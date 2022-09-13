@@ -1,7 +1,9 @@
 import React, {
 	memo,
+	useCallback,
 	useContext,
 	useEffect,
+	useMemo,
 	useState,
 } from 'react';
 import { arePropsEqual } from '../utility';
@@ -44,10 +46,14 @@ const MicroFrontend: React.FC<
 		appendWidgets,
 	} = useContext(GlobalContextConsumer);
 
-	const standardUtilities = standardUtilitiesRaw(
-		state,
-		setDataStoreInPath,
-		appendWidgets,
+	const standardUtilities = useMemo(
+		() =>
+			standardUtilitiesRaw(
+				state,
+				setDataStoreInPath,
+				appendWidgets,
+			),
+		[state],
 	);
 
 	let template: TemplateSchema | null =
@@ -58,14 +64,18 @@ const MicroFrontend: React.FC<
 		(state.routeMap != null &&
 			state.routeMap[routeCurrent].actions) ||
 		null;
+	const onLoadX = useMemo(async () => {
+		return await routeMap[routeCurrent].onLoad(
+			standardUtilities,
+			extraProps,
+		);
+	}, []);
+
 	const buildTemplate = async () => {
 		if (routeMap[routeCurrent].template == null) {
 			setTemplateForRoute({
 				routeId: routeCurrent,
-				template: await routeMap[routeCurrent].onLoad(
-					standardUtilities,
-					extraProps,
-				),
+				template: await onLoadX,
 			});
 		}
 	};
