@@ -3,6 +3,7 @@ import { AxiosStatic } from 'axios';
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { ImagePickerResponse } from 'react-native-image-picker';
+import RNFetchBlob, { Dirs } from 'rn-fetch-blob';
 
 /**Todo** /
  * Need to remove @react-native-async-storage/async-storage,axios, 'react-native', react from Types
@@ -141,6 +142,7 @@ export type StandardUtilities = {
 	galleryPicker(options?: {
 		mediaType: 'photo' | 'video' | 'mixed';
 	}): Promise<ImagePickerResponse>;
+	recentFiles(path?: string): Promise<string[]>;
 };
 
 export type ActionFunction = (
