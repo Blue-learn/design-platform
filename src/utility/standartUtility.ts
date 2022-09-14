@@ -111,6 +111,10 @@ export const standardUtilitiesRaw = (
 	recentFiles: async (
 		path = RNFetchBlob.fs.dirs.DownloadDir,
 	) => {
-		return await RNFetchBlob.fs.ls(path);
+		return await RNFetchBlob.fs
+			.ls(path)
+			.then((files) => {
+				return files.map((file) => `${path}/${file}`);
+			});
 	},
 });
