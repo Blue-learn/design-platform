@@ -7,6 +7,10 @@ import {
 } from '../navigation/root_navigation';
 import SharedPropsService from '../SharedPropsService';
 import { StandardUtilities } from '../types';
+import {
+	launchCamera,
+	launchImageLibrary,
+} from 'react-native-image-picker';
 
 export const standardUtilitiesRaw = (
 	state: any,
@@ -97,4 +101,10 @@ export const standardUtilitiesRaw = (
 		goToRoute(routeId, {});
 	},
 	goBack,
+	cameraPicker: async (options?: any) => {
+		return await launchCamera(options);
+	},
+	galleryPicker: async (options?: any) => {
+		return await launchImageLibrary(options);
+	},
 });

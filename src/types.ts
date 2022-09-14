@@ -2,6 +2,7 @@ import { CallbackWithResult } from '@react-native-async-storage/async-storage/li
 import { AxiosStatic } from 'axios';
 import React, { Component } from 'react';
 import { View } from 'react-native';
+import { ImagePickerResponse } from 'react-native-image-picker';
 
 /**Todo** /
  * Need to remove @react-native-async-storage/async-storage,axios, 'react-native', react from Types
@@ -134,6 +135,12 @@ export type StandardUtilities = {
 		datastore: Datastore,
 		widgets: WidgetItem[],
 	): void;
+	cameraPicker(options?: {
+		mediaType: 'photo' | 'video' | 'mixed';
+	}): Promise<ImagePickerResponse>;
+	galleryPicker(options?: {
+		mediaType: 'photo' | 'video' | 'mixed';
+	}): Promise<ImagePickerResponse>;
 };
 
 export type ActionFunction = (
