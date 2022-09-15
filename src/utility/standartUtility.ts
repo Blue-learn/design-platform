@@ -10,6 +10,7 @@ import { StandardUtilities } from '../types';
 import {
 	launchCamera,
 	launchImageLibrary,
+	CameraOptions,
 } from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 
@@ -102,10 +103,12 @@ export const standardUtilitiesRaw = (
 		goToRoute(routeId, {});
 	},
 	goBack,
-	cameraPicker: async (options?: any) => {
+	cameraPicker: async (options: CameraOptions) => {
 		return await launchCamera(options);
 	},
-	galleryPicker: async (options?: any) => {
+	galleryPicker: async (
+		options: CameraOptions,
+	) => {
 		return await launchImageLibrary(options);
 	},
 	recentFiles: async (

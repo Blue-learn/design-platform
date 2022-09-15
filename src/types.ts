@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { ImagePickerResponse } from 'react-native-image-picker';
 import RNFetchBlob, { Dirs } from 'rn-fetch-blob';
+import { CameraOptions } from 'react-native-image-picker/src/types';
 
 /**Todo** /
  * Need to remove @react-native-async-storage/async-storage,axios, 'react-native', react from Types
@@ -136,12 +137,12 @@ export type StandardUtilities = {
 		datastore: Datastore,
 		widgets: WidgetItem[],
 	): void;
-	cameraPicker(options?: {
-		mediaType: 'photo' | 'video' | 'mixed';
-	}): Promise<ImagePickerResponse>;
-	galleryPicker(options?: {
-		mediaType: 'photo' | 'video' | 'mixed';
-	}): Promise<ImagePickerResponse>;
+	cameraPicker(
+		options?: CameraOptions,
+	): Promise<ImagePickerResponse>;
+	galleryPicker(
+		options?: CameraOptions,
+	): Promise<ImagePickerResponse>;
 	recentFiles(path?: string): Promise<string[]>;
 };
 
