@@ -141,9 +141,19 @@ const PageRender: React.FC<PageRenderProps> = ({
 		});
 	};
 
-	const _renderItem = ({
+	const _renderListItem = ({
 		item,
 	}: ListRenderItemInfo<WidgetItem>) => {
+		return (
+			<RenderItem
+				item={item}
+				routeId={routeId}
+				isLoading={isFetching}
+			/>
+		);
+	};
+
+	const _renderItem = (item: WidgetItem) => {
 		return (
 			<RenderItem
 				item={item}
@@ -160,7 +170,7 @@ const PageRender: React.FC<PageRenderProps> = ({
 			{_map(fixedTopWI, _renderItem)}
 			<FlatList
 				ref={setRef}
-				renderItem={_renderItem}
+				renderItem={_renderListItem}
 				data={bodyWI}
 				extraData={bodyWI}
 				onEndReachedThreshold={0.5}
