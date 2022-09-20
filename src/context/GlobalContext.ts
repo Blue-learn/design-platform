@@ -5,7 +5,6 @@ import {
 	Datastore,
 	GlobalActionTokens,
 	LAYOUTS,
-	PageType,
 	RouteMap,
 	TemplateSchema,
 	WidgetItem,
