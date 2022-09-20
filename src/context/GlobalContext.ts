@@ -214,10 +214,6 @@ const GlobalReducer = (
 	state: GlobalState,
 	action: GlobalAction,
 ) => {
-	console.warn(
-		'******** global action ********',
-		action.type,
-	);
 	switch (action.type) {
 		case GlobalActionTokens.SET_ROUTE_MAP: {
 			return {
