@@ -78,6 +78,7 @@ const MicroFrontend: React.FC<
 			});
 		}
 	};
+
 	const _initGlobalProps = async () => {
 		toggleLoad(true);
 		await SharedPropsService.setGlobalProps({
