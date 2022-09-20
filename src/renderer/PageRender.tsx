@@ -8,6 +8,7 @@ import React, {
 import {
 	Dimensions,
 	FlatList,
+	KeyboardAvoidingView,
 	ListRenderItemInfo,
 	RefreshControl,
 	StyleSheet,
@@ -112,6 +113,11 @@ const PageRender: React.FC<PageRenderProps> = ({
 	};
 
 	const _layoutMapping = () => {
+		console.log(
+			'template in layout mapping',
+			template.layout.widgets,
+		);
+
 		template.layout.widgets.map((widgetItem) => {
 			if (
 				!renderedWidgetsArray.includes(widgetItem.id)
@@ -181,6 +187,7 @@ const PageRender: React.FC<PageRenderProps> = ({
 				extraData={bodyWI}
 				onEndReachedThreshold={0.5}
 				showsHorizontalScrollIndicator={false}
+				keyboardDismissMode='none'
 				onEndReached={EnableOnEndReach}
 				onMomentumScrollEnd={onScroll}
 				refreshControl={
