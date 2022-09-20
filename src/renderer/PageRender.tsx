@@ -189,6 +189,9 @@ const PageRender: React.FC<PageRenderProps> = ({
 						onRefresh={onRefresh}
 					/>
 				}
+				ListFooterComponent={() => (
+					<View style={{ height: 100 }} />
+				)}
 			/>
 			{_map(fixedBottomWI, _renderItem)}
 			<View style={styles.absoluteTop}>
