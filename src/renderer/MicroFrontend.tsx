@@ -1,6 +1,5 @@
 import React, {
 	memo,
-	useCallback,
 	useContext,
 	useEffect,
 	useMemo,
@@ -72,8 +71,8 @@ const MicroFrontend: React.FC<
 	}, []);
 
 	const buildTemplate = async () => {
-		if (routeMap[routeCurrent].template == null) {
-			setTemplateForRoute({
+		if (template === null) {
+			await setTemplateForRoute({
 				routeId: routeCurrent,
 				template: await onLoadX,
 			});
@@ -89,7 +88,6 @@ const MicroFrontend: React.FC<
 		if (state.routeMap == null) {
 			await setRouteMap(routeMap);
 		}
-
 		await buildTemplate();
 		toggleLoad(false);
 	};
@@ -97,9 +95,6 @@ const MicroFrontend: React.FC<
 	useEffect(() => {
 		_initGlobalProps();
 	}, [routeCurrent, extraProps]);
-
-	const properties: any =
-		template?.datastore[routeCurrent];
 
 	if (isLoading) {
 		return (
@@ -136,7 +131,6 @@ const MicroFrontend: React.FC<
 						}
 						template={template}
 						actions={actions}
-						properties={properties}
 						onEndReached={
 							routeMap[routeCurrent].onEndReached
 						}

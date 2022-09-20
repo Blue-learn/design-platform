@@ -5,6 +5,7 @@ import {
 	Datastore,
 	GlobalActionTokens,
 	LAYOUTS,
+	PageType,
 	RouteMap,
 	TemplateSchema,
 	WidgetItem,
@@ -213,6 +214,10 @@ const GlobalReducer = (
 	state: GlobalState,
 	action: GlobalAction,
 ) => {
+	console.warn(
+		'******** global action ********',
+		action.type,
+	);
 	switch (action.type) {
 		case GlobalActionTokens.SET_ROUTE_MAP: {
 			return {
@@ -222,13 +227,15 @@ const GlobalReducer = (
 		}
 
 		case GlobalActionTokens.SET_TEMPLATE_ROUTE: {
+			const page: any =
+				state.routeMap &&
+				state.routeMap[action.payload.routeId];
 			return {
 				...state,
 				routeMap: {
 					...state.routeMap,
 					[action.payload.routeId]: {
-						...(state.routeMap &&
-							state.routeMap[action.payload.routeId]),
+						...page,
 						template: setTemplatePageTypeData(action),
 					},
 				},

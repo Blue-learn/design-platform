@@ -84,6 +84,7 @@ const PageRender: React.FC<PageRenderProps> = ({
 	const absoluteTopWI: WidgetItem[] = [];
 	const absoluteBottomWI: WidgetItem[] = [];
 	const fabWI: WidgetItem[] = [];
+	const renderedWidgetsArray: string[] = [];
 	const callOnScrollEnd = useRef(false);
 	const standardUtilities = standardUtilitiesRaw(
 		state,
@@ -112,30 +113,35 @@ const PageRender: React.FC<PageRenderProps> = ({
 
 	const _layoutMapping = () => {
 		template.layout.widgets.map((widgetItem) => {
-			switch (widgetItem.position) {
-				case POSITION.FIXED_TOP: {
-					fixedTopWI.push(widgetItem);
-					break;
-				}
-				case POSITION.FIXED_BOTTOM: {
-					fixedBottomWI.push(widgetItem);
-					break;
-				}
-				case POSITION.ABSOLUTE_TOP: {
-					absoluteTopWI.push(widgetItem);
-					break;
-				}
-				case POSITION.ABSOLUTE_BOTTOM: {
-					absoluteBottomWI.push(widgetItem);
-					break;
-				}
-				case POSITION.FAB: {
-					fabWI.push(widgetItem);
-					break;
-				}
-				default: {
-					bodyWI.push(widgetItem);
-					break;
+			if (
+				!renderedWidgetsArray.includes(widgetItem.id)
+			) {
+				renderedWidgetsArray.push(widgetItem.id);
+				switch (widgetItem.position) {
+					case POSITION.FIXED_TOP: {
+						fixedTopWI.push(widgetItem);
+						break;
+					}
+					case POSITION.FIXED_BOTTOM: {
+						fixedBottomWI.push(widgetItem);
+						break;
+					}
+					case POSITION.ABSOLUTE_TOP: {
+						absoluteTopWI.push(widgetItem);
+						break;
+					}
+					case POSITION.ABSOLUTE_BOTTOM: {
+						absoluteBottomWI.push(widgetItem);
+						break;
+					}
+					case POSITION.FAB: {
+						fabWI.push(widgetItem);
+						break;
+					}
+					default: {
+						bodyWI.push(widgetItem);
+						break;
+					}
 				}
 			}
 		});
