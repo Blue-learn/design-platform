@@ -12,7 +12,6 @@ import {
 	launchImageLibrary,
 	CameraOptions,
 } from 'react-native-image-picker';
-import RNFetchBlob from 'rn-fetch-blob';
 
 export const standardUtilitiesRaw = (
 	state: any,
@@ -111,13 +110,7 @@ export const standardUtilitiesRaw = (
 	) => {
 		return await launchImageLibrary(options);
 	},
-	recentFiles: async (
-		path = RNFetchBlob.fs.dirs.DownloadDir,
-	) => {
-		return await RNFetchBlob.fs
-			.ls(path)
-			.then((files) => {
-				return files.map((file) => `${path}/${file}`);
-			});
+	recentFiles: async () => {
+		return [];
 	},
 });

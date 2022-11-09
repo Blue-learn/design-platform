@@ -118,7 +118,7 @@ const MicroFrontend: React.FC<
 	return (
 		<View
 			style={{
-				backgroundColor: 'transparent',
+				backgroundColor: '#F3F3F3',
 				flex: 1,
 			}}
 		>

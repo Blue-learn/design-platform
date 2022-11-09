@@ -3,7 +3,6 @@ import { AxiosStatic } from 'axios';
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { ImagePickerResponse } from 'react-native-image-picker';
-import RNFetchBlob, { Dirs } from 'rn-fetch-blob';
 import { CameraOptions } from 'react-native-image-picker/src/types';
 
 /**Todo** /
