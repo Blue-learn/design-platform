@@ -6,15 +6,16 @@
   "repository": "ssh://git@github.com:Blue-learn/design-platform.git",
   "scripts": {
     "build": "tsc",
-    "dev": "tsc -w",
-    "version-bump": "npm version patch",
-    "publish": "npm publish --access public",
     "copy": "sh scripts/copy-dev.sh",
-    "copy-win": "scripts/copy-dev.ps1",
     "copy-watcher": "node chokidar.js",
-    "lint": "eslint .",
+    "copy-win": "scripts/copy-dev.ps1",
+    "dev": "tsc -w",
     "format": "prettier --check .",
-    "typecheck": "tsc --noEmit"
+    "lint": "eslint .",
+    "prepare": "tsc",
+    "publish": "npm publish --access public",
+    "typecheck": "tsc --noEmit",
+    "version-bump": "npm version patch"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
