@@ -53,30 +53,31 @@ export const standardUtilitiesRaw = (
 				});
 		}, 16);
 	},
-	setDatastore(
+	// `async` on the method rather than on a Promise executor. The old
+	// form was `new Promise(async (resolve) => ...)`, where a throw inside
+	// the executor is swallowed: the promise neither resolves nor rejects
+	// and the caller hangs. Returning directly propagates it.
+	async setDatastore(
 		routeId,
 		widgetId: string,
 		payload?: any,
 	): Promise<any> {
-		return new Promise(async (resolve) => {
-			const previousValue = get(
-				state.datastore,
-				widgetId,
-			);
+		const previousValue = get(
+			state.datastore,
+			widgetId,
+		);
 
-			/** if previousValue is undefined, then setting undefined again is not allowed **/
-			if (previousValue === payload) {
-				console.warn('value is same');
-				resolve(state.datastore);
-				return;
-			}
-			await setDataStoreInPath({
-				routeId,
-				widgetId,
-				payload,
-			});
-			resolve(state.datastore);
+		/** if previousValue is undefined, then setting undefined again is not allowed **/
+		if (previousValue === payload) {
+			console.warn('value is same');
+			return state.datastore;
+		}
+		await setDataStoreInPath({
+			routeId,
+			widgetId,
+			payload,
 		});
+		return state.datastore;
 	},
 	appendWidgets(routeId, datastore, widgets) {
 		appendWidgets({
@@ -154,30 +155,31 @@ export const standardUtilitiesHook =
 							});
 					}, 16);
 				},
-				setDatastore(
+				// `async` on the method rather than on a Promise executor. The old
+				// form was `new Promise(async (resolve) => ...)`, where a throw inside
+				// the executor is swallowed: the promise neither resolves nor rejects
+				// and the caller hangs. Returning directly propagates it.
+				async setDatastore(
 					routeId,
 					widgetId: string,
 					payload?: any,
 				): Promise<any> {
-					return new Promise(async (resolve) => {
-						const previousValue = get(
-							state.datastore,
-							widgetId,
-						);
+					const previousValue = get(
+						state.datastore,
+						widgetId,
+					);
 
-						/** if previousValue is undefined, then setting undefined again is not allowed **/
-						if (previousValue === payload) {
-							console.warn('value is same');
-							resolve(state.datastore);
-							return;
-						}
-						await setDataStoreInPath({
-							routeId,
-							widgetId,
-							payload,
-						});
-						resolve(state.datastore);
+					/** if previousValue is undefined, then setting undefined again is not allowed **/
+					if (previousValue === payload) {
+						console.warn('value is same');
+						return state.datastore;
+					}
+					await setDataStoreInPath({
+						routeId,
+						widgetId,
+						payload,
 					});
+					return state.datastore;
 				},
 				appendWidgets(routeId, datastore, widgets) {
 					appendWidgets({
