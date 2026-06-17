@@ -9,6 +9,7 @@ import {
 } from '../types';
 import withGlobalContext from '../context/withGlobalContext';
 import ShimmerRenderer from './ShimmerRenderer';
+import WidgetErrorBoundary from './WidgetErrorBoundary';
 
 interface Props {
 	item: WidgetItem;
@@ -77,15 +78,20 @@ class WidgetRenderer extends React.PureComponent<Props> {
 			return <ShimmerRenderer {...item} />;
 
 		return (
-			<Renderer
-				key={`${item.id || item.type}`}
-				ref={forwardedRef}
-				triggerAction={this.props.triggerAction}
-				item={item}
-				datastore={datastore}
-				{...extraProps}
-				{...itemData}
-			/>
+			<WidgetErrorBoundary
+				type={item.type}
+				id={item.id}
+			>
+				<Renderer
+					key={`${item.id || item.type}`}
+					ref={forwardedRef}
+					triggerAction={this.props.triggerAction}
+					item={item}
+					datastore={datastore}
+					{...extraProps}
+					{...itemData}
+				/>
+			</WidgetErrorBoundary>
 		);
 	}
 }
