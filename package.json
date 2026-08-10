@@ -54,6 +54,6 @@
     "lodash-es": "^4.17.21",
     "react-fast-compare": "^3.2.0",
     "react-native-safe-area-context": "^4.3.1",
-    "react-native-screens": "^3.15.0"
+    "react-native-screens": "^4.27.0"
   }
 }
